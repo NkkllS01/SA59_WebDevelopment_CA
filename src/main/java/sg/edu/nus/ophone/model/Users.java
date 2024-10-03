@@ -2,12 +2,7 @@ package sg.edu.nus.ophone.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 //code by Team3.Cynthia Peh
 @Entity
@@ -35,8 +30,8 @@ public class Users {
   @OneToMany(mappedBy = "user")
   private List<Review> reviews;
 
-  @OneToMany(mappedBy = "user")
-  private List<Cart> carts;
+  @OneToOne(mappedBy = "user")
+  private Cart cart;
 
   public Users() {
   }
