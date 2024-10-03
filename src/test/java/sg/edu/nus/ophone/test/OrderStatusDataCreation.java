@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import sg.edu.nus.ophone.model.OrderStatus;
+import sg.edu.nus.ophone.repository.OrderStatusRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @SpringBootTest
 public class OrderStatusDataCreation {
     @Autowired
-    private OrderStatusDataCreation OrdStatRepo;
+    private OrderStatusRepository OrdStatRepo;
 
     @Test
     public void statusCreation() {
@@ -27,6 +28,6 @@ public class OrderStatusDataCreation {
         statuses.add(new OrderStatus(7, "Refunded"));//
         statuses.add(new OrderStatus(8, "Completed"));//
 
-        statuses.forEach(e -> OrdStatRepo.save(e));
+        OrdStatRepo.saveAll(statuses);
     }
 }

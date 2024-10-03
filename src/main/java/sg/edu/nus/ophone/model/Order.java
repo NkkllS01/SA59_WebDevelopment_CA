@@ -29,6 +29,14 @@ public class Order {
     @JoinColumn(name = "payment_id",referencedColumnName = "id")
     private Payment payment;
 
+    public Order() {}
+    public Order(String id, String userId, String orderdate, double totalamount) {
+        this.id = id;
+        this.userId = userId;
+        this.orderDate = LocalDate.parse(orderdate);
+        this.totalAmount = totalamount;
+    }
+
     public String getId() {
         return id;
     }

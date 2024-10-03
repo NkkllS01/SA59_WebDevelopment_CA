@@ -13,6 +13,5 @@ public interface OrderRepository extends JpaRepository <Order,Integer> {
     @Query("select o from Order o where o.userId = :uid")
     List<Order> findByUserId(@Param("uid") String uid);
 
-    @Query("select o from Order o where o.orderDate = :date")
-    List<Order> findByOrderDate(@Param("date") String date);
+
 }

@@ -17,8 +17,6 @@ public class OrderDataCreation {
     @Autowired
     private OrderRepository OrdRepo;
 
-    @Autowired
-    private OrderStatusRepository OrdStatRepo;
 
     @Test
     void OrderCreation() {
@@ -29,6 +27,6 @@ public class OrderDataCreation {
         orders.add(new Order("202410004", "HK416D", "2024-10-31", 11451.4));
         // status setting not implemented
 
-        orders.forEach(e -> OrdRepo.save(e));
+        OrdRepo.saveAll(orders);
     }
 }

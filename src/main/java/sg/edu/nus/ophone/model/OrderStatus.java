@@ -12,6 +12,10 @@ public class OrderStatus {
     @Column(length = 50)
     private String status;
     public OrderStatus() {}
+    public OrderStatus(int id, String status) {
+        this.id = id;
+        this.status = status;
+    }
 
     public String getStatus() {
         return status;
