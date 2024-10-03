@@ -24,7 +24,7 @@ public class Product {
   @ManyToOne
   @JoinColumn(name = "brand_id", referencedColumnName = "id")
   private Brand brand;
-  private String imagePathName;
+  private String imagePath;
 
   public Product() {
   }
@@ -86,11 +86,11 @@ public class Product {
   }
 
   public String getImagePathName() {
-    return imagePathName;
+    return imagePath;
   }
 
   public void setImagePathName(String imagePathName) {
-    this.imagePathName = imagePathName;
+    this.imagePath = imagePath;
   }
 
   @Override
