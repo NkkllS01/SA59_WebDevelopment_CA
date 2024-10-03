@@ -1,0 +1,18 @@
+package sg.edu.nus.ophone.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import sg.edu.nus.ophone.model.Order;
+
+//code by Team3.Chen Sirui
+public interface OrderRepository extends JpaRepository <Order,Integer> {
+    @Query("select o from Order o where o.userId = :uid")
+    List<Order> findByUserId(@Param("uid") String uid);
+
+    @Query("select o from Order o where o.orderDate = :date")
+    List<Order> findByOrderDate(@Param("date") String date);
+}
