@@ -12,7 +12,7 @@ import java.util.List;
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 
   @Query("SELECT u FROM Users u WHERE u.id = :id")
-  List<Users> findByUserId(@Param("id") String id);
+  List<Users> findByUserId(@Param("id") int id);
 
   @Query("SELECT u FROM Users u WHERE u.email = :email")
   List<Users> findByUserEmail(@Param("email") String email);
