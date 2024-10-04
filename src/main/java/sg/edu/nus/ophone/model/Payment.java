@@ -30,8 +30,8 @@ public class Payment {
 	@Column(name="method_id")
 	private int methodId;
 	
-	@Column(name="status_id")
-	private int statusId;
+	@Column(name="status")
+	private String status;
 	
 	@OneToOne
 	@JoinColumn(name="order_id", referencedColumnName="id")
@@ -40,75 +40,81 @@ public class Payment {
 	@ManyToOne
 	@JoinColumn(name="method_id", referencedColumnName="id")
 	private PaymentMethod paymentMethod;
-	
-	@ManyToOne
-	@JoinColumn(name="status_id", referencedColumnName="id")
-	private PaymentStatus paymentStatus;
-	
+
 	public Payment() {}
 	
-	public Payment(int orderId, String paymentDate, double paymentAmount, int methodId,
-			int statusId) {
+	public Payment(int orderId, String paymentDate, double paymentAmount, int methodId, String status) {
 		this.orderId = orderId;
 		this.paymentDate = paymentDate;
 		this.paymentAmount = paymentAmount;
 		this.methodId = methodId;
-		this.statusId = statusId;
+		this.status = status;
 	}
 
 	public int getId() {
+
 		return id;
 	}
 
 	public void setId(int id) {
+
 		this.id = id;
 	}
 
 	public int getOrderId() {
+
 		return orderId;
 	}
 
 	public void setOrderId(int orderId) {
+
 		this.orderId = orderId;
 	}
 
 	public String getPaymentDate() {
+
 		return paymentDate;
 	}
 
 	public void setPaymentDate(String paymentDate) {
+
 		this.paymentDate = paymentDate;
 	}
 
 	public double getPaymentAmount() {
+
 		return paymentAmount;
 	}
 
 	public void setPaymentAmount(double paymentAmount) {
+
 		this.paymentAmount = paymentAmount;
 	}
 
 	public int getMethodId() {
+
 		return methodId;
 	}
 
 	public void setMethodId(int methodId) {
+
 		this.methodId = methodId;
 	}
 
-	public int getStatusId() {
-		return statusId;
+	public String getStatus() {
+
+		return status;
 	}
 
-	public void setStatusId(int statusId) {
-		this.statusId = statusId;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	@Override
 	public String toString() {
 		return "Payment ID: " + id + ", Order ID: " + orderId + ", Payment Date: " + paymentDate + 
 				", Payment Amount: " + paymentAmount + ", Method ID: " + methodId + 
-				", Status ID: " + statusId;
+				", Status: " + status;
 	}
 
 }
