@@ -14,7 +14,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Users users;
+    private User user;
 
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
@@ -22,8 +22,8 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Users users) {
-        this.users = users;
+    public Cart(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -34,12 +34,12 @@ public class Cart {
         this.id = id;
     }
 
-    public Users getUser() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(Users users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<CartItem> getCartItems() {
@@ -52,6 +52,6 @@ public class Cart {
 
     @Override
     public String toString() {
-        return "Cart ID: " + id + ", User: " + users.getName();
+        return "Cart ID: " + id + ", User: " + user.getName();
     }
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 //code by Team3.Cynthia Peh
 @Entity
-public class Users {
+public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -33,10 +33,10 @@ public class Users {
   @OneToOne(mappedBy = "user")
   private Cart cart;
 
-  public Users() {
+  public User() {
   }
 
-  public Users(String userType, String name, String email, String password, String address) {
+  public User(String userType, String name, String email, String password, String address) {
     this.userType = userType;
     this.name = name;
     this.email = email;
