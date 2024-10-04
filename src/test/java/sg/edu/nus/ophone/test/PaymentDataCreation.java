@@ -14,10 +14,10 @@ public class PaymentDataCreation {
 	
 	@Test
 	void conTextLoad() {
-	Payment pay1 = new Payment(1,"2024-09-12",2500.00,1,3);
-	Payment pay2 = new Payment(2,"2024-09-16",1800.50,2,3);
-	Payment pay3 = new Payment(3,"2024-09-18",2189.32,1,2);
-	Payment pay4 = new Payment(4,"2024-09-22",2189.32,2,1);
+	Payment pay1 = new Payment(1,"2024-09-12",2500.00,3,"Completed");
+	Payment pay2 = new Payment(2,"2024-09-16",1800.50,2,"Completed");
+	Payment pay3 = new Payment(3,"2024-09-18",2189.32,1,"Validating");
+	Payment pay4 = new Payment(4,"2024-09-22",2189.32,2,"Pending payment details");
 	
 	payRepo.save(pay1);
 	payRepo.save(pay2);

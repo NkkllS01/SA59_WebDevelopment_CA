@@ -1,4 +1,4 @@
-package sg.edu.nus.ophone;
+package sg.edu.nus.ophone.test;
 
 import java.util.Arrays;
 
@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import sg.edu.nus.ophone.model.Cart;
 import sg.edu.nus.ophone.model.CartItem;
 import sg.edu.nus.ophone.model.Product;
-import sg.edu.nus.ophone.model.Users;
+import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.repository.CartRepository;
 import sg.edu.nus.ophone.repository.CartItemRepository;
 import sg.edu.nus.ophone.repository.ProductRepository;
-import sg.edu.nus.ophone.repository.UsersRepository;
+import sg.edu.nus.ophone.repository.UserRepository;
 
 @SpringBootTest
 public class CartAndCartItemDataCreation {
@@ -25,7 +25,7 @@ public class CartAndCartItemDataCreation {
     private CartItemRepository cartItemRepo;
 
     @Autowired
-    private UsersRepository userRepo;
+    private UserRepository userRepo;
 
     @Autowired
     private ProductRepository productRepo;
@@ -33,8 +33,8 @@ public class CartAndCartItemDataCreation {
     @Test
     void contTextLoad() {
         // 创建测试用户
-        Users user1 = new Users("John Doe", "johndoe@example.com");
-        Users user2 = new Users("Jane Smith", "janesmith@example.com");
+        User user1 = new User("John Doe", "johndoe@example.com");
+        User user2 = new User("Jane Smith", "janesmith@example.com");
         userRepo.saveAll(Arrays.asList(user1, user2));
 
         // 创建测试产品
