@@ -3,6 +3,7 @@ package sg.edu.nus.ophone.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 //code by Team3.Chen Sirui
 @Entity
@@ -10,10 +11,12 @@ import java.time.LocalDate;
 public class Order {
     @Id
     @Column(length = 30)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Column(length = 30)
-    private String userId;
+    @ManyToOne
+    @JoinColumn (name = "user_id")
+    private User user;
 
     @Column(name = "order_date")
     private LocalDate orderDate;
@@ -29,12 +32,25 @@ public class Order {
     @JoinColumn(name = "payment_id",referencedColumnName = "id")
     private Payment payment;
 
+    @OneToMany (mappedBy = "order")
+    private List<OrderDetails> orderDetails;
+
+    // constructors
     public Order() {}
-    public Order(String id, String userId, String orderdate, double totalamount) {
+    public Order(String id, User user, String orderDate, double totalAmount) {
         this.id = id;
-        this.userId = userId;
-        this.orderDate = LocalDate.parse(orderdate);
-        this.totalAmount = totalamount;
+        this.user = user;
+        this.orderDate = LocalDate.parse(orderDate);
+        this.totalAmount = totalAmount;
+    }
+
+    // getters and setters
+    public List<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     public String getId() {
@@ -45,12 +61,12 @@ public class Order {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDate getOrderDate() {
@@ -73,7 +89,7 @@ public class Order {
         return orderstatus;
     }
 
-    public void setOrderstatus(OrderStatus orderstatus) {
+    public void setOrderStatus(OrderStatus orderstatus) {
         this.orderstatus = orderstatus;
     }
 }
