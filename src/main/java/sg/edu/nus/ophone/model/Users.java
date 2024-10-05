@@ -14,8 +14,8 @@ import jakarta.persistence.OneToOne;
 public class Users {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   private int id;
+
   @Column(length = 30)
   private String userType;
 
@@ -25,6 +25,8 @@ public class Users {
   @Column(length = 100)
   private String email;
   private String address;
+  private String city;
+  private String postalCode;
 
   @Column(length = 20)
   private String password;
@@ -38,15 +40,16 @@ public class Users {
   @OneToOne(mappedBy = "user")
   private Cart cart;
 
-  public Users() {
-  }
+  public Users() { }
 
-  public Users(String userType, String name, String email, String password, String address) {
+  public Users(String userType, String name, String email, String address, String city, String postalCode, String password) {
     this.userType = userType;
     this.name = name;
     this.email = email;
-    this.password = password;
     this.address = address;
+    this.city = city;
+    this.postalCode = postalCode;
+    this.password = password;
   }
 
   public int getId() {
@@ -95,6 +98,22 @@ public class Users {
 
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
   }
 
   public List<Order> getOrders() {
