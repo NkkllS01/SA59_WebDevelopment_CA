@@ -7,13 +7,14 @@ public class OrderDetailsId implements Serializable {
     private Long productId;
     private Long orderId;
 
+    // constructors
     public OrderDetailsId() {}
-
     public OrderDetailsId(Long productId, Long orderId) {
         this.productId = productId;
         this.orderId = orderId;
     }
 
+    // getters & setters
     public Long getProductId() {
         return productId;
     }
