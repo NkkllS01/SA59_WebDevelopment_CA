@@ -12,7 +12,7 @@ import sg.edu.nus.ophone.model.Order;
 //code by Team3.Chen Sirui
 @Repository
 public interface OrderRepository extends JpaRepository <Order,Integer> {
-    @Query("select o from Order o where o.userId = :uid")
+    @Query("select o from Order o where o.user.id = :uid")
     List<Order> findByUserId(@Param("uid") String uid);
 
 
