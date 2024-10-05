@@ -18,10 +18,10 @@ public class UserDataCreation {
 
     @Test
     void contextLoads() {
-        User user1 = new User("Customer", "Andy", "andy@email.com", "aa12345aa", "20 Holland Village Road 23300");
-        User user2 = new User("Customer", "Billy", "billy@email.com", "3b3b8888", "3 Robinson Ring 34250");
+        User user1 = new User("Customer", "Andy", "andy@email.com", "aa12345aa", "20 Holland Village Road", "Singapore","23300");
+        User user2 = new User("Customer", "Billy", "billy@email.com", "3b3b8888", "3 Robinson Ring", "Singapore", "34250");
         User user3 = new User("Staff", "Candy", "candy@email.com", "12345678Cc",
-                "123 Jurong West #05-28 Singapore 66832");
+                "123 Jurong West #05-28", "Singapore", "66832");
 
         userRepo.saveAll(Arrays.asList(user1, user2, user3));
     }
