@@ -8,35 +8,41 @@ import jakarta.persistence.*;
 public class OrderDetails {
 
     @Id
-    @JoinColumn(name = "order_id")
+    @Column(name = "order_id")
     private Long orderId;
 
     @Id
-    @JoinColumn(name = "product_id")
+    @Column(name = "product_id")
     private Long productId;
 
+    // Map to the Order entity and use @MapsId to link the orderId field
     @ManyToOne
+    @MapsId("orderId")
+    @JoinColumn(name="order_id", insertable = false, updatable = false)
+
+    // Map to the Product entity and use @MapsId to link the productId field
+    private Order order;
+    @ManyToOne
+    @MapsId("productId")
     @JoinColumn(name="product_id", insertable = false, updatable = false)
     private Product product;
-
-    @ManyToOne
-    @JoinColumn(name="order_id", insertable = false, updatable = false)
-    private Order order;
 
     @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)
-    private double unitPrice;
+    private double amount;
 
     public OrderDetails() {
     }
 
-    public OrderDetails(Long orderId, Long productId, int quantity, double unitPrice) {
-        this.orderId = orderId;
-        this.productId = productId;
+    public OrderDetails(Order order, Product product, int quantity, double amount) {
+        this.order = order;
+        this.product = product;
+        this.orderId = order.getId();
+        this.productId = product.getId();
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
+        this.amount = amount;
     }
 
     // Getters and Setters
@@ -52,6 +58,12 @@ public class OrderDetails {
     public void setProductId(Long productId) {
         this.productId = productId;
     }
+    public Order getOrder() {
+        return order;
+    }
+    public void setOrder(Order order) {
+        this.order = order;
+    }
     public Product getProduct() {
         return product;
     }
@@ -64,17 +76,10 @@ public class OrderDetails {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public double getUnitPrice() {
-        return unitPrice;
+    public double getAmount() {
+        return amount;
     }
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
-    public Order getOrder() {
-        return order;
-    }
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
 }
