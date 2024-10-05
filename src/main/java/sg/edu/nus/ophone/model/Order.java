@@ -12,7 +12,7 @@ public class Order {
     @Id
     @Column(length = 30)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     @ManyToOne
     @JoinColumn (name = "user_id")
@@ -37,7 +37,7 @@ public class Order {
 
     // constructors
     public Order() {}
-    public Order(String id, User user, String orderDate, double totalAmount) {
+    public Order(int id, User user, String orderDate, double totalAmount) {
         this.id = id;
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
@@ -53,11 +53,11 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
