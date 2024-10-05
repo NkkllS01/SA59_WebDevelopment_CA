@@ -16,7 +16,7 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private Users users;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "productId")
@@ -63,12 +63,12 @@ public class Review {
         this.date = date;
     }
 
-    public Users getUser() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(Users users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {
