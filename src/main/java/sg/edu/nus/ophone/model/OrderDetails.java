@@ -7,18 +7,19 @@ import jakarta.persistence.*;
 @IdClass(OrderDetailsId.class)
 public class OrderDetails {
 
+//    @Id
+//    @JoinColumn(name = "order_id")
+//    private Long orderId;
+//
+//    @Id
+//    @JoinColumn(name = "product_id")
+//    private Long productId;
     @Id
-    @JoinColumn(name = "order_id")
-    private Long orderId;
-
-    @Id
-    @JoinColumn(name = "product_id")
-    private Long productId;
-
     @ManyToOne
     @JoinColumn(name="product_id", insertable = false, updatable = false)
     private Product product;
 
+    @Id
     @ManyToOne
     @JoinColumn(name="order_id", insertable = false, updatable = false)
     private Order order;
@@ -27,31 +28,21 @@ public class OrderDetails {
     private int quantity;
 
     @Column(nullable = false)
-    private double unitPrice;
+    private double amount;
 
     public OrderDetails() {
     }
 
-    public OrderDetails(Long orderId, Long productId, int quantity, double unitPrice) {
-        this.orderId = orderId;
-        this.productId = productId;
+    public OrderDetails(Order order, Product product, int quantity, double amount) {
+//        this.orderId = orderId;
+//        this.productId = productId;
+        this.order = order;
+        this.product = product;
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
+        this.amount = amount;
     }
 
     // Getters and Setters
-    public Long getOrderId() {
-        return orderId;
-    }
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-    public Long getProductId() {
-        return productId;
-    }
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
     public Product getProduct() {
         return product;
     }
@@ -64,11 +55,11 @@ public class OrderDetails {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public double getUnitPrice() {
-        return unitPrice;
+    public double getAmount() {
+        return amount;
     }
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
     public Order getOrder() {
         return order;
