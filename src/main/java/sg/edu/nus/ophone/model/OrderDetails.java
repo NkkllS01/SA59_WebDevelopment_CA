@@ -15,13 +15,15 @@ public class OrderDetails {
     @Column(name = "product_id")
     private Long productId;
 
+    // Map to the Order entity and use @MapsId to link the orderId field
     @ManyToOne
-    @MapsId("order_id")
+    @MapsId("orderId")
     @JoinColumn(name="order_id", insertable = false, updatable = false)
 
+    // Map to the Product entity and use @MapsId to link the productId field
     private Order order;
     @ManyToOne
-    @MapsId("product_id")
+    @MapsId("productId")
     @JoinColumn(name="product_id", insertable = false, updatable = false)
     private Product product;
 

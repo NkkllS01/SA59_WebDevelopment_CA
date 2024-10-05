@@ -26,14 +26,14 @@ public class OrderController {
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
     public String displayOrders(Model model, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
+        int userId = (int) session.getAttribute("userId");
         List<Order> orders = orderService.findByUserId(userId);
         model.addAttribute("orders", orders);
         return "order-history";
     }
 
     @GetMapping("/orders/{id}")
-    public String displayOrderDetails(Model model, @PathVariable("id") int orderId) {
+    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId) {
         Order order = orderService.findByOrderId(orderId);
         List<OrderDetails> orderDetails = orderService.findByOrder(order);
         model.addAttribute("orderDetails", orderDetails);
