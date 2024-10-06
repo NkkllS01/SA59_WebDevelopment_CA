@@ -104,4 +104,8 @@ public class Order {
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
+
+    public Shipping getShipping() {return shipping;}
+
+    public void setShipping(Shipping shipping) {this.shipping = shipping;}
 }
