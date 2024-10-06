@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sg.edu.nus.ophone.interfacemethods.UserService;
 import sg.edu.nus.ophone.model.User;
-import sg.edu.nus.ophone.repository.UsersRepository;
+import sg.edu.nus.ophone.repository.UserRepository;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class UserServiceImp implements UserService {
 
     @Autowired
-    private UsersRepository userRepository;
+    private UserRepository userRepository;
 
     public boolean login(String name,String password) {
         List<User> users=userRepository.findByName(name);

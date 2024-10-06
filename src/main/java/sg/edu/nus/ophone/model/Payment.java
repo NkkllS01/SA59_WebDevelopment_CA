@@ -37,10 +37,10 @@ public class Payment {
 
 	// constructors
 	public Payment() {}
-	public Payment(Order order, String paymentDate, double paymentAmount,PaymentMethod paymentMethod, String status) {
+	public Payment(Order order, String paymentDate, PaymentMethod paymentMethod, String status) {
 		this.order = order;
 		this.paymentDate = paymentDate;
-		this.paymentAmount = paymentAmount;
+		this.paymentAmount = order.getTotalAmount();
 		this.paymentMethod = paymentMethod;
 		this.status = status;
 	}

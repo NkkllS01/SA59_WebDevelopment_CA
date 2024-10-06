@@ -12,9 +12,9 @@ import sg.edu.nus.ophone.model.OrderDetails;
 
 //code by Team3.Chen Sirui
 @Repository
-public interface OrderRepository extends JpaRepository <Order,Integer> {
+public interface OrderRepository extends JpaRepository <Order,Long> {
     @Query("select o from Order o where o.user.id = :uid")
-    public List<Order> findByUserId(@Param("uid") int uid);
+    public List<Order> findByUserId(@Param("uid") long uid);
 
     @Query("SELECT o from Order o WHERE o.id = :id")
     public Order findByOrderId(@Param("id") Long orderId);
