@@ -15,17 +15,19 @@ public class Review {
     private String date;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private Users users;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public Review() {
     }
 
-    public Review(int rating, String comment, String date) {
+    public Review(Product product, User user, int rating, String comment, String date) {
+        this.product = product;
+        this.user = user;
         this.rating = rating;
         this.comment = comment;
         this.date = date;
@@ -63,12 +65,12 @@ public class Review {
         this.date = date;
     }
 
-    public Users getUser() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(Users users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {

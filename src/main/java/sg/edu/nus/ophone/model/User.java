@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   private int id;
   @Column(length = 30)
   private String userType;
@@ -20,6 +19,8 @@ public class User {
   @Column(length = 100)
   private String email;
   private String address;
+  private String city;
+  private String postalCode;
 
   @Column(length = 20)
   private String password;
@@ -36,12 +37,14 @@ public class User {
   public User() {
   }
 
-  public User(String userType, String name, String email, String password, String address) {
+  public User(String userType, String name, String email, String password, String address, String city, String postalCode) {
     this.userType = userType;
     this.name = name;
     this.email = email;
     this.password = password;
     this.address = address;
+    this.city = city;
+    this.postalCode = postalCode;
   }
 
   public int getId() {
@@ -90,6 +93,22 @@ public class User {
 
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
   }
 
   public List<Order> getOrders() {

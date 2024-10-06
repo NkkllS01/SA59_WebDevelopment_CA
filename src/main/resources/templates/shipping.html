@@ -1,0 +1,57 @@
+<!--//Team3.Kuo Chi-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shipping Details</title>
+</head>
+
+<body>
+<h2>Shipping Details</h2>
+<form action="#" th:action="@{/shipping}" method="post" th:object="${shipping}">
+    <table>
+        <tbody>
+        <tr>
+            <td>Recipient Name:</td>
+            <td>
+                <input type="text" id="name" th:field="*{users.name}" />
+            </td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>
+                <input type="text" id="email" th:field="*{users.email}" />
+            </td>
+            <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td>
+                <input type="text" id="address" th:field="*{users.address}" />
+            </td>
+            <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td>
+                <input type="text" id="city" th:field="*{users.city}" />
+            </td>
+            <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></td>
+        </tr>
+        <tr>
+            <td>Postal Code:</td>
+            <td>
+                <input type="text" id="postalCode" th:field="*{users.postalCode}" />
+            </td>
+            <td th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Confirm"></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+</body>
+</html>

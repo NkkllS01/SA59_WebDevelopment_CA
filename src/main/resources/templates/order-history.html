@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History</title>
+</head>
+<body>
+    <h2>My Order History</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="order : ${orders}">
+        <td>
+          <a th:href="@{/orders/{id}(id=${order.id})}" th:text="${order.id}"></a>
+        </td>
+        <td th:text="${order.orderDate}">Date</td>
+        <td th:text="${order.totalAmount}">Amount</td>
+        <td th:text="${order.orderStatus}">Status</td>
+      </tr>
+      </tbody>
+    </table>
+</body>
+</html>

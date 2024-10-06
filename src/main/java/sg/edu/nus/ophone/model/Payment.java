@@ -17,98 +17,77 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="order_id")
-	private int orderId;
-	
+
+	@OneToOne
+	@JoinColumn(name="order_id", referencedColumnName="id")
+	private Order order;
+
 	@Column(name="payment_date")
 	private String paymentDate;
 	
 	@Column(name="payment_amount")
 	private double paymentAmount;
 	
-	@Column(name="method_id")
-	private int methodId;
-	
-	@Column(name="status_id")
-	private int statusId;
-	
-	@OneToOne
-	@JoinColumn(name="order_id", referencedColumnName="id")
-	private Order Order;
-	
+	@Column(name="status")
+	private String status;
+
 	@ManyToOne
 	@JoinColumn(name="method_id", referencedColumnName="id")
 	private PaymentMethod paymentMethod;
-	
-	@ManyToOne
-	@JoinColumn(name="status_id", referencedColumnName="id")
-	private PaymentStatus paymentStatus;
-	
+
+	// constructors
 	public Payment() {}
-	
-	public Payment(int orderId, String paymentDate, double paymentAmount, int methodId,
-			int statusId) {
-		this.orderId = orderId;
+	public Payment(Order order, String paymentDate, PaymentMethod paymentMethod, String status) {
+		this.order = order;
 		this.paymentDate = paymentDate;
-		this.paymentAmount = paymentAmount;
-		this.methodId = methodId;
-		this.statusId = statusId;
+		this.paymentAmount = order.getTotalAmount();
+		this.paymentMethod = paymentMethod;
+		this.status = status;
 	}
 
+	// getters & setters
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public int getOrderId() {
-		return orderId;
+	public Order getOrder() {
+		return order;
 	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
-
 	public String getPaymentDate() {
 		return paymentDate;
 	}
-
 	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = paymentDate;
 	}
-
 	public double getPaymentAmount() {
 		return paymentAmount;
 	}
-
 	public void setPaymentAmount(double paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
-
-	public int getMethodId() {
-		return methodId;
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
 	}
-
-	public void setMethodId(int methodId) {
-		this.methodId = methodId;
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
-
-	public int getStatusId() {
-		return statusId;
+	public String getStatus() {
+		return status;
 	}
-
-	public void setStatusId(int statusId) {
-		this.statusId = statusId;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	@Override
 	public String toString() {
-		return "Payment ID: " + id + ", Order ID: " + orderId + ", Payment Date: " + paymentDate + 
-				", Payment Amount: " + paymentAmount + ", Method ID: " + methodId + 
-				", Status ID: " + statusId;
+		return "Payment ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate +
+				", Payment Amount: " + paymentAmount + ", Method: " + paymentMethod +
+				", Status: " + status;
 	}
 
 }
