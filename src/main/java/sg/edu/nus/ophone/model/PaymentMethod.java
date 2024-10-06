@@ -23,8 +23,8 @@ public class PaymentMethod {
 
 	private String description;
 	
-	@OneToMany(mappedBy="paymentMethod")
-	private List<Payment> paymentMethod;
+//	@OneToMany(mappedBy="paymentMethod")
+//	private List<Payment> paymentMethod;
 	
 	public PaymentMethod() {}
 	
