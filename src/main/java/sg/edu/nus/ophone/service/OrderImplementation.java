@@ -21,7 +21,7 @@ public class OrderImplementation implements OrderInterface {
     OrderDetailsRepository orderDetailsRepo;
 
     @Override
-    public List<Order> findByUserId(int userId) {
+    public List<Order> findByUserId(long userId) {
         return orderRepo.findByUserId(userId);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.LongSummaryStatistics;
 
 public interface OrderInterface {
-    public List<Order> findByUserId(int userId);
+    public List<Order> findByUserId(long userId);
     public Order findByOrderId(Long orderId);
     public List<OrderDetails> findByOrder(Order order);
 }
