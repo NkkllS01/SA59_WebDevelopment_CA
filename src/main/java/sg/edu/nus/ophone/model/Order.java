@@ -3,6 +3,7 @@ package sg.edu.nus.ophone.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 //code by Team3.Chen Sirui
@@ -24,24 +25,26 @@ public class Order {
     @Column(name = "total_amount")
     private double totalAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "status", referencedColumnName = "id")
-    private OrderStatus orderstatus;
+//    @ManyToOne
+//    @JoinColumn(name = "status", referencedColumnName = "id")
+    private String orderStatus;
 
     @OneToOne
     @JoinColumn(name = "payment_id",referencedColumnName = "id")
     private Payment payment;
 
     @OneToMany (mappedBy = "order")
-    private List<OrderDetails> orderDetails;
+    private List<OrderDetails> orderDetails = new ArrayList<>();
+
+    @OneToOne (mappedBy = "order")
+    private Shipping shipping;
 
     // constructors
     public Order() {}
-    public Order(long id, User user, String orderDate, double totalAmount) {
-        this.id = id;
+    public Order(User user, String orderDate) {
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
-        this.totalAmount = totalAmount;
+        this.orderStatus = "Processing";
     }
 
     // getters and setters
@@ -50,7 +53,12 @@ public class Order {
     }
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
-        this.orderDetails = orderDetails;
+        this.orderDetails = orderDetails != null ? orderDetails : new ArrayList<>();
+        if (orderDetails != null && !orderDetails.isEmpty()) {
+            this.totalAmount = orderDetails.stream().map(OrderDetails::getAmount).reduce(0.0, Double::sum);
+        } else {
+            this.totalAmount = 0.0;
+        }
     }
 
     public long getId() {
@@ -77,6 +85,10 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public Payment getPayment() {return payment;}
+
+    public void setPayment(Payment payment) {this.payment = payment;}
+
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -85,11 +97,11 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public OrderStatus getOrderstatus() {
-        return orderstatus;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderStatus(OrderStatus orderstatus) {
-        this.orderstatus = orderstatus;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

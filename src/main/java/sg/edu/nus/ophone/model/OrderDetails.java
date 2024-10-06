@@ -2,6 +2,8 @@ package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 //code by Team3.Lian Da
 @Entity
 @IdClass(OrderDetailsId.class)
@@ -36,13 +38,13 @@ public class OrderDetails {
     public OrderDetails() {
     }
 
-    public OrderDetails(Order order, Product product, int quantity, double amount) {
+    public OrderDetails(Order order, Product product, int quantity) {
         this.order = order;
         this.product = product;
         this.orderId = order.getId();
         this.productId = product.getId();
         this.quantity = quantity;
-        this.amount = amount;
+        this.amount = product.getUnitPrice() * quantity;
     }
 
     // Getters and Setters
