@@ -19,14 +19,16 @@ public class Shipping {
   @Column(name = "delivery_date")
   private String deliveryDate;
 
-//  @ManyToOne
+  //  @ManyToOne
   private String shippingStatus;
 
   @OneToOne
-  @JoinColumn (name = "order_id")
+  @JoinColumn(name = "order_id")
   private Order order;
 
-  public Shipping() {};
+  public Shipping() {
+  }
+
   public Shipping(Order order, String address, String city, String postalCode) {
     this.order = order;
     this.address = address;
@@ -38,21 +40,42 @@ public class Shipping {
   public int getId() {
     return id;
   }
+
   public void setId(int id) {
     this.id = id;
   }
-  public Order getOrder() {return order;}
-  public void setOrder(Order order) {this.order = order;}
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
   public String getAddress() {
     return address;
   }
+
   public void setAddress(String address) {
     this.address = address;
   }
-  public String getCity() {return city;}
-  public void setCity(String city) {this.city = city;}
-  public String getPostalCode() {return postalCode;}
-  public void setPostalCode(String postalCode) {this.postalCode = postalCode;}
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
 
   public String getShippingDate() {
     return shippingDate;
@@ -73,6 +96,7 @@ public class Shipping {
   public String getShippingStatus() {
     return shippingStatus;
   }
+
   public void setShippingStatus(String shippingStatus) {
     this.shippingStatus = shippingStatus;
   }
@@ -80,7 +104,7 @@ public class Shipping {
   @Override
   public String toString() {
     return "Shipping [id=" + id + ", address=" + address + ", shippingDate=" + shippingDate + ", deliveryDate="
-        + deliveryDate + "]";
+            + deliveryDate + "]";
   }
 
-}
+

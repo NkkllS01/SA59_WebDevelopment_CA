@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.OrderDetails;
@@ -28,9 +29,9 @@ public class OrderController {
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
     public String displayOrders(Model model, HttpSession session) {
-//        int username = (int) session.getAttribute("username");
-//        List<Order> orders = orderService.findByUserId(username);
-        List<Order> orders = orderService.findByUserId(1);
+        int userId = (int) session.getAttribute("userId");
+        List<Order> orders = orderService.findByUserId(userId);
+        orders = orderService.findByUserId(1);
         model.addAttribute("orders", orders);
         return "order-history";
     }
@@ -50,5 +51,32 @@ public class OrderController {
         model.addAttribute("orderDetails", orderDetails);
         return "order-details";
     }
+//Cancel order
+    @PostMapping("/orders/cancel/{id}")
+    public String cancelOrder(Model model, @PathVariable("id") Long orderId, HttpSession session) {
+        int userId = (int) session.getAttribute("userId");
 
+        Order order = orderService.findByOrderIdAndUserId(orderId, userId);
+
+    if (order!=null) {
+        if (!order.getShipping().equals("Shipped") &&
+                !order.getShipping().equals("Delivered")) {
+
+
+            order.setOrderStatus("Cancelled");
+            order.setPaymentStatus("Pending refund");
+            order.setShippingStatus("Cancelled");
+
+            orderService.save(order);
+            model.addAttribute("message", "Order successfully cancelled.");
+        } else {
+            model.addAttribute("error", "Order cannot be cancelled as it has already been shipped or delivered.");
+        }
+    } else {
+        model.addAttribute("error", "Order not found.");
+    }
+
+        return "order-confirm-cancel";
 }
+        }
+
