@@ -13,6 +13,7 @@ import sg.edu.nus.ophone.model.Shipping;
 import sg.edu.nus.ophone.service.OrderImplementation;
 
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class OrderController {
@@ -26,7 +27,7 @@ public class OrderController {
 
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
-    public String displayOrders(Model model, HttpSession session) {
+    public String displayOrders(Model model, HttpSession session, Locale locale) {
 //        int username = (int) session.getAttribute("username");
 //        List<Order> orders = orderService.findByUserId(username);
         List<Order> orders = orderService.findByUserId(1);
@@ -35,7 +36,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId) {
+    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, Locale locale) {
         model.addAttribute("orderId", orderId);
 
         Order order = orderService.findByOrderId(orderId);
