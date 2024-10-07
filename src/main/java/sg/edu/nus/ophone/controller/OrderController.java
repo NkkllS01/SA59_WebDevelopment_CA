@@ -40,7 +40,9 @@ public class OrderController {
         model.addAttribute("orderId", orderId);
 
         Order order = orderService.findByOrderId(orderId);
+        Double gst = (order.getTotalAmount() / 109) * 9;
         model.addAttribute("order", order);
+        model.addAttribute("gst", gst);
         Payment payment = order.getPayment();
         model.addAttribute("payment", payment);
         Shipping shipping = order.getShipping();
