@@ -4,9 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.OrderDetails;
@@ -53,9 +51,14 @@ public class OrderController {
     }
 
     @PostMapping("/order/cancel")
-    public String cancelOrder(Model model, HttpSession session) {
-
-        return "order-cancel";
+    public String cancelOrder(@RequestParam("order") Order order, Model model, HttpSession session) {
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
+        if (!shippingStatus.equalsIgnoreCase("Order shipped") &&
+                !shippingStatus.equalsIgnoreCase("Delivered")) {
+            return "order-cancel";
+        } else
+            return "redirect:/orders";
     }
 
 }

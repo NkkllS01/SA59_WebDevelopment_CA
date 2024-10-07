@@ -52,7 +52,14 @@
           <p th:text="${shipping.postalCode}"></p>
         </td>
         <td>
-          <span th:text="${shipping.shippingStatus}"></span>
+          <p><span th:text="${shipping.shippingStatus}" style="text-align: center; font-weight: bold"></span></p>
+          <div th:if="${shipping.shippingStatus == 'Order shipped'}">
+            <p>Shipped on: <span th:text="${shipping.shippingDate}"></span></p>
+          </div>
+          <div th:if="${shipping.shippingStatus == 'Delivered'}">
+            <p>Delivered on: <span th:text="${shipping.deliveryDate}"></span></p>
+            <p>Shipped on: <span th:text="${shipping.shippingDate}"></span></p>
+          </div>
         </td>
       </tr>
       <tr>

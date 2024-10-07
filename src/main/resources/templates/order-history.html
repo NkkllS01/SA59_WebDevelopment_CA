@@ -16,8 +16,8 @@
       </tr>
       </thead>
       <tbody>
-      <form th:action="@{order/cancel}" method="post">
-          <tr th:each="order : ${orders}">
+      <tr th:each="order : ${orders}">
+          <form th:action="@{order/cancel}" th:object="${order}" method="post">
               <td>
                   <a th:href="@{/orders/{id}(id=${order.id})}" th:text="${order.id}"></a>
               </td>
@@ -25,8 +25,8 @@
               <td th:text="${order.totalAmount}">Amount</td>
               <td th:text="${order.orderStatus}">Status</td>
               <td><input type="submit" value="Cancel Order" /></td>
-          </tr>
-      </form>
+        </form>
+      </tr>
       </tbody>
     </table>
 </body>
