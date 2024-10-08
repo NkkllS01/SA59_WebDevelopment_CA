@@ -1,13 +1,8 @@
 package sg.edu.nus.ophone.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 //code by Team3.Ng Jiamin
 @Entity
@@ -15,7 +10,7 @@ import jakarta.persistence.Table;
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private long id;
   private String name;
   private String description;
   @Column(name = "unit_price")
@@ -25,6 +20,8 @@ public class Product {
   @JoinColumn(name = "brand_id", referencedColumnName = "id")
   private Brand brand;
   private String imagePathName;
+  @OneToMany (mappedBy = "product")
+  private List<Review> reviews;
 
   public Product() {
   }
@@ -37,11 +34,11 @@ public class Product {
     this.brand = brand;
   }
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -65,7 +62,7 @@ public class Product {
     return unitPrice;
   }
 
-  public void setUnitPrice(int unitPrice) {
+  public void setUnitPrice(double unitPrice) {
     this.unitPrice = unitPrice;
   }
 
@@ -91,6 +88,17 @@ public class Product {
 
   public void setImagePathName(String imagePathName) {
     this.imagePathName = imagePathName;
+  }
+
+  public List<Review> getReviews() {return reviews;}
+
+  public void setReviews(List<Review> reviews) {this.reviews = reviews;}
+
+  public double calculateRating() {
+    if (reviews != null && !reviews.isEmpty()) {
+      return reviews.stream().mapToDouble(Review::getRating).average().orElse(0.0);
+    }
+    return 0.0;
   }
 
   @Override

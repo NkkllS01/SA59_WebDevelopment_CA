@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+</head>
+<body>
+<div class="container">
+  <br/>
+  <h2>Order Details</h2>
+  <div><a href="@{/order/cancel}" class="btn btn-primary btn-sm mb-3 float-right">Cancel Order</a></div>
+  <br/>
+  <table class = "table table-striped table-responsive-md">
+    <thead>
+    <tr>
+      <th>
+        Order ID #<span th:text="${orderId}">Order ID</span>
+      </th>
+      <th style="text-align: right">
+        <span class="small">Order Status:</span>
+      </th>
+      <th>
+        <span th:text="${order.orderStatus}"></span>
+      </th>
+    </tr>
+    <tr>
+      <th>Payment</th>
+      <th style="text-align: right">
+        <span class="small">Payment Status:</span>
+      </th>
+      <th>
+        <span th:text="${payment.status}"></span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr style="text-align: right">
+      <td></td>
+      <td class="small">
+        Date: <br/>
+        Method:<br/>
+        Amount:<br/>
+      </td>
+      <td style="text-align: left" class="small">
+        <span th:text="${payment.paymentDate}"></span><br/>
+        <span th:text="${payment.paymentMethod.methodName}"></span><br/>
+        <strong><span th:text="${#numbers.formatCurrency(payment.paymentAmount)}"></span></strong><br/>
+      </td>
+    </tr>
+    <tr>
+      <th>Shipping</th>
+      <th style="text-align: right">
+        <span class="small">Shipping Status:</span>
+      </th>
+      <th>
+        <span th:text="${shipping.shippingStatus}"></span>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <span class="small"><strong>Address</strong></span><br/>
+        <span th:text="${shipping.address}"></span><br/>
+        <span th:text="${shipping.city}"></span> <span th:text="${shipping.postalCode}"></span><br/>
+      </td>
+      <td style="text-align: right" class="small">
+        <div th:if="${shipping.shippingStatus == 'Order shipped'}">
+          <span>Shipped on:</span><br/>
+          <span>Ordered on:</span><br/>
+        </div>
+        <div th:if="${shipping.shippingStatus == 'Delivered'}">
+          <span>Delivered on: </span><br/>
+          <span>Shipped on:</span><br/>
+          <span>Ordered on:</span><br>
+        </div>
+      </td>
+      <td style="text-align: left" class="small">
+        <div th:if="${shipping.shippingStatus == 'Order shipped'}">
+          <span th:text="${shipping.shippingDate}"></span><br/>
+          <span th:text="${order.orderDate}"></span><br/>
+        </div>
+        <div th:if="${shipping.shippingStatus == 'Delivered'}">
+          <span th:text="${shipping.deliveryDate}"></span><br/>
+          <span th:text="${shipping.shippingDate}"></span><br/>
+          <span th:text="${order.orderDate}"></span><br/>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Amount</th>
+    </tr>
+    <tr th:each="item : ${orderDetails}">
+      <td class="small">
+        <strong><span th:text="${item.product.name}"></span></strong><br/>
+        Brand: <span th:text="${item.product.brand.name}"></span><br/>
+        Unit Price: <span th:text="${#numbers.formatCurrency(item.product.unitPrice)}"></span><br/>
+      </td>
+      <td th:text="${item.quantity}" class="small">Quantity</td>
+      <td>
+        <span th:text="${#numbers.formatCurrency(item.amount)}" class="small"></span>
+        <div><a href="@{/product/{id}/review}" class="btn btn-primary btn-sm mb-3 float-right align-top">Review</a></div>
+      </td>
+    </tr>
+    <tr class="small">
+      <td></td>
+      <th style="text-align: right">Incl. GST</th>
+      <td><span th:text="${#numbers.formatCurrency(gst)}"></span></td>
+    </tr>
+    <tr>
+      <td></td>
+      <th style="text-align: right">Total</th>
+      <td>
+        <strong><span th:text="${#numbers.formatCurrency(order.totalAmount)}"></span></strong>
+      </td>
+    </tr>
+    </tbody>
+  </table></div>
+
+</body>
+</html>

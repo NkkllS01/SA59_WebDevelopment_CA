@@ -19,10 +19,11 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="order_id")
-	private String orderId;
-	
+
+	@OneToOne
+	@JoinColumn(name="order_id", referencedColumnName="id")
+	private Order order;
+
 	@Column(name="payment_date")
 	private LocalDate paymentDate;
 	
@@ -34,49 +35,40 @@ public class Payment {
 
 	@Column(name="paypal_id")
 	private String paypalId;
-	
-	@OneToOne
-	@JoinColumn(name="order_id", referencedColumnName="id")
-	private Order Order;
 
+	// constructors
 	public Payment() {}
-	
-	public Payment(String orderId, String paymentDate, double paymentAmount, String status, String paypalId) {
-		this.orderId = orderId;
+	public Payment(Order order, String paymentDate, String status, String paypalId) {
+		this.order = order;
 		this.paymentDate = LocalDate.parse(paymentDate);
-		this.paymentAmount = paymentAmount;
+		this.paymentAmount = order.getTotalAmount();
 		this.status = status;
 		this.paypalId = paypalId;
 	}
 
+	// getters & setters
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getOrderId() {
-		return orderId;
+	public Order getOrder() {
+		return order;
 	}
-
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public LocalDate getPaymentDate() {
 		return paymentDate;
 	}
-
 	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = LocalDate.parse(paymentDate);
 	}
-
 	public double getPaymentAmount() {
 		return paymentAmount;
 	}
-
 	public void setPaymentAmount(double paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
@@ -84,7 +76,6 @@ public class Payment {
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
@@ -99,8 +90,8 @@ public class Payment {
 	
 	@Override
 	public String toString() {
-		return "Payment ID: " + id + ", Order ID: " + orderId + ", Payment Date: " + paymentDate + 
-				", Payment Amount: " + paymentAmount +
+		return "Payment ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate + 
+				", Payment Amount: " + paymentAmount + 
 				", Status: " + status + ", PayPal ID: " + paypalId;
 	}
 

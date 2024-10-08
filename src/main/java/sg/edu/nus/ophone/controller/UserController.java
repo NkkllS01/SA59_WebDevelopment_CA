@@ -1,6 +1,7 @@
 package sg.edu.nus.ophone.controller;
 
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +25,10 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public String login(@RequestParam String username,@RequestParam String password,Model model) {
+    public String login(@RequestParam String username,@RequestParam String password,Model model, HttpSession session) {
         boolean loginsuccess=u.login(username, password);
         if(loginsuccess) {
+            session.setAttribute("username", username);
             return "redirect:/product";
         }else {
             model.addAttribute("error","Invalid username or password.");

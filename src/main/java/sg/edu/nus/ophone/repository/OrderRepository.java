@@ -8,12 +8,14 @@ import org.springframework.data.repository.query.Param;
 
 import org.springframework.stereotype.Repository;
 import sg.edu.nus.ophone.model.Order;
+import sg.edu.nus.ophone.model.OrderDetails;
 
 //code by Team3.Chen Sirui
 @Repository
-public interface OrderRepository extends JpaRepository <Order,Integer> {
-    @Query("select o from Order o where o.userId = :uid")
-    List<Order> findByUserId(@Param("uid") String uid);
+public interface OrderRepository extends JpaRepository <Order,Long> {
+    @Query("select o from Order o where o.user.id = :uid")
+    public List<Order> findByUserId(@Param("uid") long uid);
 
-
+    @Query("SELECT o from Order o WHERE o.id = :id")
+    public Order findByOrderId(@Param("id") Long orderId);
 }
