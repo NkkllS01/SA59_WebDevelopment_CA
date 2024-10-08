@@ -124,7 +124,7 @@ public class TestDataCreation {
                 "Singapore", "119077");
         shippingRepo.saveAll(Arrays.asList(ship1, ship2, ship3, ship4));
 
-        // Update Shipping Status and Shipping Date
+        // Update Shipping / Order Status and Shipping Date
         ship1.setShippingStatus("Order shipped");
         ship1.setShippingDate("2024-10-02");
         ship3.setShippingStatus("Order shipped");
@@ -134,6 +134,8 @@ public class TestDataCreation {
         ship1.setDeliveryDate("2024-10-05");
         ship1.setShippingStatus("Delivered");
         shippingRepo.save(ship1);
+        order1.setOrderStatus("Completed");
+        orderRepo.save(order1);
 
         // Create Review Data
         Review review1 = new Review(oPhone, andy, 5, "Excellent product!", "2024-10-05");
