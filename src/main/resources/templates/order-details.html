@@ -39,12 +39,10 @@
       <td></td>
       <td class="small">
         Date: <br/>
-        Method:<br/>
         Amount:<br/>
       </td>
       <td style="text-align: left" class="small">
         <span th:text="${payment.paymentDate}"></span><br/>
-        <span th:text="${payment.paymentMethod.methodName}"></span><br/>
         <strong><span th:text="${#numbers.formatCurrency(payment.paymentAmount)}"></span></strong><br/>
       </td>
     </tr>
