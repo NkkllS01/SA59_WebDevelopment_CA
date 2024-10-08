@@ -32,10 +32,6 @@ public class Payment {
 	@Column(name="status")
 	private String status;
 
-//	@ManyToOne
-//	@JoinColumn(name="method_id", referencedColumnName="id")
-//	private PaymentMethod paymentMethod;
-
 	@Column(name="paypal_id")
 	private String paypalId;
 
@@ -45,8 +41,8 @@ public class Payment {
 		this.order = order;
 		this.paymentDate = LocalDate.parse(paymentDate);
 		this.paymentAmount = order.getTotalAmount();
-		this.paypalId = paypalId;
 		this.status = status;
+		this.paypalId = paypalId;
 	}
 
 	// getters & setters
@@ -62,6 +58,7 @@ public class Payment {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
+
 	public LocalDate getPaymentDate() {
 		return paymentDate;
 	}
@@ -74,26 +71,27 @@ public class Payment {
 	public void setPaymentAmount(double paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
+
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	public String getPaypalId() {
 		return paypalId;
 	}
+
 	public void setPaypalId(String paypalId) {
 		this.paypalId = paypalId;
 	}
 	
 	@Override
 	public String toString() {
-		return "Payment ID: " + id + ", Order: " + order +
-				", Payment Date: " + paymentDate +
-				", Payment Amount: " + paymentAmount +
-				", Status: " + status
-				+ ", PayPal ID: " + paypalId;
+		return "Payment ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate + 
+				", Payment Amount: " + paymentAmount + 
+				", Status: " + status + ", PayPal ID: " + paypalId;
 	}
 
 }

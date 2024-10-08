@@ -16,7 +16,7 @@ public class Order {
     private long id;
 
     @ManyToOne
-    @JoinColumn (name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "order_date")
@@ -25,22 +25,24 @@ public class Order {
     @Column(name = "total_amount")
     private double totalAmount;
 
-//    @ManyToOne
+    //    @ManyToOne
 //    @JoinColumn(name = "status", referencedColumnName = "id")
     private String orderStatus;
 
     @OneToOne
-    @JoinColumn(name = "payment_id",referencedColumnName = "id")
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
 
-    @OneToMany (mappedBy = "order")
+    @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
-    @OneToOne (mappedBy = "order")
+    @OneToOne(mappedBy = "order")
     private Shipping shipping;
 
     // constructors
-    public Order() {}
+    public Order() {
+    }
+
     public Order(User user, String orderDate) {
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
@@ -85,9 +87,13 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Payment getPayment() {return payment;}
+    public Payment getPayment() {
+        return payment;
+    }
 
-    public void setPayment(Payment payment) {this.payment = payment;}
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
 
     public double getTotalAmount() {
         return totalAmount;
@@ -105,7 +111,24 @@ public class Order {
         this.orderStatus = orderStatus;
     }
 
-    public Shipping getShipping() {return shipping;}
+    public Shipping getShipping() {
+        return shipping;
+    }
 
-    public void setShipping(Shipping shipping) {this.shipping = shipping;}
-}
+    public void setShipping(Shipping shipping) {
+        this.shipping = shipping;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        if (this.payment != null) {
+            this.payment.setStatus(paymentStatus);
+        }
+    }
+
+    public void setShippingStatus(String shippingStatus) {
+        if (this.shipping != null) {
+            this.shipping.setStatus(shippingStatus);
+        }
+    }}
+
+
