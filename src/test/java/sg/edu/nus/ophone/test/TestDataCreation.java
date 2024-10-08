@@ -83,7 +83,7 @@ public class TestDataCreation {
         order4.setOrderDetails(Arrays.asList(order4_p1, order4_p2, order4_p3));
         orderRepo.saveAll(Arrays.asList(order1, order2, order3, order4));
 
-        // Create Payment Method Data
+        // Create Payment Method Data -- deleted
         PaymentMethod creditCard = new PaymentMethod("Credit Card",
                 "Accept credit cards issued by Visa and Mastercard");
         PaymentMethod paypal = new PaymentMethod("Paypal",
@@ -92,11 +92,11 @@ public class TestDataCreation {
                 "Works as a mobile wallet that enables a one-click payment option on websites that accept it");
         paymentMethodRepo.saveAll(Arrays.asList(creditCard, paypal, applePay));
 
-        // Create Payment Data
-        Payment pay1 = new Payment(order1, "2024-10-01", creditCard, "Completed");
-        Payment pay2 = new Payment(order2, "2024-10-03", paypal, "Processing");
-        Payment pay3 = new Payment(order3, "2024-10-02", applePay, "Completed");
-        Payment pay4 = new Payment(order4, "2024-10-05", creditCard, "Unsuccessful");
+        // Create Payment Data -- amend
+        Payment pay1 = new Payment(order1, "2024-10-01", "Completed", "93DJ2231ADD35672D");
+        Payment pay2 = new Payment(order2, "2024-10-03", "Processing", "21EP5560BCV89263P");
+        Payment pay3 = new Payment(order3, "2024-10-02", "Completed", "77TY3198JKS15629Q");
+        Payment pay4 = new Payment(order4, "2024-10-05", "Unsuccessful", "09ZC4667GBM48204Y");
         paymentRepo.saveAll(Arrays.asList(pay1, pay2, pay3, pay4));
 
         // Set Payment for each Order

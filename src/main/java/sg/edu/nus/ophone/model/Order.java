@@ -44,7 +44,7 @@ public class Order {
     public Order(User user, String orderDate) {
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
-        this.orderStatus = "Processing";
+        this.orderStatus = "In cart";
     }
 
     // getters and setters

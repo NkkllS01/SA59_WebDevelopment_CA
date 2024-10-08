@@ -1,0 +1,32 @@
+<!--//Team3.Kuo Chi-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>PayPal Integration</title>
+</head>
+<body>
+<h2>Payment Details</h2>
+<form action="#" th:action="@{/pay}" method="post">
+  <table>
+    <tr>
+      <td>Subtotal:</td>
+      <td>
+        <input type="text" id="totalAmount" th:field="*{order.totalAmount}" disabled />
+      </td>
+    </tr>
+    <tr>
+      <td>Order ID:</td>
+      <td>
+        <input type="text" id="orderId" th:field="*{order.id}" disabled />
+      </td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td></td>
+      <td><input type="submit" value="Confirm Payment"></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
