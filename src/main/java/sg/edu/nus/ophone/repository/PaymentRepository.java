@@ -8,5 +8,5 @@ import sg.edu.nus.ophone.model.Payment;
 //code by Team3.Kuo Chi
 @Repository
 public interface PaymentRepository extends JpaRepository <Payment, Integer> {
-
+    Payment findByPaypalId(String paypalId);
 }

@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+
 //code by Team3.Kuo Chi
 @Entity
 @Table(name="payment")
@@ -23,7 +25,7 @@ public class Payment {
 	private Order order;
 
 	@Column(name="payment_date")
-	private String paymentDate;
+	private LocalDate paymentDate;
 	
 	@Column(name="payment_amount")
 	private double paymentAmount;
@@ -31,18 +33,17 @@ public class Payment {
 	@Column(name="status")
 	private String status;
 
-	@ManyToOne
-	@JoinColumn(name="method_id", referencedColumnName="id")
-	private PaymentMethod paymentMethod;
+	@Column(name="paypal_id")
+	private String paypalId;
 
 	// constructors
 	public Payment() {}
-	public Payment(Order order, String paymentDate, PaymentMethod paymentMethod, String status) {
+	public Payment(Order order, String paymentDate, String status, String paypalId) {
 		this.order = order;
-		this.paymentDate = paymentDate;
+		this.paymentDate = LocalDate.parse(paymentDate);
 		this.paymentAmount = order.getTotalAmount();
-		this.paymentMethod = paymentMethod;
 		this.status = status;
+		this.paypalId = paypalId;
 	}
 
 	// getters & setters
@@ -58,11 +59,12 @@ public class Payment {
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	public String getPaymentDate() {
+
+	public LocalDate getPaymentDate() {
 		return paymentDate;
 	}
 	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
+		this.paymentDate = LocalDate.parse(paymentDate);
 	}
 	public double getPaymentAmount() {
 		return paymentAmount;
@@ -70,24 +72,27 @@ public class Payment {
 	public void setPaymentAmount(double paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
-	public PaymentMethod getPaymentMethod() {
-		return paymentMethod;
-	}
-	public void setPaymentMethod(PaymentMethod paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
+
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getPaypalId() {
+		return paypalId;
+	}
+
+	public void setPaypalId(String paypalId) {
+		this.paypalId = paypalId;
+	}
 	
 	@Override
 	public String toString() {
-		return "Payment ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate +
-				", Payment Amount: " + paymentAmount + ", Method: " + paymentMethod +
-				", Status: " + status;
+		return "Payment ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate + 
+				", Payment Amount: " + paymentAmount + 
+				", Status: " + status + ", PayPal ID: " + paypalId;
 	}
 
 }

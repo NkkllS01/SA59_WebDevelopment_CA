@@ -14,35 +14,35 @@
         <tr>
             <td>Recipient Name:</td>
             <td>
-                <input type="text" id="name" th:field="*{users.name}" />
+                <input type="text" id="name" th:field="*{user.name}" disabled />
             </td>
             <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
         </tr>
         <tr>
             <td>Email:</td>
             <td>
-                <input type="text" id="email" th:field="*{users.email}" />
+                <input type="text" id="email" th:field="*{user.email}" disabled />
             </td>
             <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
         </tr>
         <tr>
             <td>Address:</td>
             <td>
-                <input type="text" id="address" th:field="*{users.address}" />
+                <input type="text" id="address" th:field="*{user.address}" />
             </td>
             <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></td>
         </tr>
         <tr>
             <td>City:</td>
             <td>
-                <input type="text" id="city" th:field="*{users.city}" />
+                <input type="text" id="city" th:field="*{user.city}" />
             </td>
             <td th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></td>
         </tr>
         <tr>
             <td>Postal Code:</td>
             <td>
-                <input type="text" id="postalCode" th:field="*{users.postalCode}" />
+                <input type="text" id="postalCode" th:field="*{user.postalCode}" />
             </td>
             <td th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></td>
         </tr>
