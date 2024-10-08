@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
+
 //code by Team3.Kuo Chi
 @Entity
 @Table(name="payment")
@@ -19,102 +21,87 @@ public class Payment {
 	private int id;
 	
 	@Column(name="order_id")
-	private int orderId;
+	private String orderId;
 	
 	@Column(name="payment_date")
-	private String paymentDate;
+	private LocalDate paymentDate;
 	
 	@Column(name="payment_amount")
 	private double paymentAmount;
 	
-	@Column(name="method_id")
-	private int methodId;
-	
 	@Column(name="status")
 	private String status;
+
+	@Column(name="paypal_id")
+	private String paypalId;
 	
 	@OneToOne
 	@JoinColumn(name="order_id", referencedColumnName="id")
 	private Order Order;
-	
-	@ManyToOne
-	@JoinColumn(name="method_id", referencedColumnName="id")
-	private PaymentMethod paymentMethod;
 
 	public Payment() {}
 	
-	public Payment(int orderId, String paymentDate, double paymentAmount, int methodId, String status) {
+	public Payment(String orderId, String paymentDate, double paymentAmount, String status, String paypalId) {
 		this.orderId = orderId;
-		this.paymentDate = paymentDate;
+		this.paymentDate = LocalDate.parse(paymentDate);
 		this.paymentAmount = paymentAmount;
-		this.methodId = methodId;
 		this.status = status;
+		this.paypalId = paypalId;
 	}
 
 	public int getId() {
-
 		return id;
 	}
 
 	public void setId(int id) {
-
 		this.id = id;
 	}
 
-	public int getOrderId() {
-
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(int orderId) {
-
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 
-	public String getPaymentDate() {
-
+	public LocalDate getPaymentDate() {
 		return paymentDate;
 	}
 
 	public void setPaymentDate(String paymentDate) {
-
-		this.paymentDate = paymentDate;
+		this.paymentDate = LocalDate.parse(paymentDate);
 	}
 
 	public double getPaymentAmount() {
-
 		return paymentAmount;
 	}
 
 	public void setPaymentAmount(double paymentAmount) {
-
 		this.paymentAmount = paymentAmount;
 	}
 
-	public int getMethodId() {
-
-		return methodId;
-	}
-
-	public void setMethodId(int methodId) {
-
-		this.methodId = methodId;
-	}
-
 	public String getStatus() {
-
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public String getPaypalId() {
+		return paypalId;
+	}
+
+	public void setPaypalId(String paypalId) {
+		this.paypalId = paypalId;
+	}
 	
 	@Override
 	public String toString() {
 		return "Payment ID: " + id + ", Order ID: " + orderId + ", Payment Date: " + paymentDate + 
-				", Payment Amount: " + paymentAmount + ", Method ID: " + methodId + 
-				", Status: " + status;
+				", Payment Amount: " + paymentAmount +
+				", Status: " + status + ", PayPal ID: " + paypalId;
 	}
 
 }
