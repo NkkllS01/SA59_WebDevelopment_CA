@@ -11,4 +11,8 @@ public interface OrderInterface {
     public List<Order> findByUserId(long userId);
     public Order findByOrderId(Long orderId);
     public List<OrderDetails> findByOrder(Order order);
+
+   public void save(Order order);
+
+    public Order findByOrderIdAndUserId(Long orderId, int userId);
 }
