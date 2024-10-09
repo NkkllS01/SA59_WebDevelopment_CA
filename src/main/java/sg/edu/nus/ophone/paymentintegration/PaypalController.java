@@ -30,7 +30,7 @@ public class PaypalController {
             Payment paypalPayment = paypalService.createPayment(order, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 
-            sg.edu.nus.ophone.model.Payment paymentRecord = paymentService.createPaymentRecord(order, order.getTotalAmount(), "Validating");
+            sg.edu.nus.ophone.model.Payment paymentRecord = paymentService.createPaymentRecord(order, "Validating");
 
             for(Links link:paypalPayment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
