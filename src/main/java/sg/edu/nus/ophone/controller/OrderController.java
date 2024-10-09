@@ -15,6 +15,7 @@ import sg.edu.nus.ophone.service.OrderImplementation;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 public class OrderController {
@@ -32,15 +33,19 @@ public class OrderController {
 //        int username = (int) session.getAttribute("username");
 //        List<Order> orders = orderService.findByUserId(username);
         List<Order> orders = orderService.findByUserId(1);
-        model.addAttribute("orders", orders);
+        List<Order> orderList = orders.stream()
+                .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
+                        .toList();
+        model.addAttribute("orders", orderList);
         return "order-history";
     }
 
     @GetMapping("/orders/{id}")
     public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, Locale locale) {
-        model.addAttribute("orderId", orderId);
-
         Order order = orderService.findByOrderId(orderId);
+
+        // get and add order details to model
+        model.addAttribute("orderId", orderId);
         Double gst = (order.getTotalAmount() / 109) * 9;
         model.addAttribute("order", order);
         model.addAttribute("gst", gst);
@@ -48,47 +53,53 @@ public class OrderController {
         model.addAttribute("payment", payment);
         Shipping shipping = order.getShipping();
         model.addAttribute("shipping", shipping);
-        
         List<OrderDetails> orderDetails = orderService.findByOrder(order);
         model.addAttribute("orderDetails", orderDetails);
+
         return "order-details";
     }
-//Cancel order
-    @PostMapping("/orders/cancel/{id}")
-    public String cancelOrder(Model model, @PathVariable("id") Long orderId, HttpSession session) {
-        int userId = (int) session.getAttribute("userId");
 
-    @PostMapping("/order/cancel")
-    public String cancelOrder(@RequestParam("order") Order order, Model model, HttpSession session) {
-//         Shipping shipping = order.getShipping();
-//         String shippingStatus = shipping.getShippingStatus();
-//         if (!shippingStatus.equalsIgnoreCase("Order shipped") &&
-//                 !shippingStatus.equalsIgnoreCase("Delivered")) {
-//             return "order-cancel";
-//         } else
-//             return "redirect:/orders";
-//     }
-        Order order = orderService.findByOrderIdAndUserId(orderId, userId);
+    @GetMapping("/orders/{id}/cancel")
+    public String cancelOrder(@PathVariable("id") Long orderId, Model model, HttpSession session) {
+        model.addAttribute("orderId", orderId);
+        Order order = orderService.findByOrderId(orderId);
+         if (order == null) {
+             model.addAttribute("errorMessage", "Order not found.");
+             return "redirect:/orders";
+         }
 
-    if (order!=null) {
-        if (!order.getShipping().equals("Shipped") &&
-                !order.getShipping().equals("Delivered")) {
+         Shipping shipping = order.getShipping();
+         String shippingStatus = shipping.getShippingStatus();
 
+         if (!shippingStatus.equalsIgnoreCase("Shipped") &&
+            !shippingStatus.equalsIgnoreCase("Delivered") &&
+            !shippingStatus.equalsIgnoreCase("Cancelled")) {
+             // cancel order (set order, payment, shipping status)
+             orderService.cancelOrder(order);
 
-            order.setOrderStatus("Cancelled");
-            order.setPaymentStatus("Pending refund");
-            order.setShippingStatus("Cancelled");
+             // get and add order details to model
+             Double gst = (order.getTotalAmount() / 109) * 9;
+             model.addAttribute("order", order);
+             model.addAttribute("gst", gst);
+             Payment payment = order.getPayment();
+             model.addAttribute("payment", payment);
+             model.addAttribute("shipping", shipping);
+             List<OrderDetails> orderDetails = orderService.findByOrder(order);
+             model.addAttribute("orderDetails", orderDetails);
+             return "order-cancel";
+         } else {
+             model.addAttribute("errorMessage",
+                     "Your order cannot be cancelled as it has already been " +
+                             shippingStatus.toLowerCase() + ".");
+             return "order-cancel-fail";
+         }
+     }
 
-            orderService.save(order);
-            model.addAttribute("message", "Order successfully cancelled.");
-        } else {
-            model.addAttribute("error", "Order cannot be cancelled as it has already been shipped or delivered.");
-        }
-    } else {
-        model.addAttribute("error", "Order not found.");
-    }
+     @GetMapping("/product/{id}/review")
+    public String reviewProduct(@PathVariable("id") Long productId, Model model, HttpSession session) {
+        return "product-review";
+     }
 
-        return "order-confirm-cancel";
 }
-        }
+
 
