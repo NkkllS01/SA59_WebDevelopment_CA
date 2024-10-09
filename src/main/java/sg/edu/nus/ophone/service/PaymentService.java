@@ -17,11 +17,10 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
     @Transactional
-    public Payment createPaymentRecord(String orderId, double amount, String status) {
+    public Payment createPaymentRecord(Order order, String status) {
         Payment payment = new Payment();
-        payment.setOrderId(orderId);
+        payment.setOrder(order);
         payment.setPaymentDate(LocalDateTime.now().toString());
-        payment.setPaymentAmount(amount);
         payment.setStatus(status);
         return paymentRepository.save(payment);
     }
