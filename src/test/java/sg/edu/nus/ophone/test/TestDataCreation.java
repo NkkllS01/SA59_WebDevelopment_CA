@@ -88,10 +88,10 @@ public class TestDataCreation {
         orderRepo.saveAll(Arrays.asList(order1, order2, order3, order4, order5));
 
         // Create Payment Data -- amended
-        Payment pay1 = new Payment(order1, "2024-10-01", "Completed", "93DJ2231ADD35672D");
-        Payment pay2 = new Payment(order2, "2024-10-03", "Processing", "21EP5560BCV89263P");
-        Payment pay3 = new Payment(order3, "2024-10-02", "Completed", "77TY3198JKS15629Q");
-        Payment pay4 = new Payment(order4, "2024-10-05", "Unsuccessful", "09ZC4667GBM48204Y");
+        PaymentRecord pay1 = new PaymentRecord(order1, "2024-10-01", "Completed", "93DJ2231ADD35672D");
+        PaymentRecord pay2 = new PaymentRecord(order2, "2024-10-03", "Processing", "21EP5560BCV89263P");
+        PaymentRecord pay3 = new PaymentRecord(order3, "2024-10-02", "Completed", "77TY3198JKS15629Q");
+        PaymentRecord pay4 = new PaymentRecord(order4, "2024-10-05", "Unsuccessful", "09ZC4667GBM48204Y");
         paymentRepo.saveAll(Arrays.asList(pay1, pay2, pay3, pay4));
 
         // Set Payment for each Order
