@@ -22,8 +22,6 @@ public class TestDataCreation {
     @Autowired
     OrderDetailsRepository orderDetailsRepo;
     @Autowired
-    PaymentMethodRepository paymentMethodRepo;
-    @Autowired
     PaymentRepository paymentRepo;
     @Autowired
     ProductRepository productRepo;
@@ -41,9 +39,11 @@ public class TestDataCreation {
                 "20 Holland Village Road", "Singapore", "233020");
         User billy = new User("Customer", "Billy", "billy@email.com", "password",
                 "3 Robinson Ring", "Singapore", "342503");
+        User derek = new User("Customer", "Derek", "derek@email.com", "password",
+                "2 Ming Teck Park", "Singapore", "277370");
         User candy = new User("Staff", "Candy", "candy@email.com", "password",
                 "123 Jurong West #05-28", "Singapore", "668123");
-        userRepo.saveAll(Arrays.asList(andy, billy, candy));
+        userRepo.saveAll(Arrays.asList(andy, billy, candy, derek));
 
         // Create Brand Data
         Brand orange = new Brand("Orange", "Orange");
@@ -55,14 +55,16 @@ public class TestDataCreation {
         Product oPhone = new Product("Orange oPhone 24", "oPhone 24", 1500.00, 40, orange);
         Product pPhone = new Product("Pineapple pPhone Pro", "pPhone Pro", 1900.00, 30, pineapple);
         Product kPhone = new Product("Kiwi kPhone S3", "kPhone S3", 2024, 99, kiwi);
-        productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone));
+        Product kPhone2 = new Product("Kiwi kPhone S1 Max", "kPhone S1 Max", 1999, 56, kiwi);
+        productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2));
 
         // Create Order Data
         Order order1 = new Order(andy, "2024-10-01");
         Order order2 = new Order(billy, "2024-10-03");
         Order order3 = new Order(andy, "2024-10-02");
         Order order4 = new Order(billy, "2024-10-05");
-        orderRepo.saveAll(Arrays.asList(order1, order2, order3, order4));
+        Order order5 = new Order(derek, "2024-10-03");
+        orderRepo.saveAll(Arrays.asList(order1, order2, order3, order4, order5));
 
         // Create Order Details Data
         OrderDetails order1_p1 = new OrderDetails(order1, oPhone, 3);
@@ -73,26 +75,19 @@ public class TestDataCreation {
         OrderDetails order4_p1 = new OrderDetails(order4, oPhone, 2);
         OrderDetails order4_p2 = new OrderDetails(order4, pPhone, 1);
         OrderDetails order4_p3 = new OrderDetails(order4, kPhone, 1);
+        OrderDetails order5_p1 = new OrderDetails(order5, kPhone2, 1);
         orderDetailsRepo.saveAll(Arrays.asList(order1_p1, order1_p2, order2_p1,
-                order2_p2, order3_p1, order4_p1, order4_p2, order4_p3));
+                order2_p2, order3_p1, order4_p1, order4_p2, order4_p3, order5_p1));
 
         // Set OrderDetails for each Order
         order1.setOrderDetails(Arrays.asList(order1_p1, order1_p2));
         order2.setOrderDetails(Arrays.asList(order2_p1, order2_p2));
         order3.setOrderDetails(List.of(order3_p1));
         order4.setOrderDetails(Arrays.asList(order4_p1, order4_p2, order4_p3));
-        orderRepo.saveAll(Arrays.asList(order1, order2, order3, order4));
+        order5.setOrderDetails(List.of(order5_p1));
+        orderRepo.saveAll(Arrays.asList(order1, order2, order3, order4, order5));
 
-        // Create Payment Method Data -- deleted
-        PaymentMethod creditCard = new PaymentMethod("Credit Card",
-                "Accept credit cards issued by Visa and Mastercard");
-        PaymentMethod paypal = new PaymentMethod("Paypal",
-                "An online payment system that acts as the intermediary between a payer and payee");
-        PaymentMethod applePay = new PaymentMethod("Apple Pay",
-                "Works as a mobile wallet that enables a one-click payment option on websites that accept it");
-        paymentMethodRepo.saveAll(Arrays.asList(creditCard, paypal, applePay));
-
-        // Create Payment Data -- amend
+        // Create Payment Data -- amended
         Payment pay1 = new Payment(order1, "2024-10-01", "Completed", "93DJ2231ADD35672D");
         Payment pay2 = new Payment(order2, "2024-10-03", "Processing", "21EP5560BCV89263P");
         Payment pay3 = new Payment(order3, "2024-10-02", "Completed", "77TY3198JKS15629Q");
@@ -125,9 +120,9 @@ public class TestDataCreation {
         shippingRepo.saveAll(Arrays.asList(ship1, ship2, ship3, ship4));
 
         // Update Shipping / Order Status and Shipping Date
-        ship1.setShippingStatus("Order shipped");
+        ship1.setShippingStatus("Shipped");
         ship1.setShippingDate("2024-10-02");
-        ship3.setShippingStatus("Order shipped");
+        ship3.setShippingStatus("Shipped");
         ship3.setShippingDate("2024-10-04");
         shippingRepo.saveAll(Arrays.asList(ship1, ship3));
 
