@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sg.edu.nus.ophone.model.Order;
+import sg.edu.nus.ophone.model.PaymentRecord;
 import sg.edu.nus.ophone.service.PaymentService;
 
 
@@ -26,11 +27,10 @@ public class PaypalController {
     @PostMapping("/pay")
     public String payment(@ModelAttribute("order") Order order) {
         try {
-
             Payment paypalPayment = paypalService.createPayment(order, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 
-            sg.edu.nus.ophone.model.Payment paymentRecord = paymentService.createPaymentRecord(order, "Validating");
+            PaymentRecord paymentRecord = paymentService.createPaymentRecord(order, "Validating");
 
             for(Links link:paypalPayment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
