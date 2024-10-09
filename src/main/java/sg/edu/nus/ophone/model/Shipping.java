@@ -32,12 +32,12 @@ public class Shipping {
   public Shipping() {
   }
 
-  public Shipping(Order order, String address, String city, String postalCode) {
+  public Shipping(Order order, String address, String city, String postalCode, String shippingStatus) {
     this.order = order;
     this.address = address;
     this.city = city;
     this.postalCode = postalCode;
-    this.shippingStatus = "Processing";
+    this.shippingStatus = shippingStatus;
   }
 
   public int getId() {
@@ -106,9 +106,11 @@ public class Shipping {
 
   @Override
   public String toString() {
-    return "Shipping [id=" + id + ", address=" + address + ", shippingDate=" + shippingDate + ", deliveryDate="
-            + deliveryDate + "]";
+    return "Shipping [id=" + id + ", Address=" + address + ", Ship Out Date=" + shippingDate + ", Delivery Date="
+            + deliveryDate + ", Shipping Status=" + shippingStatus + "]";
   }
+}
+
 }
 
 

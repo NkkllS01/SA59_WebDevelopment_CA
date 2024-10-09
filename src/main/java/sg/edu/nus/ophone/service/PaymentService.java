@@ -10,6 +10,7 @@ import sg.edu.nus.ophone.model.PaymentRecord;
 import sg.edu.nus.ophone.repository.PaymentRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -28,9 +29,12 @@ public class PaymentService {
     }
 
     @Transactional
-    public void updatePaymentStatus(PaymentRecord paymentRecord, String status) {
-        paymentRecord.setStatus(status);
-        paymentRepository.save(paymentRecord);
+    public void updatePaymentStatus(String paypalId, String status) {
+        PaymentRecord record = paymentRepository.findByPaypalId(paypalId);
+        if (record != null) {
+            record.setStatus(status);
+            paymentRepository.save(record);
+        }
     }
 
 
