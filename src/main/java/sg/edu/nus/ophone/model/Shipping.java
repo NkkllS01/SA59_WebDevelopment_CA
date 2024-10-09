@@ -1,6 +1,9 @@
 package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
 
 //code by Team3.Gao Zijie
 @Entity
@@ -14,10 +17,10 @@ public class Shipping {
   private String postalCode;
 
   @Column(name = "shipping_date")
-  private String shippingDate;
+  private LocalDate shippingDate;
 
   @Column(name = "delivery_date")
-  private String deliveryDate;
+  private LocalDate deliveryDate;
 
   //  @ManyToOne
   private String shippingStatus;
@@ -77,20 +80,20 @@ public class Shipping {
     this.postalCode = postalCode;
   }
 
-  public String getShippingDate() {
+  public LocalDate getShippingDate() {
     return shippingDate;
   }
 
   public void setShippingDate(String shippingDate) {
-    this.shippingDate = shippingDate;
+    this.shippingDate = LocalDate.parse(shippingDate);
   }
 
-  public String getDeliveryDate() {
+  public LocalDate getDeliveryDate() {
     return deliveryDate;
   }
 
   public void setDeliveryDate(String deliveryDate) {
-    this.deliveryDate = deliveryDate;
+    this.deliveryDate = LocalDate.parse(deliveryDate);
   }
 
   public String getShippingStatus() {
