@@ -16,7 +16,6 @@ import java.util.List;
 public class OrderImplementation implements OrderInterface {
     @Autowired
     OrderRepository orderRepo;
-
     @Autowired
     OrderDetailsRepository orderDetailsRepo;
 
@@ -33,5 +32,22 @@ public class OrderImplementation implements OrderInterface {
     @Override
     public List<OrderDetails> findByOrder(Order order) {
         return orderDetailsRepo.findByOrder(order);
+    }
+
+    @Override
+    public void save(Order order) {
+        orderRepo.save(order);
+    }
+
+    @Override
+    public Order findByOrderIdAndUserId(Long orderId, int userId) {
+        return orderRepo.findByOrderIdAndUserId(orderId, userId);
+    }
+
+    @Override
+    public void cancelOrder(Order order) {
+        order.setOrderStatus("Cancelled");
+        order.getShipping().setShippingStatus("Cancelled");
+        order.getPayment().setStatus("Pending refund");
     }
 }
