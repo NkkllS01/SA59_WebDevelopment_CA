@@ -23,10 +23,15 @@
             <td>
                 <a th:href="@{/orders/{id}(id=${order.id})}" th:text="${order.id}"></a>
             </td>
-            <td th:text="${order.orderDate}">Date</td>
+            <td th:text="${#temporals.format(order.orderDate, 'dd MMM yyyy')}">Date</td>
             <td th:text="${#numbers.formatCurrency(order.totalAmount)}">Amount</td>
             <td th:text="${order.orderStatus}">Status</td>
-            <td><a th:href="@{/orders/{id}/cancel(id=${order.id})}" class="btn btn-primary btn-sm mb-3">Cancel Order</a></td>
+            <td>
+                <div class="btn-grp">
+                    <a th:href="@{/orders/{id}/cancel(id=${order.id})}" class="btn btn-primary btn-sm mb-3">Cancel Order</a>
+                    <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-primary btn-sm mb-3">Order Details</a>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table></div>
