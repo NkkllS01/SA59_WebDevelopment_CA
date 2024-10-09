@@ -33,7 +33,7 @@ public class PaypalController {
             if (order == null) {
                 return "redirect:/cart";
             }
-            
+
             Payment paypalPayment = paypalService.createPayment(order, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 
