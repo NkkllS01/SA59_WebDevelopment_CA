@@ -106,6 +106,7 @@ public class Shipping {
     return "Shipping [id=" + id + ", Address=" + address + ", Ship Out Date=" + shippingDate + ", Delivery Date="
             + deliveryDate + ", Shipping Status=" + shippingStatus + "]";
   }
+}
 
 }
 

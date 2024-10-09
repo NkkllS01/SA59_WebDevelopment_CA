@@ -125,10 +125,4 @@ public class Order {
         }
     }
 
-    public void setShippingStatus(String shippingStatus) {
-        if (this.shipping != null) {
-            this.shipping.setShippingStatus(shippingStatus);
-        }
-    }}
-
 
