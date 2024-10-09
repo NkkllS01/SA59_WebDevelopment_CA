@@ -16,14 +16,12 @@
             <td>
                 <input type="text" id="name" th:field="*{user.name}" disabled />
             </td>
-            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
         </tr>
         <tr>
             <td>Email:</td>
             <td>
                 <input type="text" id="email" th:field="*{user.email}" disabled />
             </td>
-            <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
         </tr>
         <tr>
             <td>Address:</td>
