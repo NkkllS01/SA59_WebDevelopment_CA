@@ -2,6 +2,8 @@ package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 //code by Team3.Song Jingze
 @Entity
 @Table(name = "reviews")
@@ -12,7 +14,7 @@ public class Review {
 
     private int rating;
     private String comment;
-    private String date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -30,7 +32,7 @@ public class Review {
         this.user = user;
         this.rating = rating;
         this.comment = comment;
-        this.date = date;
+        this.date = LocalDate.parse(date);
     }
 
     public int getId() {
@@ -57,11 +59,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
