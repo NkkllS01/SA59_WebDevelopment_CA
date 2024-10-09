@@ -18,11 +18,12 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
     @Transactional
-    public PaymentRecord createPaymentRecord(Order order, String status) {
+    public PaymentRecord createPaymentRecord(Order order, String status, String paymentId) {
         PaymentRecord paymentRecord = new PaymentRecord();
         paymentRecord.setOrder(order);
         paymentRecord.setPaymentDate(LocalDateTime.now().toString());
         paymentRecord.setStatus(status);
+        paymentRecord.setPaypalId(paymentId);
         return paymentRepository.save(paymentRecord);
     }
 
