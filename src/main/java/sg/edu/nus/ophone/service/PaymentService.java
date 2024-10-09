@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.Payment;
 import sg.edu.nus.ophone.repository.PaymentRepository;
@@ -18,6 +19,7 @@ public class PaymentService {
 
     @Transactional
     public Payment createPaymentRecord(Order order, String status) {
+
         Payment payment = new Payment();
         payment.setOrder(order);
         payment.setPaymentDate(LocalDateTime.now().toString());
