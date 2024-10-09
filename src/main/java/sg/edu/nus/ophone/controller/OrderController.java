@@ -81,7 +81,7 @@ public class OrderController {
              Double gst = (order.getTotalAmount() / 109) * 9;
              model.addAttribute("order", order);
              model.addAttribute("gst", gst);
-             Payment payment = order.getPayment();
+             PaymentRecord payment = order.getPayment();
              model.addAttribute("payment", payment);
              model.addAttribute("shipping", shipping);
              List<OrderDetails> orderDetails = orderService.findByOrder(order);
