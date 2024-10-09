@@ -28,9 +28,12 @@ public class PaymentService {
     }
 
     @Transactional
-    public void updatePaymentStatus(PaymentRecord paymentRecord, String status) {
-        paymentRecord.setStatus(status);
-        paymentRepository.save(paymentRecord);
+    public void updatePaymentStatus(String paypalId, String status) {
+        PaymentRecord record = paymentRepository.findByPaypalId(paypalId);
+        if (record != null) {
+            record.setStatus(status);
+            paymentRepository.save(record);
+        }
     }
 
 
