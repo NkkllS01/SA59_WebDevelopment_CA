@@ -47,7 +47,8 @@ public class PaypalController {
     }
 
     @GetMapping(value = CANCEL_URL)
-    public String cancelPay() {
+    public String cancelPay(@RequestParam("paymentId") String paymentId) {
+        paymentService.updatePaymentStatus(paymentId, "Cancelled");
         return "cancel";
     }
 
@@ -57,11 +58,13 @@ public class PaypalController {
             Payment paypalPayment = paypalService.executePayment(paymentId, payerId);
             System.out.println(paypalPayment.toJSON());
             if (paypalPayment.getState().equals("approved")) {
+                paymentService.updatePaymentStatus(paymentId, "Completed");
                 return "success";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
+        paymentService.updatePaymentStatus(paymentId, "Failed");
         return "fail";
     }
 
