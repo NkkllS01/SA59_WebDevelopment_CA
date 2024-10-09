@@ -23,4 +23,9 @@ public class UserServiceImp implements UserService {
         }
         return false;
     }
+
+    @Override
+    public User findUserByUserId(int userId) {
+        return userRepository.findById(userId).get();
+    }
 }
