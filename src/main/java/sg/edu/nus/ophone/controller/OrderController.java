@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.OrderDetails;
-import sg.edu.nus.ophone.model.Payment;
+import sg.edu.nus.ophone.model.PaymentRecord;
 import sg.edu.nus.ophone.model.Shipping;
 import sg.edu.nus.ophone.service.OrderImplementation;
 
@@ -44,8 +44,8 @@ public class OrderController {
         Double gst = (order.getTotalAmount() / 109) * 9;
         model.addAttribute("order", order);
         model.addAttribute("gst", gst);
-        Payment payment = order.getPayment();
-        model.addAttribute("payment", payment);
+        PaymentRecord paymentRecord = order.getPayment();
+        model.addAttribute("payment", paymentRecord);
         Shipping shipping = order.getShipping();
         model.addAttribute("shipping", shipping);
         
