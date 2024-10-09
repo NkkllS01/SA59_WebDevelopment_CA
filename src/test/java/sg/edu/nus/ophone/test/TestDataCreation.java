@@ -104,13 +104,13 @@ public class TestDataCreation {
 
         // Create Shipping Data
         Shipping ship1 = new Shipping(order1, "20 Holland Village Road",
-                "Singapore", "233020");
+                "Singapore", "233020", "Completed");
         Shipping ship2 = new Shipping(order2, "3 Robinson Ring",
-                "Singapore", "342503");
+                "Singapore", "342503", "Completed");
         Shipping ship3 = new Shipping(order3, "25 Heng Mui Keng Terrace",
-                "Singapore", "119617");
+                "Singapore", "119617", "Processing");
         Shipping ship4 = new Shipping(order4, "21 Lower Kent Ridge Rd",
-                "Singapore", "119077");
+                "Singapore", "119077", "Processing");
         shippingRepo.saveAll(Arrays.asList(ship1, ship2, ship3, ship4));
 
         // Update Shipping / Order Status and Shipping Date

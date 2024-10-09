@@ -120,14 +120,14 @@ public class Order {
     }
 
     public void setPaymentStatus(String paymentStatus) {
-        if (this.payment != null) {
-            this.payment.setStatus(paymentStatus);
+        if (this.paymentRecord != null) {
+            this.paymentRecord.setStatus(paymentStatus);
         }
     }
 
     public void setShippingStatus(String shippingStatus) {
         if (this.shipping != null) {
-            this.shipping.setStatus(shippingStatus);
+            this.shipping.setShippingStatus(shippingStatus);
         }
     }}
 

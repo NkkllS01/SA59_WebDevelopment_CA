@@ -9,28 +9,21 @@ import org.springframework.ui.Model;
 
 import jakarta.validation.Valid;
 
-import sg.edu.nus.ophone.interfacemethods.ShippingInterface;
-import sg.edu.nus.ophone.service.ShippingImplementation;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.Shipping;
+import sg.edu.nus.ophone.service.ShippingService;
 
 //Team3.Kuo Chi
 @Controller
 public class ShippingController {
     @Autowired
-    private ShippingInterface shipService;
-
-    @Autowired
-    public void setShippingService(ShippingImplementation shipServiceImpl) {
-        this.shipService = shipServiceImpl;
-    }
+    private ShippingService shipService;
 
     @PostMapping("/shipping")
-    public String createShipping(@ModelAttribute ("shipping") @Valid Shipping shipping, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "shipping";
-        } else {
-            shipService.saveShipping(shipping);
-            return "payment";
-        }
+    public void shipping(@ModelAttribute ("order") Order order, @RequestParam String address, @RequestParam String city, @RequestParam String postalCode, Model model) {
+        Shipping shippingRecord = shipService.createShipping(order, address, city, postalCode);
+        model.addAttribute("shippingRecord", shippingRecord);
     }
 }
