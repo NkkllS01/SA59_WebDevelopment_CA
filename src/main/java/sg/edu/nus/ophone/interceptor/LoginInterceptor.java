@@ -18,7 +18,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String username = (String) session.getAttribute("username");
         if (username == null) {
             //this redirection url may need modification
-            response.sendRedirect("/orangestore/login");
+            response.sendRedirect("/login");
             return false;
         }
         return true;
