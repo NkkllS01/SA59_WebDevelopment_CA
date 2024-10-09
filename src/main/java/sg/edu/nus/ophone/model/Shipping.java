@@ -1,6 +1,7 @@
 package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 //code by Team3.Gao Zijie
 @Entity
@@ -9,8 +10,11 @@ public class Shipping {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @NotBlank(message = "Please enter your address.")
   private String address;
+  @NotBlank(message = "Please enter the city you reside in.")
   private String city;
+  @NotBlank(message = "Please enter your postal code.")
   private String postalCode;
 
   @Column(name = "shipping_date")
@@ -108,6 +112,5 @@ public class Shipping {
   }
 }
 
-}
 
 
