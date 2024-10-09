@@ -46,6 +46,7 @@ public class PaypalService {
         payment.setRedirectUrls(redirectUrls);
 
         return payment.create(apiContext);
+
     }
 
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException{
@@ -57,4 +58,3 @@ public class PaypalService {
     }
 
 }
-

@@ -31,7 +31,7 @@ public class Order {
 
     @OneToOne
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
-    private Payment payment;
+    private PaymentRecord paymentRecord;
 
     @OneToMany(mappedBy = "order")
     private List<OrderDetails> orderDetails = new ArrayList<>();
@@ -46,7 +46,7 @@ public class Order {
     public Order(User user, String orderDate) {
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
-        this.orderStatus = "Processing";
+        this.orderStatus = "In cart";
     }
 
     // getters and setters
@@ -87,12 +87,12 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public Payment getPayment() {
-        return payment;
+    public PaymentRecord getPayment() {
+        return paymentRecord;
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void setPayment(PaymentRecord paymentRecord) {
+        this.paymentRecord = paymentRecord;
     }
 
     public double getTotalAmount() {
@@ -120,15 +120,9 @@ public class Order {
     }
 
     public void setPaymentStatus(String paymentStatus) {
-        if (this.payment != null) {
-            this.payment.setStatus(paymentStatus);
+        if (this.paymentRecord != null) {
+            this.paymentRecord.setStatus(paymentStatus);
         }
     }
-
-    public void setShippingStatus(String shippingStatus) {
-        if (this.shipping != null) {
-            this.shipping.setStatus(shippingStatus);
-        }
-    }}
 
 

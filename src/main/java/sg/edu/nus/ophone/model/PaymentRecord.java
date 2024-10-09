@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -14,8 +13,8 @@ import java.time.LocalDate;
 
 //code by Team3.Kuo Chi
 @Entity
-@Table(name="payment")
-public class Payment {
+@Table(name="payment_record")
+public class PaymentRecord {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
@@ -37,8 +36,9 @@ public class Payment {
 	private String paypalId;
 
 	// constructors
-	public Payment() {}
-	public Payment(Order order, String paymentDate, String status, String paypalId) {
+	public PaymentRecord() {}
+
+	public PaymentRecord(Order order, String paymentDate, String status, String paypalId) {
 		this.order = order;
 		this.paymentDate = LocalDate.parse(paymentDate);
 		this.paymentAmount = order.getTotalAmount();
@@ -50,12 +50,15 @@ public class Payment {
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public Order getOrder() {
 		return order;
 	}
+
 	public void setOrder(Order order) {
 		this.order = order;
 	}
@@ -63,12 +66,15 @@ public class Payment {
 	public LocalDate getPaymentDate() {
 		return paymentDate;
 	}
+
 	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = LocalDate.parse(paymentDate);
 	}
+
 	public double getPaymentAmount() {
 		return paymentAmount;
 	}
+
 	public void setPaymentAmount(double paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
@@ -76,6 +82,7 @@ public class Payment {
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
@@ -90,7 +97,7 @@ public class Payment {
 	
 	@Override
 	public String toString() {
-		return "Payment ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate + 
+		return "Payment Record ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate +
 				", Payment Amount: " + paymentAmount + 
 				", Status: " + status + ", PayPal ID: " + paypalId;
 	}

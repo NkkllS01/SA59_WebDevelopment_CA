@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sg.edu.nus.ophone.model.Order;
+import sg.edu.nus.ophone.model.PaymentRecord;
 import sg.edu.nus.ophone.service.PaymentService;
 
 
@@ -26,11 +27,12 @@ public class PaypalController {
     @PostMapping("/pay")
     public String payment(@ModelAttribute("order") Order order) {
         try {
-
             Payment paypalPayment = paypalService.createPayment(order, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 
-            sg.edu.nus.ophone.model.Payment paymentRecord = paymentService.createPaymentRecord(order.getId(), order.getTotalAmount(), "Validating");
+            String paymentId = paypalPayment.getId();
+
+            PaymentRecord paymentRecord = paymentService.createPaymentRecord(order, "Validating", paymentId);
 
             for(Links link:paypalPayment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
@@ -45,7 +47,8 @@ public class PaypalController {
     }
 
     @GetMapping(value = CANCEL_URL)
-    public String cancelPay() {
+    public String cancelPay(@RequestParam("paymentId") String paymentId) {
+        paymentService.updatePaymentStatus(paymentId, "Cancelled");
         return "cancel";
     }
 
@@ -55,12 +58,15 @@ public class PaypalController {
             Payment paypalPayment = paypalService.executePayment(paymentId, payerId);
             System.out.println(paypalPayment.toJSON());
             if (paypalPayment.getState().equals("approved")) {
+                paymentService.updatePaymentStatus(paymentId, "Completed");
                 return "success";
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
+        paymentService.updatePaymentStatus(paymentId, "Failed");
         return "fail";
     }
 
 }
+
