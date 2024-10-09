@@ -119,10 +119,7 @@ public class Order {
         this.shipping = shipping;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        if (this.paymentRecord != null) {
-            this.paymentRecord.setStatus(paymentStatus);
-        }
-    }
+}
+
 
 
