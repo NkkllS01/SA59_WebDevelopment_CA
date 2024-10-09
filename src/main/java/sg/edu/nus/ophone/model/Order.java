@@ -124,11 +124,6 @@ public class Order {
             this.payment.setStatus(paymentStatus);
         }
     }
-
-    public void setShippingStatus(String shippingStatus) {
-        if (this.shipping != null) {
-            this.shipping.setStatus(shippingStatus);
-        }
-    }}
+}
 
 
