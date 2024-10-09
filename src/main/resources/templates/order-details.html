@@ -101,7 +101,7 @@
       <td th:text="${item.quantity}" class="small">Quantity</td>
       <td>
         <span th:text="${#numbers.formatCurrency(item.amount)}" class="small"></span>
-        <div><a th:href="@{/product/{id}/review(id=${item.product.id})}" class="btn btn-primary btn-sm mb-3 float-right align-top">Review</a></div>
+        <div><a th:href="@{/product/{id}/review(id=${item.product.id}, orderId=${orderId})}" class="btn btn-primary btn-sm mb-3 float-right align-top">Review</a></div>
       </td>
     </tr>
     <tr class="small">
