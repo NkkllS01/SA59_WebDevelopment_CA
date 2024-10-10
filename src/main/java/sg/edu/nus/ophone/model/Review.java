@@ -12,20 +12,21 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int rating;
+    @Column(length = 1000)
     private String comment;
+
+    private int rating;
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private Product product;
 
-    public Review() {
-    }
+    public Review() {}
 
     public Review(Product product, User user, int rating, String comment, String date) {
         this.product = product;
