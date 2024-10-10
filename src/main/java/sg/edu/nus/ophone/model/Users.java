@@ -113,12 +113,6 @@ public class Users {
     this.reviews = reviews;
   }
 
-  public Cart getCart() {
-    return cart;
-  }
 
-  public void setCart(Cart cart) {
-    this.cart = cart;
-  }
 
 }
