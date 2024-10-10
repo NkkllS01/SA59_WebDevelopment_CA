@@ -1,41 +1,39 @@
 package sg.edu.nus.ophone.model;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.util.List;
 
-//code by Team3.Lian Da
 @Entity
 public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "order_id")
-    private Long orderId;
-
-    @Column(name = "product_id")
-    private Long productId;
-
-    // Map to the Order entity and use @MapsId to link the orderId field
     @ManyToOne
-//    @MapsId("orderId")
-    @JoinColumn(name="order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "order_id",nullable = false)
     private Order order;
 
-    // Map to the Product entity and use @MapsId to link the productId field
     @ManyToOne
-//    @MapsId("productId")
-    @JoinColumn(name="product_id", insertable = false, updatable = false)
+    @JoinColumn(name = "product_id",nullable = false)
     private Product product;
-
-    @Column(nullable = false)
-    private int quantity;
-
-    @Column(nullable = false)
+    
+    @Column(name = "quantity")
+    private Integer quantity;
+    @Column(name = "amount")
     private double amount;
+    
+    public OrderDetails() {}
 
-    public OrderDetails() {
+    public Long getId() {
+        return id;
     }
 
     public OrderDetails(Order order, Product product, int quantity) {
@@ -48,10 +46,10 @@ public class OrderDetails {
     }
 
     // Getters and Setters
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public Long getOrderId() {
@@ -69,25 +67,33 @@ public class OrderDetails {
     public Order getOrder() {
         return order;
     }
+
     public void setOrder(Order order) {
         this.order = order;
     }
+
     public Product getProduct() {
         return product;
     }
+
     public void setProduct(Product product) {
         this.product = product;
     }
-    public int getQuantity() {
+
+    public Integer getQuantity() {
         return quantity;
     }
-    public void setQuantity(int quantity) {
+
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public double getAmount() {
         return amount;
     }
+
     public void setAmount(double amount) {
         this.amount = amount;
     }
+    
 }

@@ -3,6 +3,7 @@ package sg.edu.nus.ophone.paymentintegration;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,15 @@ public class PaypalController {
     public static final String SUCCESS_URL = "payment/success";
     public static final String CANCEL_URL = "payment/cancel";
 
-    @PostMapping("/pay")
-    public String payment(@ModelAttribute("order") Order order) {
+    @PostMapping("/payment")
+    public String payment(HttpSession session) {
         try {
+            Order order = (Order) session.getAttribute("order");
+
+            if (order == null) {
+                return "redirect:/cart";
+            }
+
             Payment paypalPayment = paypalService.createPayment(order, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 

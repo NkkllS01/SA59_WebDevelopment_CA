@@ -2,6 +2,7 @@ package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column(name = "order_date")
     private LocalDate orderDate;
@@ -38,6 +36,12 @@ public class Order {
 
     @OneToOne(mappedBy = "order")
     private Shipping shipping;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
 
     // constructors
     public Order() {
@@ -47,6 +51,17 @@ public class Order {
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
         this.orderStatus = "In cart";
+    }
+    
+	public void createOrder() {
+        if ("cart".equals(this.orderStatus)) {
+            this.orderStatus = "order";
+        }
+        
+    }
+
+    public void cancelOrder() {
+       
     }
 
     // getters and setters
@@ -119,7 +134,11 @@ public class Order {
         this.shipping = shipping;
     }
 
-}
-
+    public void setPaymentStatus(String paymentStatus) {
+        if (this.paymentRecord != null) {
+            this.paymentRecord.setStatus(paymentStatus);
+        }
+    }
+    }
 
 

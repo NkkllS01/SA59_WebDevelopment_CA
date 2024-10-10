@@ -14,4 +14,10 @@ public interface OrderInterface {
     public void save(Order order);
     public Order findByOrderIdAndUserId(Long orderId, int userId);
     public void cancelOrder(Order order);
+    
+    OrderDetails addOrderDetail(OrderDetails orderDetail);
+    List<OrderDetails> getOrderDetailsByOrderId(Long orderId);
+    boolean removeOrderDetail(Long orderId, Long productId);
+    void updateQuantity(Long orderId, Long productId, Integer quantity);
+    OrderDetails updateOrderDetail(OrderDetails orderDetail);
 }
