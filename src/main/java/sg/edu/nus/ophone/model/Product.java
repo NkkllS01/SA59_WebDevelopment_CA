@@ -22,6 +22,9 @@ public class Product {
   private String imagePathName;
   @OneToMany (mappedBy = "product")
   private List<Review> reviews;
+  
+ @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<OrderDetails> orderDetails;
 
   public Product() {
   }
