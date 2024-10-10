@@ -6,26 +6,26 @@ import java.util.List;
 
 //code by Team3.Lian Da
 @Entity
-@IdClass(OrderDetailsId.class)
 public class OrderDetails {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "order_id")
     private Long orderId;
 
-    @Id
     @Column(name = "product_id")
     private Long productId;
 
     // Map to the Order entity and use @MapsId to link the orderId field
     @ManyToOne
-    @MapsId("orderId")
+//    @MapsId("orderId")
     @JoinColumn(name="order_id", insertable = false, updatable = false)
+    private Order order;
 
     // Map to the Product entity and use @MapsId to link the productId field
-    private Order order;
     @ManyToOne
-    @MapsId("productId")
+//    @MapsId("productId")
     @JoinColumn(name="product_id", insertable = false, updatable = false)
     private Product product;
 
@@ -48,6 +48,12 @@ public class OrderDetails {
     }
 
     // Getters and Setters
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
     public Long getOrderId() {
         return orderId;
     }
