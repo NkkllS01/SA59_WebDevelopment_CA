@@ -31,13 +31,10 @@ public interface OrderDetailsRepository extends JpaRepository <OrderDetails, Lon
     
     @Modifying
 	@Transactional
-	@Query("DELETE FROM OrderDetail od WHERE od.order.id = :orderId AND od.product.id = :productId")
+	@Query("DELETE FROM OrderDetails od WHERE od.order.id = :orderId AND od.product.id = :productId")
 	int deleteByOrderIdAndProductId(@Param("orderId") Long orderId, @Param("productId") Long productId);
 
-	
-	
-
-	 @Query("SELECT od FROM OrderDetail od WHERE od.order.user.id = :userId AND od.product.id = :productId")
+	 @Query("SELECT od FROM OrderDetails od WHERE od.order.user.id = :userId AND od.product.id = :productId")
 	    OrderDetails findByUserIdAndProductId(@Param("userId") Long userId, @Param("productId") Long productId);
     
 

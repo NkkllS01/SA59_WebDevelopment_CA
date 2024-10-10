@@ -1,5 +1,6 @@
 package sg.edu.nus.ophone.controller;
 
+import com.paypal.api.payments.Payment;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -14,23 +15,16 @@ import sg.edu.nus.ophone.model.OrderDetails;
 import sg.edu.nus.ophone.model.PaymentRecord;
 import sg.edu.nus.ophone.model.Shipping;
 import sg.edu.nus.ophone.service.OrderImplementation;
-import sg.nus.iss.example.workshop.service.OrderDetailService;
-import sg.nus.iss.example.workshop.service.OrderService;
+
 
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class OrderController {
     @Autowired
     private OrderInterface orderService;
-    
-    @Autowired
-    private OrderService orderService1;
-
-    @Autowired
-    private OrderDetailService orderDetailService;
 
     @Autowired
     public void setOrderService(OrderImplementation orderImp) {
@@ -60,7 +54,7 @@ public class OrderController {
     @GetMapping("/cart")
     public String viewCart(@RequestParam Long userId, Model model) {
         
-        Order cart = orderService1.getCartByUserId(userId);
+        Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
@@ -72,12 +66,12 @@ public class OrderController {
     @PostMapping("/cart/remove/{productId}")
     public String removeCartItem(@RequestParam Long orderId, @PathVariable Long productId, Model model) {
         try {
-            Order cart = orderService1.getOrderById(orderId);
+            Order cart = orderService.findByOrderId(orderId);
             if (cart == null) {
                 model.addAttribute("errorMessage", "Order not found.");
                 return "error";  
             }
-            boolean isRemoved = orderDetailService.removeOrderDetail(orderId, productId);
+            boolean isRemoved = orderService.removeOrderDetail(orderId, productId);
             if (!isRemoved) {
                 model.addAttribute("errorMessage", "Order detail could not be removed.");
                 return "error";  
@@ -92,9 +86,9 @@ public class OrderController {
     @PostMapping("/cart/submit")
     @Transactional
     public String submitCart(@RequestParam Long userId, Model model) {
-        Order cart = orderService1.getCartByUserId(userId);
-        if (cart != null && "cart".equals(cart.getStatus())) {
-            orderService1.createOrder(cart); 
+        Order cart = orderService.getCartByUserId(userId);
+        if (cart != null && "cart".equals(cart.getOrderStatus())) {
+            orderService.createOrder(cart);
             return "order_submitted";  
         } else {
             return "error"; 
@@ -106,9 +100,9 @@ public class OrderController {
             @PathVariable Long productId, 
             @RequestParam Integer quantity) {
         
-        Order cart = orderService1.getCartByUserId(userId);
+        Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
-            orderDetailService.updateQuantity(cart.getUser().getId(), productId, quantity);
+            orderService.updateQuantity(cart.getId(), productId, quantity);
         }
         return "redirect:/orders/cart?userId=" + userId;  
     }
@@ -155,7 +149,7 @@ public class OrderController {
              Double gst = (order.getTotalAmount() / 109) * 9;
              model.addAttribute("order", order);
              model.addAttribute("gst", gst);
-             Payment payment = order.getPayment();
+             PaymentRecord payment = order.getPayment();
              model.addAttribute("payment", payment);
              model.addAttribute("shipping", shipping);
              List<OrderDetails> orderDetails = orderService.findByOrder(order);
