@@ -86,7 +86,7 @@ public class Order {
         this.id = id;
     }
 
-    public User getUserId() {
+    public User getUser() {
         return user;
     }
 

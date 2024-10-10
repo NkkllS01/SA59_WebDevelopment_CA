@@ -13,6 +13,15 @@ import sg.edu.nus.ophone.repository.OrderRepository;
 
 import java.util.List;
 
+/**
+ *
+ * Creating, Cancel, RetriveOrder(by userId or orderId), and confirm
+ * order details in the cart system.
+ *
+ * Created by: LianDa,GaoZijie
+ * Created on: 10/09/2024
+ */
+
 @Service
 @Transactional
 public class OrderImplementation implements OrderInterface {
@@ -84,7 +93,14 @@ public class OrderImplementation implements OrderInterface {
 			orderDetailsRepo.save(orderDetail);
 		}
 	}
-	
+
+    @Override
+    public void createOrder(Order order) {
+        if("cart".equals(order.getOrderStatus())) {
+            order.setOrderStatus("order");
+        }
+        orderRepo.save(order);
+    }
 	
 	@Override
 	@Transactional
@@ -98,4 +114,20 @@ public class OrderImplementation implements OrderInterface {
 	        return false;
 	    }
 	}
+
+    @Override
+    public Order getCartByUserId(Long userId) {
+        return orderRepo.findByUserIdAndStatus(userId, "cart");
+    }
+
+    @Override
+    public void submitOrder(Long userId) {
+        Order cart = orderRepo.findByUserIdAndStatus(userId, "cart");
+        if (cart != null) {
+            cart.setOrderStatus("submitted");
+            orderRepo.save(cart);
+        } else {
+            throw new IllegalArgumentException("not found cart");
+        }
+    }
 }
