@@ -20,4 +20,9 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
     @Query("select r from Review r where r.user.id = :id")
     List<Review> findReviewsByUserId(@Param("id") int id);
+
+    @Query("SELECT ROUND(AVG(r.rating), 1) FROM Review r WHERE r.product.id = :pid")
+    Double getAverageRatingByProductId(@Param("pid") int pid);
+
+    List<Review> findByProductIdOrderByRatingDesc(Integer pId);
 }

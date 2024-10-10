@@ -3,63 +3,68 @@ package sg.edu.nus.ophone.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import sg.edu.nus.ophone.interfacemethods.ProductService;
+import sg.edu.nus.ophone.interfacemethods.ProductInterface;
+import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
 import sg.edu.nus.ophone.model.Product;
-import jakarta.validation.Valid;
+import sg.edu.nus.ophone.service.ProductImplementation;
+import sg.edu.nus.ophone.service.ReviewImplementation;
+
+
+import java.util.List;
+
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/orangestore")
 public class ProductController {
+    @Autowired
+    private ProductInterface pservice;
 
     @Autowired
-    private ProductService productService;
-    @GetMapping("/create")
-    public String createProductForm(Model model) {
-        model.addAttribute("product", new Product());
-        return "createProduct";
+    private ReviewInterface rservice;
+
+    @Autowired
+    public void setProductService(ProductImplementation pserviceImpl) {
+        this.pservice = pserviceImpl;
     }
 
-    @PostMapping("/save")
-    public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "createProduct";
-        }
-        productService.saveProduct(product);
-        return "redirect:/products";
+    @Autowired
+    public void setReviewService(ReviewImplementation rserviceImpl) {
+        this.rservice = rserviceImpl;
     }
 
-    
+    // index page --- common components
     @GetMapping
-    public String listProducts(Model model) {
-        model.addAttribute("products", productService.findAllProducts());
+    public String getIndex(Model model) {
+        return "index";
+    }
+
+    // display the home page and get products for displaying
+    @GetMapping("/home")
+    public String getLandingPage(Model model) {
+        model.addAttribute("products", pservice.getProduct());
+        return "landingPage";
+    }
+
+    // display all products searched by name
+    @PostMapping("/all/products/searching")
+    public String search(@RequestParam("keyword") String keyword, Model model) {
+        List<Product> products = pservice.searchProductByKey(keyword);
+        if (products.isEmpty()) {
+            return "noProductFound";
+        }
+        model.addAttribute("products", products);
         return "searchResults";
     }
 
-    
-    @GetMapping("/edit/{id}")
-    public String editProductForm(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("product", productService.findProductById(id));
-        return "editProduct";
-    }
-    @PostMapping("/update")
-    public String updateProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "editProduct";
-        }
-        productService.saveProduct(product);
-        return "redirect:/products";
+    // display the product which is clicked via picture
+    @GetMapping("/products/details/{id}")
+    public String displayProducts(@PathVariable("id") Integer id, ModelMap model) {
+        model.addAttribute("product", pservice.searchProductById(id));
+        model.addAttribute("reviews", rservice.SearchReviewByProductId(id));
+        model.addAttribute("avgrating", rservice.GetAverageRating(id));
+        return "displayProduct";
     }
 
-    
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Integer id) {
-        Product product = productService.findProductById(id);
-        if (product != null) {
-            productService.deleteProduct(product);
-        }
-        return "redirect:/products";
-    }
 }

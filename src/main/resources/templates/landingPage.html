@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
+    <title>Landing Page</title>
     <link th:insert="~{index::webicon}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
     <div th:insert="~{index::topbar}"></div>
     <div class="container">
@@ -17,25 +18,17 @@
             <div th:insert="~{index::icon-cart}"></div>
         </header>
         <div th:insert="~{index::searchbox}"></div>
-
-        <!--            test data             -->
-        <table th:if="${not #lists.isEmpty(products)}">
-            <tr>
-                <th>Id：</th>
-                <th>Name：</th>
-                <th>Stock：</th>
-                <th>Unit Price：</th>
-                <th>Description：</th>
-            </tr>
-            <tr th:each="p:${products}">
-                <td th:text="${p.id}">Id</td>
-                <td><a th:text="${p.name}">Name</a></td>
-                <td th:text="${p.stock}">Stock</td>
-                <td th:text="${p.unitPrice}">UnitPrice</td>
-                <td th:text="${p.description}">Description</td>
-            </tr>
-        </table>
-
+        <div class="listProducts">
+            <div th:each="product:${products}">
+                <div class="item">
+                    <a th:href="@{/orangestore/products/details/{id}(id=${product.id})}">
+                        <img th:src="${product.imagePathName}" alt="${product.name}"/>
+                    </a>
+                    <h2 th:text="${product.name}"></h2>
+                    <div class="price" th:text="'SG$' + ${product.unitPrice}"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
