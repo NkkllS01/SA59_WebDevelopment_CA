@@ -15,10 +15,9 @@ public class UserServiceImp implements UserService {
     private UserRepository userRepository;
 
     public boolean login(String name,String password) {
-        List<User> users=userRepository.findByName(name);
+        User user=userRepository.findByName(name);
 
-        if(!users.isEmpty()) {
-            User user=users.get(0);
+        if(user != null) {
             return user.getPassword().equals(password);
         }
         return false;
@@ -27,5 +26,20 @@ public class UserServiceImp implements UserService {
     @Override
     public User findUserByUserId(int userId) {
         return userRepository.findById(userId).get();
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByUserEmail(email);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }
