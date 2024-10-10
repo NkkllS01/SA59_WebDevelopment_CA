@@ -20,4 +20,7 @@ public interface OrderInterface {
     boolean removeOrderDetail(Long orderId, Long productId);
     void updateQuantity(Long orderId, Long productId, Integer quantity);
     OrderDetails updateOrderDetail(OrderDetails orderDetail);
+    public Order getCartByUserId(Long userId);
+    void createOrder(Order order);
+    void submitOrder(Long userId);
 }
