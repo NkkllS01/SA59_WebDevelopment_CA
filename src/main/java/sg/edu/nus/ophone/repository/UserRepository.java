@@ -12,14 +12,16 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Query("SELECT u FROM User u WHERE u.id = :id")
-  List<User> findByUserId(@Param("id") int id);
+  User findByUserId(@Param("id") int id);
 
   @Query("SELECT u FROM User u WHERE u.email = :email")
-  User findByUserEmail(@Param("email") String email);
+  List<User> findByUserEmail(@Param("email") String email);
 
   @Query("SELECT u FROM User u WHERE u.userType =:userType")
   List<User> findByUserType(String userType);
 
-  User findByName(String name);
+  List<User> findByName(String name);
+  
+	boolean existsByName(String username);
 }
 

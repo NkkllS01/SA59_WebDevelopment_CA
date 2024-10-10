@@ -1,87 +1,81 @@
 package sg.edu.nus.ophone.model;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.util.List;
 
-//code by Team3.Lian Da
 @Entity
-@IdClass(OrderDetailsId.class)
 public class OrderDetails {
-
     @Id
-    @Column(name = "order_id")
-    private Long orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id
-    @Column(name = "product_id")
-    private Long productId;
-
-    // Map to the Order entity and use @MapsId to link the orderId field
     @ManyToOne
-    @MapsId("orderId")
-    @JoinColumn(name="order_id", insertable = false, updatable = false)
-
-    // Map to the Product entity and use @MapsId to link the productId field
+    @JoinColumn(name = "order_id",nullable = false)
     private Order order;
+
     @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name="product_id", insertable = false, updatable = false)
+    @JoinColumn(name = "product_id",nullable = false)
     private Product product;
-
-    @Column(nullable = false)
-    private int quantity;
-
-    @Column(nullable = false)
+    
+    @Column(name = "quantity")
+    private Integer quantity;
+    @Column(name = "amount")
     private double amount;
-
-    public OrderDetails() {
-    }
+    
+    public OrderDetails() {}
 
     public OrderDetails(Order order, Product product, int quantity) {
         this.order = order;
         this.product = product;
-        this.orderId = order.getId();
-        this.productId = product.getId();
         this.quantity = quantity;
         this.amount = product.getUnitPrice() * quantity;
     }
 
     // Getters and Setters
-    public Long getOrderId() {
-        return orderId;
+    public Long getId() {
+        return id;
     }
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-    public Long getProductId() {
-        return productId;
-    }
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setId(Long id) {
+        this.id = id;
     }
     public Order getOrder() {
         return order;
     }
+
     public void setOrder(Order order) {
         this.order = order;
     }
+
     public Product getProduct() {
         return product;
     }
+
     public void setProduct(Product product) {
         this.product = product;
     }
-    public int getQuantity() {
+
+    public Integer getQuantity() {
         return quantity;
     }
-    public void setQuantity(int quantity) {
+
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public double getAmount() {
         return amount;
     }
+
     public void setAmount(double amount) {
         this.amount = amount;
     }
+    
 }

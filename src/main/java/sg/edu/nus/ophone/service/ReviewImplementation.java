@@ -7,14 +7,26 @@ import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
 import sg.edu.nus.ophone.model.Review;
 import sg.edu.nus.ophone.repository.ReviewRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ReviewImplementation implements ReviewInterface {
     @Autowired
-    ReviewRepository reviewRepo;
+    ReviewRepository rrepo;
 
     @Override
     public void createNewReview(Review review) {
-        reviewRepo.save(review);
+        rrepo.save(review);
+    }
+
+    @Override
+    public List<Review> SearchReviewByProductId(Integer pid) {
+        return rrepo.findByProductIdOrderByRatingDesc(pid);
+    }
+
+    @Override
+    public Double GetAverageRating(Integer pid) {
+        return rrepo.getAverageRatingByProductId(pid);
     }
 }
