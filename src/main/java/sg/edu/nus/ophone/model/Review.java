@@ -12,27 +12,26 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int rating;
+    @Column(length = 1000)
     private String comment;
-    private LocalDate date;
+
+    private int rating;
+    private String date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private Product product;
 
-    public Review() {
-    }
+    public Review() {}
 
-    public Review(Product product, User user, int rating, String comment, String date) {
-        this.product = product;
-        this.user = user;
+    public Review(int rating, String comment, String date) {
         this.rating = rating;
         this.comment = comment;
-        this.date = LocalDate.parse(date);
+        this.date = date;
     }
 
     public int getId() {
@@ -59,11 +58,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
