@@ -40,4 +40,6 @@ public class PaypalConfig {
         return context;
     }
 
+    {}
+
 }
