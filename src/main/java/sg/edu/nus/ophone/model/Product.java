@@ -34,11 +34,12 @@ public class Product {
   public Product() {
   }
 
-  public Product(String name, String description, double unitPrice, int stock) {
+  public Product(String name, String description, double unitPrice, int stock, Brand brand) {
     this.name = name;
     this.description = description;
     this.unitPrice = unitPrice;
     this.stock = stock;
+    this.brand = brand;
   }
 
   public int getId() {
