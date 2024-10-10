@@ -13,4 +13,11 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     Double getAverageRatingByProductId(@Param("pid") int pid);
 
     List<Review> findByProductIdOrderByRatingDesc(Integer pId);
+
+
+
+
+
+
+
 }
