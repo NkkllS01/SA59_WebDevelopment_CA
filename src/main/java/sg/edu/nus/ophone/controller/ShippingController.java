@@ -1,5 +1,6 @@
 package sg.edu.nus.ophone.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.validation.BindingResult;
@@ -22,8 +23,21 @@ public class ShippingController {
     private ShippingService shipService;
 
     @PostMapping("/shipping")
-    public void shipping(@ModelAttribute ("order") Order order, @RequestParam String address, @RequestParam String city, @RequestParam String postalCode, Model model) {
-        Shipping shippingRecord = shipService.createShipping(order, address, city, postalCode);
-        model.addAttribute("shippingRecord", shippingRecord);
+    public String shipping(@Valid HttpSession session, @RequestParam String address, @RequestParam String city, @RequestParam String postalCode, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/shipping";
+        } else {
+            Order order = (Order) session.getAttribute("order");
+
+            if (order == null) {
+                return "redirect:/cart";
+            }
+
+            Shipping shippingRecord = shipService.createShipping(order, address, city, postalCode);
+            session.setAttribute("order", order);
+            model.addAttribute("shippingRecord", shippingRecord);
+
+            return  "redirect:/payment";
+            }
     }
 }

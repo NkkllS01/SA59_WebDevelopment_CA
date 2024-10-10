@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Payment Failed</title>
+    <script type="text/javascript">
+        function redirectToHome() {
+            setTimeout(function() {
+                window.location.href = '/Users/freddiekuo/Documents/GitHub/nus-iss-sa-webdevelopment-CA1/src/main/resources/templates/shipping.html';
+            }, 10000);
+        }
+    </script>
 </head>
-<body>
+
+<body onload="redirectToHome()">
 <h1>Payment Failed</h1>
+<p>Should you have any questions regarding this issue, please call our customer service hotline (+65 1234 5678).</p>
+<p>You will be redirected to the home page, if it failed to load you may click on the link below.</p>
+
+<table>
+    <tr>
+        <td></td>
+        <td><a href="/Users/freddiekuo/Documents/GitHub/nus-iss-sa-webdevelopment-CA1/src/main/resources/templates/shipping.html" style="color: #007bff; text-decoration: underline;">Back to Home</a></td>
+    </tr>
+</table>
 </body>
 </html>
