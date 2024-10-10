@@ -11,17 +11,14 @@ import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
 import sg.edu.nus.ophone.interfacemethods.UserService;
 import sg.edu.nus.ophone.model.*;
-import sg.edu.nus.ophone.repository.ProductRepository;
 import sg.edu.nus.ophone.service.OrderImplementation;
 import sg.edu.nus.ophone.service.ProductImplementation;
 import sg.edu.nus.ophone.service.ReviewImplementation;
 import sg.edu.nus.ophone.service.UserServiceImp;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Controller
 public class OrderController {
@@ -114,10 +111,11 @@ public class OrderController {
              model.addAttribute("orderDetails", orderDetails);
              return "order-cancel";
          } else {
+             model.addAttribute("errorTitle", "Unsuccessful Order Cancellation");
              model.addAttribute("errorMessage",
                      "Your order cannot be cancelled as it has already been " +
                              shippingStatus.toLowerCase() + ".");
-             return "order-cancel-fail";
+             return "errorMsg";
          }
      }
 
@@ -136,7 +134,10 @@ public class OrderController {
             model.addAttribute("review", new Review());
             return "product-review";
         } else {
-            return "product-review-fail";
+            model.addAttribute("errorTitle", "Product Review Unsuccessful");
+            model.addAttribute("errorMessage",
+                    "A review cannot be created yet as the order has not been delivered.");
+            return "errorMsg";
         }
     }
 
