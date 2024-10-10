@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+<div class="container">
+  <br/><h2>My Profile</h2><br/>
+  <div><span th:text="${successMsg}"></span></div>
+  <form th:action="@{/myaccount/profile/save}" th:object="${user}" method="post">
+    <table class = "table table-striped table-responsive-md">
+      <tbody>
+      <tr>
+        <td>
+          <input type="hidden" th:field="*{id}" th:value="*{id}" />
+          <input type="hidden" th:field="*{password}" th:value="*{password}" />
+          <input type="hidden" th:field="*{userType}" th:value="*{userType}" />
+          Name:
+        </td>
+        <td>
+          <input type="text" th:field="*{name}" th:value="*{name}" />
+        </td>
+      </tr>
+      <tr>
+        <td>Email: </td>
+        <td><input type="text" th:field="*{email}" th:value="*{email}" /></td>
+      </tr>
+      <tr>
+        <td>Address:</td>
+        <td>
+          <input type="text" th:field="*{address}" th:value="*{address}" />
+        </td>
+      </tr>
+      <tr>
+        <td>City: </td>
+        <td>
+          <input type="text" th:field="*{city}" th:value="*{city}" />
+        </td>
+      </tr>
+      <tr>
+        <td>Postal Code: </td>
+        <td>
+          <input type="text" th:field="*{postalCode}" th:value="*{postalCode}" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="btn-grp float-right">
+            <a href="#" onclick="history.go(-1); return false;" class="btn btn-primary">Back</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </form>
+</div>
+</body>
+</html>
