@@ -31,7 +31,7 @@ public class Order {
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private PaymentRecord paymentRecord;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails = new ArrayList<>();
 
     @OneToOne(mappedBy = "order")

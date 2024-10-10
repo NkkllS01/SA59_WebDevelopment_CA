@@ -14,10 +14,6 @@ public class TestDataCreation {
     @Autowired
     BrandRepository brandRepo;
     @Autowired
-    CartRepository cartRepo;
-    @Autowired
-    CartItemRepository cartItemRepo;
-    @Autowired
     OrderRepository orderRepo;
     @Autowired
     OrderDetailsRepository orderDetailsRepo;

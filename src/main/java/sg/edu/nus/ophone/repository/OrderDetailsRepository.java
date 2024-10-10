@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.OrderDetails;
-import sg.edu.nus.ophone.model.OrderDetailsId;
 
 
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @Repository
 public interface OrderDetailsRepository extends JpaRepository <OrderDetails, Long>{
-	
+
 	List<OrderDetails> findAllByOrderId(Long orderId);
 	OrderDetails findByOrderIdAndProductId(Long orderId, Long productId);
 	
