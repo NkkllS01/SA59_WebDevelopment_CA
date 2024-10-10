@@ -27,14 +27,23 @@ public class ProductImplementation implements ProductInterface {
     }
 
     @Override
+    public Product searchProductById(Integer id) {
+        return prepo.findProductById(id);
+    }
+
+    @Override
     @Transactional
     public List<Product> getProduct() {
         return prepo.getProduct();
     }
 
     @Override
-    @Transactional
-    public Product searchProductById(Integer id) {
-        return prepo.findById(id).get();
+    public Product createProduct(Product product) {
+        return prepo.save(product);
+    }
+
+    @Override
+    public void deleteProduct(Long productId) {
+        prepo.deleteById(productId);
     }
 }
