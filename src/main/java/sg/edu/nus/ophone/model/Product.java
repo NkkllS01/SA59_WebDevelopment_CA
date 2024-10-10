@@ -6,21 +6,26 @@ import java.util.List;
 
 //code by Team3.Ng Jiamin
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private int id;
+
   private String name;
   private String description;
+  @Column(name = "stockQuantity")
+  private int stock;
+  private String imagePathName;
+
   @Column(name = "unit_price")
   private double unitPrice;
-  private int stock;
+
   @ManyToOne
   @JoinColumn(name = "brand_id", referencedColumnName = "id")
   private Brand brand;
-  private String imagePathName;
-  @OneToMany (mappedBy = "product")
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private List<Review> reviews;
   
  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
@@ -29,19 +34,18 @@ public class Product {
   public Product() {
   }
 
-  public Product(String name, String description, double unitPrice, int stock, Brand brand) {
+  public Product(String name, String description, double unitPrice, int stock) {
     this.name = name;
     this.description = description;
     this.unitPrice = unitPrice;
     this.stock = stock;
-    this.brand = brand;
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -61,28 +65,12 @@ public class Product {
     this.description = description;
   }
 
-  public double getUnitPrice() {
-    return unitPrice;
-  }
-
-  public void setUnitPrice(double unitPrice) {
-    this.unitPrice = unitPrice;
-  }
-
   public int getStock() {
     return stock;
   }
 
   public void setStock(int stock) {
     this.stock = stock;
-  }
-
-  public Brand getBrand() {
-    return brand;
-  }
-
-  public void setBrand(Brand brand) {
-    this.brand = brand;
   }
 
   public String getImagePathName() {
@@ -93,21 +81,33 @@ public class Product {
     this.imagePathName = imagePathName;
   }
 
-  public List<Review> getReviews() {return reviews;}
+  public double getUnitPrice() {
+    return unitPrice;
+  }
 
-  public void setReviews(List<Review> reviews) {this.reviews = reviews;}
+  public void setUnitPrice(double unitPrice) {
+    this.unitPrice = unitPrice;
+  }
 
-  public double calculateRating() {
-    if (reviews != null && !reviews.isEmpty()) {
-      return reviews.stream().mapToDouble(Review::getRating).average().orElse(0.0);
-    }
-    return 0.0;
+  public Brand getBrand() {
+    return brand;
+  }
+
+  public void setBrand(Brand brand) {
+    this.brand = brand;
+  }
+
+  public List<Review> getReviews() {
+    return reviews;
+  }
+
+  public void setReviews(List<Review> reviews) {
+    this.reviews = reviews;
   }
 
   @Override
   public String toString() {
-    return "Product ID: " + id + ", Name: " + name + ", Description: " + description + ", Unit Price: " + unitPrice
-        + ", Stock: " + stock + ", Brand: " + brand;
+    return "Product [id = " + id + ", name = " + name + ", description = " + description +
+            ", unitPrice = " + unitPrice + ", stock = " + stock + "]";
   }
-
 }
