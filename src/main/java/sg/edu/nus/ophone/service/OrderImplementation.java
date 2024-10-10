@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.OrderDetails;
+import sg.edu.nus.ophone.model.PaymentRecord;
 import sg.edu.nus.ophone.repository.OrderDetailsRepository;
 import sg.edu.nus.ophone.repository.OrderRepository;
 
@@ -48,6 +49,12 @@ public class OrderImplementation implements OrderInterface {
     public void cancelOrder(Order order) {
         order.setOrderStatus("Cancelled");
         order.getShipping().setShippingStatus("Cancelled");
-        order.getPayment().setStatus("Pending refund");
+        PaymentRecord payment = order.getPayment();
+        String paymentStatus = payment.getStatus();
+        if (!paymentStatus.equalsIgnoreCase("Completed")) {
+            payment.setStatus("Cancelled");
+        } else {
+            payment.setStatus("Pending refund");
+        }
     }
 }
