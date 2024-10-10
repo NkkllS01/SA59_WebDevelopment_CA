@@ -1,8 +1,11 @@
 package sg.edu.nus.ophone.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import sg.edu.nus.ophone.interfacemethods.ProductService;
 import sg.edu.nus.ophone.model.Product;
 import sg.edu.nus.ophone.repository.ProductRepository;
@@ -34,5 +37,24 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
+    }
+    @Transactional
+    public void saveProduct(Product product) {
+    	productRepository.save(product);
+    }
+
+    @Transactional
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Transactional
+    public Product findProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
+    public void deleteProduct(Product product) {
+    	productRepository.delete(product);
     }
 }
