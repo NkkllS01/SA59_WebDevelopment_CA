@@ -1,6 +1,9 @@
 package sg.edu.nus.ophone.interfacemethods;
 
+import org.springframework.data.repository.query.Param;
 import sg.edu.nus.ophone.model.User;
+
+import java.util.List;
 
 /**
  * 
@@ -13,9 +16,8 @@ import sg.edu.nus.ophone.model.User;
 
 public interface UserService {
 
+	User findByUserId(int id);
 	boolean login(String username,String password);
-	
-	 boolean usernameExists(String username);
-	 
+	boolean usernameExists(String username);
 	void saveUser(User user);
 }

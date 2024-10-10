@@ -10,13 +10,17 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
-import sg.edu.nus.ophone.model.Order;
-import sg.edu.nus.ophone.model.OrderDetails;
-import sg.edu.nus.ophone.model.PaymentRecord;
-import sg.edu.nus.ophone.model.Shipping;
+import sg.edu.nus.ophone.interfacemethods.ProductInterface;
+import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
+import sg.edu.nus.ophone.interfacemethods.UserService;
+import sg.edu.nus.ophone.model.*;
 import sg.edu.nus.ophone.service.OrderImplementation;
+import sg.edu.nus.ophone.service.ProductImplementation;
+import sg.edu.nus.ophone.service.ReviewImplementation;
+import sg.edu.nus.ophone.service.UserServiceImp;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,10 +29,30 @@ import java.util.Locale;
 public class OrderController {
     @Autowired
     private OrderInterface orderService;
-
     @Autowired
     public void setOrderService(OrderImplementation orderImp) {
         this.orderService = orderImp;
+    }
+
+    @Autowired
+    private ProductInterface productService;
+    @Autowired
+    public void setProductService(ProductImplementation productImp) {
+        this.productService = productImp;
+    }
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    public void setUserService(UserServiceImp userImp) {
+        this.userService = userImp;
+    }
+
+    @Autowired
+    private ReviewInterface reviewService;
+    @Autowired
+    public void setReviewService(ReviewImplementation reviewImp) {
+        this.reviewService = reviewImp;
     }
 
     @GetMapping ("/orders")
@@ -164,10 +188,33 @@ public class OrderController {
      }
 
      @GetMapping("/product/{id}/review")
-    public String reviewProduct(@PathVariable("id") Long productId, Model model, HttpSession session) {
+     public String reviewProduct(@PathVariable("id") Long productId, Model model, HttpSession session) {
         return "product-review";
      }
 
+    @PostMapping("/product/{id}/review/create")
+    public String createProductReview(@PathVariable("id") Long productId,
+                                      @RequestParam("orderId") Long orderId,
+                                      @ModelAttribute Review review,
+                                      Model model, HttpSession session) {
+//        int userId = (int) session.getAttribute("userId");
+//        User user = userService.findUserByUserId(userId);
+        User user = userService.findByUserId(1);
+        Product product = productService.getProductById(productId);
+
+        Order order = orderService.findByOrderId(orderId);
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
+
+        review.setProduct(product);
+        review.setUser(user);
+        review.setDate(LocalDate.now());
+
+        reviewService.createNewReview(review);
+        return "product-review-success";
+    }
+
 }
+
 
 

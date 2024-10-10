@@ -22,7 +22,12 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
+	@Override
+	public User findByUserId(int id) {
+		return userRepository.findByUserId(id);
+	}
+
+	@Override
 	public boolean login(String name,String password) {
 		List<User> users=userRepository.findByName(name);
 		
