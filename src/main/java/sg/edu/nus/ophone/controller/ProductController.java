@@ -44,7 +44,8 @@ public class ProductController {
     @GetMapping("/home")
     public String getLandingPage(Model model) {
         model.addAttribute("products", pservice.getProduct());
-        return "landingPage";
+//        return "landingPage";
+        return "landingPage-jm";
     }
 
     // display all products searched by name
