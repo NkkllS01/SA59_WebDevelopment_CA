@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base Page using Bootstrap</title>
+    <title>OrangeStore</title>
     <!-- web icon -->
     <link rel="icon" type="image/x-icon" sizes="32x32" href="/images/favicon.ico" th:fragment="webicon">
     <!-- Bootstrap CSS -->
@@ -83,7 +83,7 @@
               <img th:src="${product.imagePathName}" th:alt="${product.name}" class="img-fluid" loading="lazy"/>
             </a>
             <h2 th:text="${product.name}"></h2>
-            <div class="price" th:text="'SG$' + ${product.unitPrice}"></div>
+            <div class="price" th:text="${#numbers.formatCurrency(product.unitPrice)}"></div>
           </div>
         </div>
       </div>
