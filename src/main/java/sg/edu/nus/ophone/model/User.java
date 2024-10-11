@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private long id;
   @Column(length = 30)
   private String userType;
 
@@ -47,11 +47,11 @@ public class User {
     this.postalCode = postalCode;
   }
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 

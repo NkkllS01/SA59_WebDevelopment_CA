@@ -3,14 +3,79 @@
 	Created by: LianDa,GaoZijie
 	Created on: 10/09/2024
  -->
+ <!DOCTYPE html>
+ <html xmlns:th="http://www.thymeleaf.org">
+ <head>
+     <meta charset="UTF-8">
+     <title>Order Submitted</title>
+     <style>
+         body {
+             font-family: Arial, sans-serif;
+             background-color: #f4f4f4;
+             margin: 0;
+             padding: 0;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 100vh;
+         }
  
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Order Submitted</title>
-</head>
-<body>
-    <h1>Order Submitted Successfully!</h1>
-    <p>Your order has been submitted.</p>
-</body>
-</html>
+         .container {
+             background-color: #ffffff;
+             border-radius: 10px;
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+             max-width: 600px;
+             width: 100%;
+             padding: 20px;
+             text-align: center;
+         }
+ 
+         h1 {
+             color: #4CAF50;
+             margin-bottom: 20px;
+         }
+ 
+         p {
+             color: #555;
+             font-size: 1.1em;
+             margin: 10px 0;
+         }
+ 
+         .redirect-message {
+             margin-top: 20px;
+             color: #888;
+             font-size: 0.9em;
+         }
+ 
+         .loader {
+             margin: 20px auto;
+             border: 5px solid #f3f3f3;
+             border-radius: 50%;
+             border-top: 5px solid #4CAF50;
+             width: 40px;
+             height: 40px;
+             animation: spin 1s linear infinite;
+         }
+ 
+         @keyframes spin {
+             0% { transform: rotate(0deg); }
+             100% { transform: rotate(360deg); }
+         }
+     </style>
+     <script type="text/javascript">
+         
+         setTimeout(function() {
+             window.location.href = '/payment';
+         }, 10000); 
+     </script>
+ </head>
+ <body>
+     <div class="container">
+         <h1>Order Submitted Successfully!</h1>
+         <div class="loader"></div>
+         <p>Your order has been submitted. You will be redirected to the payment page shortly...</p>
+         <p class="redirect-message">If you are not redirected, <a href="/payment">click here</a>.</p>
+     </div>
+ </body>
+ </html>
+ 
