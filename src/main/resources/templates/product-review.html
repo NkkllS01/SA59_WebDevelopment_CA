@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/custom-style-jm.css}">
 </head>
 <body>
-<div th:insert="~{index-jiamin::topbar}"></div>
+<div th:insert="~{landingPage-jm::topbar}"></div>
 <div class="container" id="main-content">
     <br/><h2>New Review</h2><br/>
     <form th:action="@{/product/{id}/review/create(id=${product.id})}" th:object="${review}" method="post">
@@ -62,7 +62,7 @@
         </table>
     </form>
 </div>
-<div th:insert="~{index-jiamin::footer}"></div>
+<div th:insert="~{landingPage-jm::footer}"></div>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
