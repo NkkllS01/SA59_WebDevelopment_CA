@@ -17,8 +17,8 @@ public class ShippingStatus {
   private String name;
   private String description;
 
-  @OneToMany(mappedBy = "ShippingStatus")
-  private List<Shipping> shippings;
+//  @OneToMany(mappedBy = "ShippingStatus")
+//  private List<Shipping> shippings;
 
   public ShippingStatus() {
   }

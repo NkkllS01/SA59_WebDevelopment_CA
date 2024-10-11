@@ -2,6 +2,8 @@ package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 //code by Team3.Song Jingze
 @Entity
 @Table(name = "reviews")
@@ -10,25 +12,28 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int rating;
+    @Column(length = 1000)
     private String comment;
-    private String date;
+
+    private int rating;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    private Users users;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
 
-    public Review() {
-    }
+    public Review() {}
 
-    public Review(int rating, String comment, String date) {
+    public Review(Product product, User user, int rating, String comment, String date) {
+        this.product = product;
+        this.user = user;
         this.rating = rating;
         this.comment = comment;
-        this.date = date;
+        this.date = LocalDate.parse(date);
     }
 
     public int getId() {
@@ -55,20 +60,20 @@ public class Review {
         this.comment = comment;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Users getUser() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser(Users users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Product getProduct() {

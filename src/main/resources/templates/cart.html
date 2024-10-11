@@ -1,0 +1,73 @@
+<!-- 
+	cart_page
+	Created by: LianDa,GaoZijie
+	Created on: 10/09/2024
+ -->
+ 
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/css/cart_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Shopping Cart</h1>
+
+        <div th:if="${cart != null}">
+            <!-- Show cart content -->
+            <h2>Order Details</h2>
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- retrive the cart content -->
+                    <tr th:each="item : ${orderDetails}">
+                        <td th:text="${item.product.name}">Product Name</td>
+                        <td>
+                            <!-- update the product number -->
+                            <form th:action="@{/orders/cart/updateQuantity/{productId}(productId=${item.product.id})}" method="post">
+                                <input type="number" name="quantity" th:value="${item.quantity}" min="1">
+                                <input type="hidden" name="userId" th:value="${cart.user.id}">
+                                <button type="submit" class="btn btn-update">Update</button>
+                            </form>
+                        </td>
+                        <td th:text="${item.product.unitPrice}">Price</td>
+                        <td th:text="${item.quantity * item.product.unitPrice}">Total</td>
+                        <td>
+                            <!-- delete the product -->
+							<form th:action="@{/orders/cart/remove/{productId}(productId=${item.product.id})}" method="post">
+							    <!-- hidden field to pass the  orderId -->
+							    <input type="hidden" name="orderId" th:value="${cart.id}">
+							    <button type="submit" class="btn btn-remove"><i class="fas fa-trash-alt"></i> Remove</button>
+							</form>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- submit the form -->
+            <form th:action="@{/orders/cart/submit}" method="post">
+                <input type="hidden" name="userId" th:value="${cart.user.id}">
+                <button type="submit" class="btn btn-submit">Submit Order</button>
+            </form>
+        </div>
+
+        <!-- show notice when the cart is empty -->
+        <div th:if="${cart == null}" class="empty-cart">
+            <p><i class="fas fa-shopping-cart"></i> Your cart is empty.</p>
+        </div>
+    </div>
+</body>
+</html>

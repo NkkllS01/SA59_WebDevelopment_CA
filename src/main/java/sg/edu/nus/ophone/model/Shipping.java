@@ -1,12 +1,11 @@
 package sg.edu.nus.ophone.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
 
 //code by Team3.Gao Zijie
 @Entity
@@ -15,29 +14,35 @@ public class Shipping {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @NotBlank(message = "Please enter your address.")
   private String address;
+  @NotBlank(message = "Please enter the city you reside in.")
+  private String city;
+  @NotBlank(message = "Please enter your postal code.")
+  private String postalCode;
 
   @Column(name = "shipping_date")
-  private String shippingDate;
+  private LocalDate shippingDate;
 
   @Column(name = "delivery_date")
-  private String deliveryDate;
+  private LocalDate deliveryDate;
 
-  @ManyToOne
-  private ShippingStatus ShippingStatus;
+  //  @ManyToOne
+  private String shippingStatus;
 
   @OneToOne
+  @JoinColumn(name = "order_id")
   private Order order;
 
   public Shipping() {
-  };
+  }
 
-  public Shipping(int id, String address, String shippingDate, String deliveryDate) {
-    this.id = id;
+  public Shipping(Order order, String address, String city, String postalCode, String shippingStatus) {
+    this.order = order;
     this.address = address;
-    this.shippingDate = shippingDate;
-    this.deliveryDate = deliveryDate;
-
+    this.city = city;
+    this.postalCode = postalCode;
+    this.shippingStatus = shippingStatus;
   }
 
   public int getId() {
@@ -48,6 +53,14 @@ public class Shipping {
     this.id = id;
   }
 
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
+  }
+
   public String getAddress() {
     return address;
   }
@@ -56,26 +69,50 @@ public class Shipping {
     this.address = address;
   }
 
-  public String getShippingDate() {
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
+  }
+
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
+
+  public LocalDate getShippingDate() {
     return shippingDate;
   }
 
   public void setShippingDate(String shippingDate) {
-    this.shippingDate = shippingDate;
+    this.shippingDate = LocalDate.parse(shippingDate);
   }
 
-  public String getDeliveryDate() {
+  public LocalDate getDeliveryDate() {
     return deliveryDate;
   }
 
   public void setDeliveryDate(String deliveryDate) {
-    this.deliveryDate = deliveryDate;
+    this.deliveryDate = LocalDate.parse(deliveryDate);
+  }
+
+  public String getShippingStatus() {
+    return shippingStatus;
+  }
+
+  public void setShippingStatus(String shippingStatus) {
+    this.shippingStatus = shippingStatus;
   }
 
   @Override
   public String toString() {
-    return "Shipping [id=" + id + ", address=" + address + ", shippingDate=" + shippingDate + ", deliveryDate="
-        + deliveryDate + "]";
+    return "Shipping [id=" + id + ", Address=" + address + ", Ship Out Date=" + shippingDate + ", Delivery Date="
+            + deliveryDate + ", Shipping Status=" + shippingStatus + "]";
   }
-
 }
+

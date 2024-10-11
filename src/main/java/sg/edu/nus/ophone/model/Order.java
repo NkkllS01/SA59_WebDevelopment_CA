@@ -2,7 +2,10 @@ package sg.edu.nus.ophone.model;
 
 import jakarta.persistence.*;
 
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 //code by Team3.Chen Sirui
 @Entity
@@ -10,10 +13,9 @@ import java.time.LocalDate;
 public class Order {
     @Id
     @Column(length = 30)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @Column(length = 30)
-    private String userId;
 
     @Column(name = "order_date")
     private LocalDate orderDate;
@@ -21,28 +23,75 @@ public class Order {
     @Column(name = "total_amount")
     private double totalAmount;
 
-    @ManyToOne
-    @JoinColumn(name = "status", referencedColumnName = "id")
-    private OrderStatus orderstatus;
+    //    @ManyToOne
+//    @JoinColumn(name = "status", referencedColumnName = "id")
+    private String orderStatus;
 
     @OneToOne
-    @JoinColumn(name = "payment_id",referencedColumnName = "id")
-    private Payment payment;
+    @JoinColumn(name = "payment_id", referencedColumnName = "id")
+    private PaymentRecord paymentRecord;
 
-    public String getId() {
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails = new ArrayList<>();
+
+    @OneToOne(mappedBy = "order")
+    private Shipping shipping;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+
+    // constructors
+    public Order() {
+    }
+
+    public Order(User user, String orderDate) {
+        this.user = user;
+        this.orderDate = LocalDate.parse(orderDate);
+        this.orderStatus = "In cart";
+    }
+    
+	public void createOrder() {
+        if ("cart".equals(this.orderStatus)) {
+            this.orderStatus = "order";
+        }
+        
+    }
+
+    public void cancelOrder() {
+       
+    }
+
+    // getters and setters
+    public List<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails != null ? orderDetails : new ArrayList<>();
+        if (orderDetails != null && !orderDetails.isEmpty()) {
+            this.totalAmount = orderDetails.stream().map(OrderDetails::getAmount).reduce(0.0, Double::sum);
+        } else {
+            this.totalAmount = 0.0;
+        }
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDate getOrderDate() {
@@ -53,6 +102,14 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public PaymentRecord getPayment() {
+        return paymentRecord;
+    }
+
+    public void setPayment(PaymentRecord paymentRecord) {
+        this.paymentRecord = paymentRecord;
+    }
+
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -61,11 +118,27 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public OrderStatus getOrderstatus() {
-        return orderstatus;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderstatus(OrderStatus orderstatus) {
-        this.orderstatus = orderstatus;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
-}
+
+    public Shipping getShipping() {
+        return shipping;
+    }
+
+    public void setShipping(Shipping shipping) {
+        this.shipping = shipping;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        if (this.paymentRecord != null) {
+            this.paymentRecord.setStatus(paymentStatus);
+        }
+    }
+    }
+
+
