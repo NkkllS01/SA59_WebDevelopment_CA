@@ -24,18 +24,18 @@
             <!-- Logo -->
             <a class="navbar-brand" href="#">
               <img src="/images/Logo.png" style="width: 40px" alt="logo" class="rounded">
-              <span class="ms-2 text-white fw-bold">Orange Store</span>
+              <strong><span class="ms-2 text-white" style="font-size: 20pt">OrangeStore</span></strong>
             </a>
             <!-- Navbar links -->
-            <ul class="navbar-nav ms-3 text-white">
+            <ul class="navbar-nav ms-3 text-white fw-bold">
               <li class="nav-item">
-                <a class="nav-link text-white" th:href="@{/orangestore/home}"> Home </a>
+                <a class="nav-link text-white link-hover" th:href="@{/orangestore/home}"> Home </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" th:href="@{/about}"> About </a>
+                <a class="nav-link text-white link-hover" th:href="@{/about}"> About </a>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"> Contact us </a>
+                <a class="nav-link dropdown-toggle text-white link-hover" href="#" role="button" data-bs-toggle="dropdown"> Contact us </a>
                 <ul class="dropdown-menu dropdown-menu-dark">
                   <li>
                     <a class="dropdown-item" href="#"> E-mail: orangeestore@org.com </a>
@@ -52,24 +52,43 @@
             <form class="d-flex" action="#" th:action="@{/orangestore/all/products/searching}" method="POST">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search Product" aria-label="Search">
-                <button class="btn btn-outline-light" type="submit">
+                <button class="btn btn-outline-light btn-search" type="submit">
                   <i class="fas fa-search"></i>
                 </button>
               </div>
             </form>
             <!-- Login and Cart Icons -->
-            <a th:href="@{/login}" class="ms-3 text-white"><i class="fas fa-user"></i></a>
-            <a th:href="@{/cart}" class="ms-3 text-white"><i class="fas fa-shopping-cart"></i></a>
+            <a th:href="@{/login}" class="ms-3 text-white icon-hover" aria-label="Login">
+              <i class="fas fa-user"></i>
+            </a>
+            <a th:href="@{/cart}" class="ms-3 text-white icon-hover" aria-label="Shopping Cart">
+              <i class="fas fa-shopping-cart"></i>
+            </a>
           </div>
         </div>
       </nav>
     </div>
-
+    <br/>
+    <!-- Main Content -->
     <div id="main-content" class="container">
-      <h1>This is the base landing page for Orange Store.</h1>
-      <p>Main content here.</p>
+      <div style="color: #DC6B19">
+        <h2>Our Top Picks Loved by Customers</h2>
+        <p>Treat Yourself Today – You Deserve the Best!</p>
+      </div>
+      <br/>
+      <div class="listProducts">
+        <div th:each="product:${products}">
+          <div class="item">
+            <a th:href="@{/orangestore/products/details/{id}(id=${product.id})}">
+              <img th:src="${product.imagePathName}" th:alt="${product.name}" class="img-fluid" loading="lazy"/>
+            </a>
+            <h2 th:text="${product.name}"></h2>
+            <div class="price" th:text="'SG$' + ${product.unitPrice}"></div>
+          </div>
+        </div>
+      </div>
     </div>
-
+    <br/>
     <!-- footer -->
     <div th:fragment="footer">
       <footer id="sticky-footer" class="flex-shrink-0 py-4" style="background-color: orange; color: white">
