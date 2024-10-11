@@ -1,0 +1,18 @@
+.custom-btn {
+    background-color: #FF7101;
+    border-color: #FF7101;
+    color: #fff;
+}
+.custom-btn:hover {
+    background-color: #FFA500; /* Darker shade on hover */
+    border-color: #FFA500;     /* Match the border color */
+    color: #fff;               /* Keep the text color white */
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure full height for sticky footer */
+}
+#main-content {
+    flex: 1; /* Allow main content to grow */
+}
