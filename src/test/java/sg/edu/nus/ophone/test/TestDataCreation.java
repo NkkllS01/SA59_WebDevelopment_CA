@@ -45,14 +45,32 @@ public class TestDataCreation {
         Brand orange = new Brand("Orange", "Orange");
         Brand pineapple = new Brand("Pineapple", "Pineapple");
         Brand kiwi = new Brand("Kiwi", "Kiwi");
-        brandRepo.saveAll(Arrays.asList(orange, pineapple, kiwi));
+        Brand huawei = new Brand("Huawei", "Huawei");
+        Brand xiaomi = new Brand("Xiaomi", "Xiaomi");
+        Brand apple = new Brand("Apple", "Apple");
+        brandRepo.saveAll(Arrays.asList(orange, pineapple, kiwi, huawei, xiaomi, apple));
 
         // Create Product Data
         Product oPhone = new Product("Orange oPhone 24", "oPhone 24", 1500.00, 40, orange);
         Product pPhone = new Product("Pineapple pPhone Pro", "pPhone Pro", 1900.00, 30, pineapple);
         Product kPhone = new Product("Kiwi kPhone S3", "kPhone S3", 2024, 99, kiwi);
         Product kPhone2 = new Product("Kiwi kPhone S1 Max", "kPhone S1 Max", 1999, 56, kiwi);
-        productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2));
+        Product hwMate = new Product("HUAWEI Mate60", "6.7\" display, Weight: approx. 206g (w/ battery)",
+                1600, 90, huawei);
+        hwMate.setImagePathName("/images/HUAWEI Mate60.jpg");
+        Product hwPura = new Product("HUAWEI Pura70",
+                "Ultra Speed Snapshot, Ultra Lighting Macro Telephoto Camera, Super Durable Kunlun Glass, 100W Wired & 80W Wireless SuperCharge",
+                1548, 37, huawei);
+        hwPura.setImagePathName("/images/HUAWEI Pura70.jpg");
+        Product xmFold = new Product("Xiaomi MIX Fold 4",
+                "Six Leica-branded cameras, a 5,100mAh battery and the latest Qualcomm chip.",
+                1582.50, 34, xiaomi);
+        xmFold.setImagePathName("/images/Xiaomi MIX Fold 4.jpg");
+        Product xmUltra = new Product("Xiaomi MIX Fold4",
+                "Qualcomm Snapdragon 8 Gen 3, powered by modern LPRRD5X RAM and the latest UFS 4.0 storage technologies.",
+                1699, 28, xiaomi);
+        xmUltra.setImagePathName("/Xiaomi 14Ultra.jpg");
+        productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2, hwMate, hwPura, xmFold, xmUltra));
 
         // Create Order Data
         Order order1 = new Order(andy, "2024-10-01");
