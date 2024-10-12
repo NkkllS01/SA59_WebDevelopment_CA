@@ -1,6 +1,8 @@
 package sg.edu.nus.ophone.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +35,19 @@ public class UserController {
         boolean loginsuccess=u.login(username, password);
         if(loginsuccess) {
             session.setAttribute("username", username);
-            return "redirect:/product";
+            return "redirect:/orangestore/home";
         }else {
             model.addAttribute("error","Invalid username or password.");
             return "login";
         }
     }
     @GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/login";
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate(); // Invalidate the session
+		}
+		return "redirect:/login?logout=true";
 	}
 	@GetMapping("/register")
 	public String registerPage() {
