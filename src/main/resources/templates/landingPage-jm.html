@@ -49,26 +49,74 @@
           </div>
           <!-- Search form -->
           <div class="d-flex align-items-center ms-auto">
-            <form class="d-flex" action="#" th:action="@{/orangestore/all/products/searching}" method="POST">
+            <form class="d-flex mx-3" action="#" th:action="@{/orangestore/all/products/searching}" method="POST">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search Product" aria-label="Search">
                 <button class="btn btn-outline-light btn-search" type="submit">
-                  <i class="fas fa-search"></i>
+                  <i class="fas fa-search fa-lg"></i>
                 </button>
               </div>
             </form>
-            <!-- Login and Cart Icons -->
-            <a th:href="@{/login}" class="ms-3 text-white icon-hover" aria-label="Login">
-              <i class="fas fa-user"></i>
-            </a>
-            <a th:href="@{/cart}" class="ms-3 text-white icon-hover" aria-label="Shopping Cart">
-              <i class="fas fa-shopping-cart"></i>
+
+            <!-- Login -->
+            <!-- Thymeleaf conditional check for user login status -->
+            <div th:if="${isLoggedIn}">
+              <!-- Show dropdown if user is logged in -->
+              <div class="dropdown">
+                <a href="#" class="mx-3 text-white icon-hover dropdown-toggle" id="loggedInUserMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-user fa-2x"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loggedInUserMenu">
+                  <li><a class="dropdown-item" th:href="@{/myaccount/profile/update}">My Profile</a></li>
+                  <li><a class="dropdown-item" th:href="@{/orders}">View Order History</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Show login icon with modal trigger if user is not logged in -->
+            <div th:unless="${isLoggedIn}">
+              <a href="#" class="mx-3 text-white icon-hover" aria-label="Login" data-bs-toggle="modal" data-bs-target="#loginModal">
+                <i class="fas fa-user fa-2x"></i>
+              </a>
+            </div>
+
+            <!-- Cart -->
+            <a th:href="@{/cart}" class="mx-3 text-white icon-hover" aria-label="Shopping Cart">
+              <i class="fas fa-shopping-cart fa-2x"></i>
             </a>
           </div>
         </div>
       </nav>
     </div>
     <br/>
+
+    <!-- Bootstrap Modal for Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="#" th:action="@{/login}" method="POST">
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+              </div>
+              <button type="submit" class="btn custom-btn w-100">Login</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <div id="main-content" class="container">
       <div style="color: #DC6B19">
