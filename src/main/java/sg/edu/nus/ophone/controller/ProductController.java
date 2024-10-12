@@ -1,5 +1,7 @@
 package sg.edu.nus.ophone.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +14,8 @@ import sg.edu.nus.ophone.service.ProductImplementation;
 import sg.edu.nus.ophone.service.ReviewImplementation;
 
 
+import java.security.Principal;
 import java.util.List;
-
 
 @Controller
 @RequestMapping("/orangestore")
@@ -42,7 +44,10 @@ public class ProductController {
 
     // display the home page and get products for displaying
     @GetMapping("/home")
-    public String getLandingPage(Model model) {
+    public String getLandingPage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("products", pservice.getProduct());
 //        return "landingPage";
         return "landingPage-jm";
