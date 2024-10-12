@@ -1,4 +1,5 @@
 package sg.edu.nus.ophone.config;
+import org.springframework.stereotype.Component;
 import sg.edu.nus.ophone.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,12 +13,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Created on: 10/09/2024
  */
 
+@Component
 public class WebConfig implements WebMvcConfigurer{
 
     @Autowired
     private LoginInterceptor LoginInterceptor;
 
-    public void addInterceptor(InterceptorRegistry Registry) {
-        Registry.addInterceptor(LoginInterceptor).addPathPatterns( "/cart","/order","/order_submitted");
+    @Override
+    public void addInterceptors(InterceptorRegistry Registry) {
+        Registry.addInterceptor(LoginInterceptor).addPathPatterns(
+                "/cart","/orders/**","/order_submitted",
+                "/myaccount/**", "/product/**");
     }
 }
