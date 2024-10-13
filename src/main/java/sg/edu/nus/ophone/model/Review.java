@@ -16,7 +16,7 @@ public class Review {
     private String comment;
 
     private int rating;
-    private String date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -28,10 +28,12 @@ public class Review {
 
     public Review() {}
 
-    public Review(int rating, String comment, String date) {
+    public Review(Product product, User user, int rating, String comment, String date) {
+        this.product = product;
+        this.user = user;
         this.rating = rating;
         this.comment = comment;
-        this.date = date;
+        this.date = LocalDate.parse(date);
     }
 
     public int getId() {
@@ -58,11 +60,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

@@ -270,6 +270,24 @@ header {
     border-bottom: none;
 }
 
+.view-more {
+    text-align: center; /* 居中对齐 */
+    margin-top: 20px; /* 上边距 */
+}
+
+.view-more-button {
+    padding: 10px 20px; /* 内边距 */
+    background-color: #FF7101; /* 按钮背景色 */
+    color: white; /* 按钮文字颜色 */
+    text-decoration: none; /* 去掉下划线 */
+    border-radius: 5px; /* 圆角 */
+    transition: background-color 0.3s; /* 添加过渡效果 */
+}
+
+.view-more-button:hover {
+    background-color: #FFA500; /* 悬停时改变背景色 */
+}
+
 /* menu */
 #menu,
 #menu ul,
@@ -302,6 +320,11 @@ header {
     position: relative;
     margin: 0;
     padding: 0;
+}
+
+#menu > ul > li.login-button {
+    float: right;
+    margin-right: 0;
 }
 
 #menu > ul > li > a {
