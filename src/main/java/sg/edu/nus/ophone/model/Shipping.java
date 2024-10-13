@@ -3,8 +3,6 @@ package sg.edu.nus.ophone.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDate;
 
 //code by Team3.Gao Zijie

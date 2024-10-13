@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.ui.Model;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.repository.ShippingRepository;
 import sg.edu.nus.ophone.model.Shipping;
@@ -23,11 +22,12 @@ public class ShippingService {
         Shipping shipping = new Shipping();
         shipping.setOrder(order);
         shipping.setAddress(address);
-        shipping.setAddress(city);
-        shipping.setAddress(postalCode);
+        shipping.setCity(city);
+        shipping.setPostalCode(postalCode);
         shipping.setShippingStatus("Processing");
         return shipRepo.save(shipping);
     }
+
     @Transactional
     public boolean updateShippingStatus(int orderId, String status) {
         Shipping shipping = shipRepo.findByOrderId(orderId);
