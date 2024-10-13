@@ -24,7 +24,16 @@
 </head>
 
 <body>
-<h2>Shipping Details</h2>
+<!-- topbar -->
+<div id="menu" th:fragment="topbar">
+</div>
+<div th:insert="~{index::logo}"></div>
+
+<!-- co-name -->
+<div class="co-title" th:fragment="co-name">
+    Shipping Details
+</div>
+
 <form action="#" th:action="@{/shipping}" method="post" th:object="${shipping}">
     <table>
         <tbody>

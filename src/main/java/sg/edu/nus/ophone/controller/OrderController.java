@@ -75,15 +75,27 @@ public class OrderController {
      * Created by: LianDa,GaoZijie
      * Created on: 10/09/2024
      */
+
     @GetMapping("/cart")
-    public String viewCart(@RequestParam Long userId, Model model) {
-        
+    public String viewCart(@RequestParam(required = false) Long userId, HttpSession session, Model model) {
+
+        if (userId == null) {
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+            if (loggedInUser != null) {
+                userId = (long) loggedInUser.getId();
+            } else {
+                return "redirect:/login";
+            }
+        }
+
+
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
-            return "cart";  
+            return "cart";
         } else {
+            model.addAttribute("errorMessage", "Cart not found.");
             return "error";
         }
     }
