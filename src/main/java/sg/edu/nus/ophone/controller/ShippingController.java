@@ -57,7 +57,7 @@ public class ShippingController {
             Shipping shippingRecord = shipService.createShipping(order, shipRequest.getAddress(), shipRequest.getCity(), shipRequest.getPostalCode());
             session.setAttribute("order", order);
 
-            return new ResponseEntity<>(shippingRecord, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
 
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
