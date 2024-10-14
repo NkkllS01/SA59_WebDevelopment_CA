@@ -79,12 +79,11 @@ public class OrderController {
      */
     @GetMapping("/cart")
     public String viewCart(@RequestParam Long userId, Model model) {
-        
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
-            return "cart";  
+            return "cart";
         } else {
             return "error";
         }
@@ -154,7 +153,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}/cancel")
-    public String cancelOrder(@PathVariable("id") Long orderId, Model model, HttpSession session) {
+    public String cancelOrder(@PathVariable("id") Long orderId, Model model) {
         model.addAttribute("orderId", orderId);
         Order order = orderService.findByOrderId(orderId);
          if (order == null) {
@@ -193,7 +192,7 @@ public class OrderController {
      @GetMapping("/product/{id}/review")
      public String reviewProduct(@PathVariable("id") long productId,
                                  @RequestParam("orderId") long orderId,
-                                 Model model, HttpSession session) {
+                                 Model model) {
         Product product = productService.getProductById(productId);
         Order order = orderService.findByOrderId(orderId);
         Shipping shipping = order.getShipping();
@@ -220,16 +219,11 @@ public class OrderController {
     @PostMapping("/product/{id}/review/create")
     public String createProductReview(@PathVariable("id") Long productId,
                                       @RequestParam("orderId") Long orderId,
-                                      @ModelAttribute Review review,
-                                      Model model, HttpSession session) {
+                                      @ModelAttribute Review review) {
 //        int userId = (int) session.getAttribute("userId");
 //        User user = userService.findUserByUserId(userId);
         User user = userService.findByUserId(1);
         Product product = productService.getProductById(productId);
-
-        Order order = orderService.findByOrderId(orderId);
-        Shipping shipping = order.getShipping();
-        String shippingStatus = shipping.getShippingStatus();
 
         review.setProduct(product);
         review.setUser(user);
