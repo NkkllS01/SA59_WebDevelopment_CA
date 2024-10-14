@@ -1,5 +1,7 @@
 package sg.edu.nus.ophone.controller;
 
+import com.paypal.api.payments.Payment;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -9,37 +11,58 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
-import sg.edu.nus.ophone.model.Order;
-import sg.edu.nus.ophone.model.OrderDetails;
-import sg.edu.nus.ophone.model.PaymentRecord;
-import sg.edu.nus.ophone.model.Shipping;
+import sg.edu.nus.ophone.interfacemethods.ProductInterface;
+import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
+import sg.edu.nus.ophone.interfacemethods.UserService;
+import sg.edu.nus.ophone.model.*;
 import sg.edu.nus.ophone.service.OrderImplementation;
+import sg.edu.nus.ophone.service.ProductImplementation;
+import sg.edu.nus.ophone.service.ReviewImplementation;
+import sg.edu.nus.ophone.service.UserServiceImp;
 
-import sg.edu.nus.ophone.interfacemethods.OrderInterface;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import sg.edu.nus.ophone.model.PaymentRecord;
+
 
 @Controller
 public class OrderController {
     @Autowired
     private OrderInterface orderService;
-    
-
-    
-
     @Autowired
     public void setOrderService(OrderImplementation orderImp) {
         this.orderService = orderImp;
     }
 
+    @Autowired
+    private ProductInterface productService;
+    @Autowired
+    public void setProductService(ProductImplementation productImp) {
+        this.productService = productImp;
+    }
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    public void setUserService(UserServiceImp userImp) {
+        this.userService = userImp;
+    }
+
+    @Autowired
+    private ReviewInterface reviewService;
+    @Autowired
+    public void setReviewService(ReviewImplementation reviewImp) {
+        this.reviewService = reviewImp;
+    }
+
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
     public String displayOrders(Model model, HttpSession session, Locale locale) {
-//        int username = (int) session.getAttribute("username");
-//        List<Order> orders = orderService.findByUserId(username);
-        List<Order> orders = orderService.findByUserId(1);
+        String username = (String) session.getAttribute("username");
+        int userId = userService.findByName(username).getId();
+        List<Order> orders = orderService.findByUserId(userId);
+//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
                         .toList();
@@ -54,15 +77,27 @@ public class OrderController {
      * Created by: LianDa,GaoZijie
      * Created on: 10/09/2024
      */
+
     @GetMapping("/cart")
-    public String viewCart(@RequestParam Long userId, Model model) {
-        
+    public String viewCart(@RequestParam(required = false) Long userId, HttpSession session, Model model) {
+
+        if (userId == null) {
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+            if (loggedInUser != null) {
+                userId = (long) loggedInUser.getId();
+            } else {
+                return "redirect:/login";
+            }
+        }
+
+
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
-            return "cart";  
+            return "cart";
         } else {
+            model.addAttribute("errorMessage", "Cart not found.");
             return "error";
         }
     }
@@ -88,11 +123,10 @@ public class OrderController {
     }
     @PostMapping("/cart/submit")
     @Transactional
-    public String submitCart(@RequestParam Long userId, Model model,HttpSession session) {
+    public String submitCart(@RequestParam Long userId, Model model) {
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
-        	orderService.createOrder(cart);
-        	session.setAttribute("submittedOrder", cart);
+            orderService.createOrder(cart);
             return "order_submitted";  
         } else {
             return "error"; 
@@ -106,14 +140,14 @@ public class OrderController {
         
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
-            orderService.updateQuantity(cart.getUser().getId(), productId, quantity);
+            orderService.updateQuantity(cart.getId(), productId, quantity);
         }
         return "redirect:/orders/cart?userId=" + userId;  
     }
     
 
     @GetMapping("/orders/{id}")
-    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, Locale locale) {
+    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, HttpServletResponse response) {
         Order order = orderService.findByOrderId(orderId);
 
         // get and add order details to model
@@ -160,18 +194,64 @@ public class OrderController {
              model.addAttribute("orderDetails", orderDetails);
              return "order-cancel";
          } else {
+             model.addAttribute("errorTitle", "Unsuccessful Order Cancellation");
              model.addAttribute("errorMessage",
                      "Your order cannot be cancelled as it has already been " +
                              shippingStatus.toLowerCase() + ".");
-             return "order-cancel-fail";
+             return "errorMsg";
          }
      }
 
      @GetMapping("/product/{id}/review")
-    public String reviewProduct(@PathVariable("id") Long productId, Model model, HttpSession session) {
-        return "product-review";
+     public String reviewProduct(@PathVariable("id") long productId,
+                                 @RequestParam("orderId") long orderId,
+                                 Model model, HttpSession session) {
+        Product product = productService.getProductById(productId);
+        Order order = orderService.findByOrderId(orderId);
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
+
+         if (shippingStatus.equalsIgnoreCase("Delivered")) {
+             model.addAttribute("order", order);
+             model.addAttribute("product", product);
+             model.addAttribute("review", new Review());
+             return "product-review";
+         } else if (shippingStatus.equalsIgnoreCase("Cancelled")) {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created as the order has been cancelled.");
+             return "errorMsg";
+         } else {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created yet as the order has not been delivered.");
+             return "errorMsg";
+         }
      }
 
+    @PostMapping("/product/{id}/review/create")
+    public String createProductReview(@PathVariable("id") Long productId,
+                                      @RequestParam("orderId") Long orderId,
+                                      @ModelAttribute Review review,
+                                      Model model, HttpSession session) {
+//        int userId = (int) session.getAttribute("userId");
+//        User user = userService.findUserByUserId(userId);
+        User user = userService.findByUserId(1);
+        Product product = productService.getProductById(productId);
+
+        Order order = orderService.findByOrderId(orderId);
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
+
+        review.setProduct(product);
+        review.setUser(user);
+        review.setDate(LocalDate.now());
+
+        reviewService.createNewReview(review);
+        return "product-review-success";
+    }
+
 }
+
 
 

@@ -2,42 +2,65 @@ package sg.edu.nus.ophone.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.Shipping;
+import sg.edu.nus.ophone.model.ShipRequest;
+import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.service.ShippingService;
 
 //Team3.Kuo Chi
-@Controller
+@CrossOrigin
+@RestController
+@RequestMapping("/api")
 public class ShippingController {
     @Autowired
     private ShippingService shipService;
 
+    @GetMapping("/userShipping")
+    public ResponseEntity<User> retrieveUserData (HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
     @PostMapping("/shipping")
-    public String shipping(@Valid HttpSession session, @RequestParam String address, @RequestParam String city, @RequestParam String postalCode, BindingResult bindingResult, Model model) {
+    public ResponseEntity<Shipping> createShipping(HttpSession session,
+                                                   //When a POST request is submitted to the shipping endpoint, the JSON body is automatically mapped to an instance of the ShippingRequest class
+                                                   @RequestBody @Valid ShipRequest shipRequest,
+                                                   BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
-            return "redirect:/shipping";
-        } else {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+        try {
             Order order = (Order) session.getAttribute("order");
-
             if (order == null) {
-                return "redirect:/cart";
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            Shipping shippingRecord = shipService.createShipping(order, address, city, postalCode);
+            Shipping shippingRecord = shipService.createShipping(order, shipRequest.getAddress(), shipRequest.getCity(), shipRequest.getPostalCode());
             session.setAttribute("order", order);
-            model.addAttribute("shippingRecord", shippingRecord);
 
-            return  "redirect:/payment";
-            }
+            return new ResponseEntity<>(shippingRecord, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 }
