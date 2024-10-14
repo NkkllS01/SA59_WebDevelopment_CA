@@ -79,28 +79,34 @@ public class OrderController {
      */
 
     @GetMapping("/cart")
-    public String viewCart(@RequestParam(required = false) Long userId, HttpSession session, Model model) {
+    public String viewCart(HttpSession session, Model model) {
 
-        if (userId == null) {
-            User loggedInUser = (User) session.getAttribute("loggedInUser");
-            if (loggedInUser != null) {
-                userId = (long) loggedInUser.getId();
-            } else {
-                return "redirect:/login";
-            }
+       
+        String username = (String) session.getAttribute("username");
+        System.out.println("Session Username: " + username);
+        if (username == null) {
+            return "redirect:/login";
         }
+        User loggedInUser = userService.findByName(username);
 
-
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+      
+        Long userId = (long)loggedInUser.getId();
         Order cart = orderService.getCartByUserId(userId);
-        if (cart != null) {
+
+        if (cart != null && cart.getOrderDetails() != null && !cart.getOrderDetails().isEmpty()) {
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
-            return "cart";
         } else {
-            model.addAttribute("errorMessage", "Cart not found.");
-            return "error";
+            model.addAttribute("cart", null); 
         }
+        
+       
+        return "cart";  
     }
+    
     @PostMapping("/cart/remove/{productId}")
     public String removeCartItem(@RequestParam Long orderId, @PathVariable Long productId, Model model) {
         try {

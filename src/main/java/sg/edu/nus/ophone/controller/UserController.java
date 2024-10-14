@@ -33,8 +33,10 @@ public class UserController {
     public String login(@RequestParam String username,
     		@RequestParam String password,Model model, HttpSession session) {
         boolean loginsuccess=u.login(username, password);
+        System.out.println(loginsuccess);
         if(loginsuccess) {
             session.setAttribute("username", username);
+            System.out.println("Login successful. Username stored in session: " + username);
             return "redirect:/orangestore/home";
         }else {
             model.addAttribute("error","Invalid username or password.");
