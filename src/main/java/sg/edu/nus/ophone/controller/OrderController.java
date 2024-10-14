@@ -1,6 +1,7 @@
 package sg.edu.nus.ophone.controller;
 
 import com.paypal.api.payments.Payment;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -58,9 +59,10 @@ public class OrderController {
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
     public String displayOrders(Model model, HttpSession session, Locale locale) {
-//        int username = (int) session.getAttribute("username");
-//        List<Order> orders = orderService.findByUserId(username);
-        List<Order> orders = orderService.findByUserId(1);
+        String username = (String) session.getAttribute("username");
+        int userId = userService.findByName(username).getId();
+        List<Order> orders = orderService.findByUserId(userId);
+//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
                         .toList();
@@ -133,7 +135,7 @@ public class OrderController {
     
 
     @GetMapping("/orders/{id}")
-    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, Locale locale) {
+    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, HttpServletResponse response) {
         Order order = orderService.findByOrderId(orderId);
 
         // get and add order details to model
@@ -202,6 +204,11 @@ public class OrderController {
              model.addAttribute("product", product);
              model.addAttribute("review", new Review());
              return "product-review";
+         } else if (shippingStatus.equalsIgnoreCase("Cancelled")) {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created as the order has been cancelled.");
+             return "errorMsg";
          } else {
              model.addAttribute("errorTitle", "Product Review Unsuccessful");
              model.addAttribute("errorMessage",

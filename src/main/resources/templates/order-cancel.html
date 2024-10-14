@@ -14,11 +14,11 @@
 </head>
 <body>
 <div th:insert="~{landingPage-jm::topbar}"></div>
-<div class="container">
+<div class="container" id="main-content">
   <br/>
-  <h1>Your order has been cancelled successfully.</h1> <br/>
+  <h2>Your order has been cancelled successfully.</h2> <br/>
   <h2>Order Details</h2>
-  <div><a href="#" onclick="history.go(-1); return false;" class="btn custom-btn btn-sm mb-3 float-right">Back</a></div>
+  <div class="d-flex justify-content-end mb-3"><a th:href="@{/orders/{id}(id=${order.id})}" class="btn custom-btn btn-sm">Back</a></div>
   <br/>
   <table class = "table table-striped table-responsive-md">
     <thead>

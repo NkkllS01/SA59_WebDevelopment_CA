@@ -52,9 +52,13 @@ public class TestDataCreation {
 
         // Create Product Data
         Product oPhone = new Product("Orange oPhone 24", "oPhone 24", 1500.00, 40, orange);
+        oPhone.setImagePathName("/images/iQOO 12.jpg");
         Product pPhone = new Product("Pineapple pPhone Pro", "pPhone Pro", 1900.00, 30, pineapple);
+        pPhone.setImagePathName("/images/vivo X100 Ultra.jpg");
         Product kPhone = new Product("Kiwi kPhone S3", "kPhone S3", 2024, 99, kiwi);
+        kPhone.setImagePathName("/images/Redmi K70.jpg");
         Product kPhone2 = new Product("Kiwi kPhone S1 Max", "kPhone S1 Max", 1999, 56, kiwi);
+        kPhone2.setImagePathName("/images/HUAWEI Pocket2.jpg");
         Product hwMate = new Product("HUAWEI Mate60", "6.7\" display, Weight: approx. 206g (w/ battery)",
                 1600, 90, huawei);
         hwMate.setImagePathName("/images/HUAWEI Mate60.jpg");
@@ -65,11 +69,11 @@ public class TestDataCreation {
         Product xmFold = new Product("Xiaomi MIX Fold 4",
                 "Six Leica-branded cameras, a 5,100mAh battery and the latest Qualcomm chip.",
                 1582.50, 34, xiaomi);
-        xmFold.setImagePathName("/images/Xiaomi MIX Fold 4.jpg");
+        xmFold.setImagePathName("/images/Xiaomi MIX Fold4.jpg");
         Product xmUltra = new Product("Xiaomi MIX Fold4",
                 "Qualcomm Snapdragon 8 Gen 3, powered by modern LPRRD5X RAM and the latest UFS 4.0 storage technologies.",
                 1699, 28, xiaomi);
-        xmUltra.setImagePathName("/Xiaomi 14Ultra.jpg");
+        xmUltra.setImagePathName("/images/Xiaomi 14Ultra.jpg");
         productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2, hwMate, hwPura, xmFold, xmUltra));
 
         // Create Order Data
@@ -126,7 +130,7 @@ public class TestDataCreation {
         Shipping ship1 = new Shipping(order1, "20 Holland Village Road",
                 "Singapore", "233020", "Completed");
         Shipping ship2 = new Shipping(order2, "3 Robinson Ring",
-                "Singapore", "342503", "Completed");
+                "Singapore", "342503", "Processing");
         Shipping ship3 = new Shipping(order3, "25 Heng Mui Keng Terrace",
                 "Singapore", "119617", "Processing");
         Shipping ship4 = new Shipping(order4, "21 Lower Kent Ridge Rd",
