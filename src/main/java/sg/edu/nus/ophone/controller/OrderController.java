@@ -1,6 +1,7 @@
 package sg.edu.nus.ophone.controller;
 
 import com.paypal.api.payments.Payment;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -58,9 +59,10 @@ public class OrderController {
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
     public String displayOrders(Model model, HttpSession session, Locale locale) {
-//        int username = (int) session.getAttribute("username");
-//        List<Order> orders = orderService.findByUserId(username);
-        List<Order> orders = orderService.findByUserId(1);
+        String username = (String) session.getAttribute("username");
+        int userId = userService.findByName(username).getId();
+        List<Order> orders = orderService.findByUserId(userId);
+//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
                         .toList();
@@ -145,7 +147,7 @@ public class OrderController {
     
 
     @GetMapping("/orders/{id}")
-    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, Locale locale) {
+    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, HttpServletResponse response) {
         Order order = orderService.findByOrderId(orderId);
 
         // get and add order details to model
@@ -192,16 +194,39 @@ public class OrderController {
              model.addAttribute("orderDetails", orderDetails);
              return "order-cancel";
          } else {
+             model.addAttribute("errorTitle", "Unsuccessful Order Cancellation");
              model.addAttribute("errorMessage",
                      "Your order cannot be cancelled as it has already been " +
                              shippingStatus.toLowerCase() + ".");
-             return "order-cancel-fail";
+             return "errorMsg";
          }
      }
 
      @GetMapping("/product/{id}/review")
-     public String reviewProduct(@PathVariable("id") Long productId, Model model, HttpSession session) {
-        return "product-review";
+     public String reviewProduct(@PathVariable("id") long productId,
+                                 @RequestParam("orderId") long orderId,
+                                 Model model, HttpSession session) {
+        Product product = productService.getProductById(productId);
+        Order order = orderService.findByOrderId(orderId);
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
+
+         if (shippingStatus.equalsIgnoreCase("Delivered")) {
+             model.addAttribute("order", order);
+             model.addAttribute("product", product);
+             model.addAttribute("review", new Review());
+             return "product-review";
+         } else if (shippingStatus.equalsIgnoreCase("Cancelled")) {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created as the order has been cancelled.");
+             return "errorMsg";
+         } else {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created yet as the order has not been delivered.");
+             return "errorMsg";
+         }
      }
 
     @PostMapping("/product/{id}/review/create")
