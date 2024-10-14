@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Edit Product</title>
+  <title>Delete Product</title>
   <style>
     /* 顶部导航栏样式 */
     .navbar {
@@ -73,9 +73,55 @@
       color: white;
       font-size: 20px;
     }
+
+    /* 表单样式 */
+    table {
+      width: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    a {
+      text-decoration: none;
+      color: blue;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .action-buttons {
+      text-align: center;
+    }
+
+    input[type="submit"], input[type="reset"] {
+      padding: 5px 15px;
+      border: none;
+      background-color: #FF7101;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover, input[type="reset"]:hover {
+      background-color: #ff8a33;
+    }
+
   </style>
 </head>
 <body>
+
 <!-- 导航栏 -->
 <div class="navbar">
   <div class="logo-container">
@@ -96,50 +142,33 @@
   </div>
 </div>
 
-<h2 style="text-align: center;">Edit Product</h2>
+<h2 style="text-align: center;">Delete Product</h2>
 
-<form action="#" th:object="${product}" th:action="@{/products/update}" method="post">
-  <table style="width:50%; margin-left: auto; margin-right: auto;">
+<form th:object="${product}" th:action="@{/products/deleteConfirm}" method="post">
+  <table>
     <tr>
-      <th><input type="hidden" th:field="*{id}">Name:</th>
-      <td><input type="text" th:field="*{name}"></td>
+      <th>Name</th>
+      <td><input type="text" th:field="*{name}" readonly></td>
     </tr>
     <tr>
-      <th>Description:</th>
-      <td><input type="text" th:field="*{description}"></td>
+      <th>Description</th>
+      <td><input type="text" th:field="*{description}" readonly></td>
     </tr>
     <tr>
-      <th>Unit Price:</th>
-      <td><input type="text" th:field="*{unitPrice}"></td>
+      <th>Unit Price</th>
+      <td><input type="text" th:field="*{unitPrice}" readonly></td>
     </tr>
     <tr>
-      <th>Stock:</th>
-      <td><input type="text" th:field="*{stock}"></td>
+      <th>Stock</th>
+      <td><input type="text" th:field="*{stock}" readonly></td>
     </tr>
-    <tr>
-      <td colspan="2" style="text-align: center;">
-        <input type="submit" value="Save" /> &nbsp; &nbsp;
-        <input type="reset" value="Reset" />
-      </td>
-    <tr>
-    <td colspan="2" style="text-align: center;">
-      <form th:action="@{/products/list}" method="get">
-        <button type="submit">Back</button>
-      </form>
-    </td>
-  </tr>
   </table>
+  <div class="action-buttons">
+    <input type="submit" value="Confirm Deletion" />
+    <a th:href="@{/products/list}" style="margin-left: 20px;">Back</a>
+  </div>
 </form>
-
-<table style="width:50%; margin-left: auto; margin-right: auto; border: none;">
-  <tr>
-    <td style="text-align: center; font-weight: bold;">
-
-    </td>
-  </tr>
-</table>
 
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
