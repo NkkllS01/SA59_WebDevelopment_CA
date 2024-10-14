@@ -77,14 +77,27 @@ public class OrderController {
      * Created by: LianDa,GaoZijie
      * Created on: 10/09/2024
      */
+
     @GetMapping("/cart")
-    public String viewCart(@RequestParam Long userId, Model model) {
+    public String viewCart(@RequestParam(required = false) Long userId, HttpSession session, Model model) {
+
+        if (userId == null) {
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+            if (loggedInUser != null) {
+                userId = (long) loggedInUser.getId();
+            } else {
+                return "redirect:/login";
+            }
+        }
+
+
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
             return "cart";
         } else {
+            model.addAttribute("errorMessage", "Cart not found.");
             return "error";
         }
     }
@@ -153,7 +166,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}/cancel")
-    public String cancelOrder(@PathVariable("id") Long orderId, Model model) {
+    public String cancelOrder(@PathVariable("id") Long orderId, Model model, HttpSession session) {
         model.addAttribute("orderId", orderId);
         Order order = orderService.findByOrderId(orderId);
          if (order == null) {
@@ -192,7 +205,7 @@ public class OrderController {
      @GetMapping("/product/{id}/review")
      public String reviewProduct(@PathVariable("id") long productId,
                                  @RequestParam("orderId") long orderId,
-                                 Model model) {
+                                 Model model, HttpSession session) {
         Product product = productService.getProductById(productId);
         Order order = orderService.findByOrderId(orderId);
         Shipping shipping = order.getShipping();
@@ -219,11 +232,16 @@ public class OrderController {
     @PostMapping("/product/{id}/review/create")
     public String createProductReview(@PathVariable("id") Long productId,
                                       @RequestParam("orderId") Long orderId,
-                                      @ModelAttribute Review review) {
+                                      @ModelAttribute Review review,
+                                      Model model, HttpSession session) {
 //        int userId = (int) session.getAttribute("userId");
 //        User user = userService.findUserByUserId(userId);
         User user = userService.findByUserId(1);
         Product product = productService.getProductById(productId);
+
+        Order order = orderService.findByOrderId(orderId);
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
 
         review.setProduct(product);
         review.setUser(user);
