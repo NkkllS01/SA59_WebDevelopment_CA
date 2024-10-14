@@ -31,13 +31,18 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
-    		@RequestParam String password,Model model, HttpSession session) {
+    		@RequestParam String password,@RequestParam String userType,Model model, HttpSession session) {
         boolean loginsuccess=u.login(username, password);
-        System.out.println(loginsuccess);
         if(loginsuccess) {
             session.setAttribute("username", username);
-            System.out.println("Login successful. Username stored in session: " + username);
-            return "redirect:/orangestore/home";
+            session.setAttribute("userType", userType);
+            if(userType.equalsIgnoreCase("customer")) {
+                return "redirect:/orangestore/home";
+            }else if(userType.equalsIgnoreCase("staff")){
+            	return"redirect:/prodect-review";
+            }else {
+            	return "login";
+            }
         }else {
             model.addAttribute("error","Invalid username or password.");
             return "login";
@@ -57,17 +62,31 @@ public class UserController {
 	}
 	
 	@PostMapping("/register")
-	public String register(@RequestParam String username,@RequestParam String password,@RequestParam String email,@RequestParam String address,Model model) {
+	public String register(
+			@RequestParam String username,
+			@RequestParam String password,
+			 @RequestParam String confirmPassword,
+			@RequestParam String email,
+			@RequestParam String address,
+			@RequestParam String city,
+			@RequestParam String postalCode,
+			Model model) {
 		if(u.usernameExists(username)) {
 			model.addAttribute("error","Username already exists");
 			return "register";
-		}
+		} 
+		if (!password.equals(confirmPassword)) {
+		        model.addAttribute("error", "Passwords do not match");
+		        return "register";
+		  }
 		User newuser =new User();
 		newuser.setName(username);
 		newuser.setPassword(password);
 		newuser.setEmail(email);
 		newuser.setUserType("customer");
 		newuser.setAddress(address);
+		newuser.setCity(city);
+		newuser.setPostalCode(postalCode);
 		u.saveUser(newuser);
 		return "redirect:/login";
 	}
