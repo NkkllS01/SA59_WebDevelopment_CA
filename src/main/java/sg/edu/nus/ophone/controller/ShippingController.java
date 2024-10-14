@@ -12,14 +12,31 @@ import jakarta.validation.Valid;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.Shipping;
 import sg.edu.nus.ophone.model.ShipRequest;
+import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.service.ShippingService;
 
 //Team3.Kuo Chi
 @CrossOrigin
 @RestController
+@RequestMapping("/api")
 public class ShippingController {
     @Autowired
     private ShippingService shipService;
+
+    @GetMapping("/userShipping")
+    public ResponseEntity<User> retrieveUserData (HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
 
     @PostMapping("/shipping")
     public ResponseEntity<Shipping> createShipping(HttpSession session,
