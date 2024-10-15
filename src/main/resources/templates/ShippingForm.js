@@ -5,16 +5,8 @@ import axios from 'axios';
 const REST_API_USER_URL = "http://localhost:8080/api/userShipping";
 const REST_API_SHIPPING_URL = "http://localhost:8080/api/shipping";
 
-type User = {
-name: String;
-email: String;
-address: String;
-city: String;
-postalCode: String;
-};
-
 export default function CreateShipping() {
-    const [shippingData, setShippingData] = useState<User>({
+    const [shippingData, setShippingData] = useState({
             name: "",
             email: "",
             address: "",
@@ -33,7 +25,7 @@ export default function CreateShipping() {
 
     function retrieveUserData() {
         axios
-            .get<User>(REST_API_USER_URL)
+            .get(REST_API_USER_URL)
             .then(response => {
                 setShippingData(response.data)
                 console.log(response.data);
