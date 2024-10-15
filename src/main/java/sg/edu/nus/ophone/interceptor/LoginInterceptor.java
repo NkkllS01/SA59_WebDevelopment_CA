@@ -32,9 +32,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         HttpSession session=request.getSession(false);
         String username = (session != null) ? (String) session.getAttribute("username") : null;
-
+        
         // Check if user is not logged in
         if (username == null) {
+        	System.out.println("username is null");
             // Check if the request is already for the home page
             if (request.getRequestURI().equals("/orangestore/home")) {
                 return false;

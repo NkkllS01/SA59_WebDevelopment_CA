@@ -96,9 +96,6 @@ public class OrderImplementation implements OrderInterface {
 
     @Override
     public void createOrder(Order order) {
-        if("cart".equals(order.getOrderStatus())) {
-            order.setOrderStatus("order");
-        }
         orderRepo.save(order);
     }
 	
@@ -124,7 +121,7 @@ public class OrderImplementation implements OrderInterface {
     public void submitOrder(Long userId) {
         Order cart = orderRepo.findByUserIdAndStatus(userId, "cart");
         if (cart != null) {
-            cart.setOrderStatus("submitted");
+
             orderRepo.save(cart);
         } else {
             throw new IllegalArgumentException("not found cart");
