@@ -97,8 +97,12 @@ public class OrderController {
         Order cart = orderService.getCartByUserId(userId);
 
         if (cart != null && cart.getOrderDetails() != null && !cart.getOrderDetails().isEmpty()) {
+        	double totalPrice = cart.getOrderDetails().stream()
+                    .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                    .sum();
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
+            model.addAttribute("totalPrice",totalPrice);
         } else {
             model.addAttribute("cart", null); 
         }
@@ -155,6 +159,10 @@ public class OrderController {
                     model.addAttribute("error", "The quantity exceeds available stock. Only " + availableStock + " items are in stock.");
                     model.addAttribute("cart", cart);
                     model.addAttribute("orderDetails", cart.getOrderDetails());
+                    double totalPrice = cart.getOrderDetails().stream()
+                            .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                            .sum();
+                    model.addAttribute("totalPrice", totalPrice);
                     return "cart";  
                 }
                 orderService.updateQuantity((long)cart.getUser().getId(), productId, quantity);
@@ -162,6 +170,10 @@ public class OrderController {
                 model.addAttribute("error", "Product not found.");
                 model.addAttribute("cart", cart);
                 model.addAttribute("orderDetails", cart.getOrderDetails());
+                double totalPrice = cart.getOrderDetails().stream()
+                        .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                        .sum();
+                model.addAttribute("totalPrice", totalPrice);
                 return "cart"; 
             }
         }
@@ -170,7 +182,10 @@ public class OrderController {
         cart = orderService.getCartByUserId(userId);
         model.addAttribute("cart", cart);
         model.addAttribute("orderDetails", cart.getOrderDetails());
-        
+        double totalPrice = cart.getOrderDetails().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                .sum();
+        model.addAttribute("totalPrice", totalPrice);
         return "cart"; 
     }
     
