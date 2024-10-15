@@ -7,11 +7,12 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sg.edu.nus.ophone.model.Order;
 import sg.edu.nus.ophone.model.PaymentRecord;
+import sg.edu.nus.ophone.model.User;
+import sg.edu.nus.ophone.service.OrderImplementation;
 import sg.edu.nus.ophone.service.PaymentService;
 
 
@@ -21,6 +22,7 @@ public class PaypalController {
     @Autowired
     private PaypalService paypalService;
     private PaymentService paymentService;
+    private OrderImplementation orderImplementation;
 
     public static final String SUCCESS_URL = "payment/success";
     public static final String CANCEL_URL = "payment/cancel";
@@ -28,7 +30,14 @@ public class PaypalController {
     @PostMapping("/payment")
     public String payment(HttpSession session) {
         try {
-            Order order = (Order) session.getAttribute("order");
+            User user = (User) session.getAttribute("user");
+
+            if (user == null) {
+                return "redirect:/cart";
+            }
+
+            long userId = user.getId();
+            Order order = (Order) orderImplementation.findByUserId(userId);
 
             if (order == null) {
                 return "redirect:/cart";

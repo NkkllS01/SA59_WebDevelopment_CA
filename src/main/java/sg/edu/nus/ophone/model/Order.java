@@ -27,7 +27,7 @@ public class Order {
 //    @JoinColumn(name = "status", referencedColumnName = "id")
     private String orderStatus;
 
-    @OneToOne
+    @OneToOne(mappedBy = "order")
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private PaymentRecord paymentRecord;
 
