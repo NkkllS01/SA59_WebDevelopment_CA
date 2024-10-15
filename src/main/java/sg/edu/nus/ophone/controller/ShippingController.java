@@ -14,6 +14,7 @@ import sg.edu.nus.ophone.model.Shipping;
 import sg.edu.nus.ophone.model.ShipRequest;
 import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.service.ShippingService;
+import sg.edu.nus.ophone.service.UserServiceImp;
 
 //Team3.Kuo Chi
 @CrossOrigin
@@ -22,11 +23,13 @@ import sg.edu.nus.ophone.service.ShippingService;
 public class ShippingController {
     @Autowired
     private ShippingService shipService;
+    private UserServiceImp userServiceImp;
 
     @GetMapping("/userShipping")
     public ResponseEntity<User> retrieveUserData (HttpSession session) {
         try {
-            User user = (User) session.getAttribute("user");
+            String username = (String) session.getAttribute("username");
+            User user = userServiceImp.findByName(username);
             if (user == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
