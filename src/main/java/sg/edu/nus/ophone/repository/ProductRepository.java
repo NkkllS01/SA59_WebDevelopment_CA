@@ -12,14 +12,12 @@ import java.util.List;
 //code by Team3.Ng Jiamin
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
-    @Query("select p from Product p where p.name like %:keyword%")
-    List<Product> searchProductByKey(@Param("keyword") String keyword);
+    @Query("Select p from Product p where lower(p.name) like lower(CONCAT('%',:keyword,'%')) " +
+            "or lower(p.brand.name) like lower(CONCAT('%',:keyword,'%'))")
+    public List<Product> searchProductByKey(@Param("keyword") String keyword);
 
     @Query("select p from Product p where p.id = :id")
     Product findProductById(@Param("id") long id);
-
-    /*@Query("Select p from Product p where p.name like CONCAT('%',:keyword,'%') ")
-    public List<Product> searchProductByKey(@Param("keyword") String keyword);*/
 
     @Query("Select p from Product p")
     public List<Product> getProduct();

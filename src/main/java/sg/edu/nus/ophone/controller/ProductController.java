@@ -58,7 +58,7 @@ public class ProductController {
     }
 
     // display all products searched by name
-    @PostMapping("/all/products/searching")
+    @GetMapping("/all/products/searching")
     public String search(@RequestParam("keyword") String keyword, Model model) {
         List<Product> products = pservice.searchProductByKey(keyword);
         if (products.isEmpty()) {
