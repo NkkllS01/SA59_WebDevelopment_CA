@@ -79,70 +79,114 @@ public class OrderController {
      */
 
     @GetMapping("/cart")
-    public String viewCart(@RequestParam(required = false) Long userId, HttpSession session, Model model) {
+    public String viewCart(HttpSession session, Model model) {
 
-        if (userId == null) {
-            User loggedInUser = (User) session.getAttribute("loggedInUser");
-            if (loggedInUser != null) {
-                userId = (long) loggedInUser.getId();
-            } else {
-                return "redirect:/login";
-            }
+       
+        String username = (String) session.getAttribute("username");
+        System.out.println("Session Username: " + username);
+        if (username == null) {
+            return "redirect:/login";
         }
+        User loggedInUser = userService.findByName(username);
 
-
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+      
+        Long userId = (long)loggedInUser.getId();
         Order cart = orderService.getCartByUserId(userId);
-        if (cart != null) {
+
+        if (cart != null && cart.getOrderDetails() != null && !cart.getOrderDetails().isEmpty()) {
+        	double totalPrice = cart.getOrderDetails().stream()
+                    .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                    .sum();
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
-            return "cart";
+            model.addAttribute("totalPrice",totalPrice);
         } else {
-            model.addAttribute("errorMessage", "Cart not found.");
-            return "error";
+            model.addAttribute("cart", null); 
         }
+        
+       
+        return "cart";  
     }
+    
     @PostMapping("/cart/remove/{productId}")
     public String removeCartItem(@RequestParam Long orderId, @PathVariable Long productId, Model model) {
         try {
             Order cart = orderService.findByOrderId(orderId);
-            if (cart == null) {
-                model.addAttribute("errorMessage", "Order not found.");
-                return "error";  
-            }
             boolean isRemoved = orderService.removeOrderDetail(orderId, productId);
             if (!isRemoved) {
                 model.addAttribute("errorMessage", "Order detail could not be removed.");
-                return "error";  
+                return "cart";  
             }
-            return "redirect:/orders/cart?userId=" + cart.getUser().getId();
-            
+            return "redirect:/cart";
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Something went wrong. Please try again.");
-            return "error";  
+            model.addAttribute("error", "remove unsucessfully");
+            return "cart";  
         }
     }
+    
+    
     @PostMapping("/cart/submit")
     @Transactional
     public String submitCart(@RequestParam Long userId, Model model) {
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
-            return "order_submitted";  
+            return "redirect:/shipping";  
         } else {
-            return "error"; 
+        	model.addAttribute("error","submit unsuccessfully");
+            return "cart"; 
         }
     }
-    @PostMapping("/cart/updateQuantity/{productId}")
+    
+    
+    
+ @PostMapping("/cart/updateQuantity/{productId}")
     public String updateCartItemQuantity(
             @RequestParam Long userId, 
             @PathVariable Long productId, 
-            @RequestParam Integer quantity) {
-        
+            @RequestParam Integer quantity,
+            Model model) {
+
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
-            orderService.updateQuantity(cart.getId(), productId, quantity);
+            Product product = productService.getProductById(productId);
+            if (product != null) {
+                int availableStock = product.getStock(); 
+                if (quantity > availableStock) {
+                    model.addAttribute("error", "The quantity exceeds available stock. Only " + availableStock + " items are in stock.");
+                    model.addAttribute("cart", cart);
+                    model.addAttribute("orderDetails", cart.getOrderDetails());
+                    double totalPrice = cart.getOrderDetails().stream()
+                            .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                            .sum();
+                    model.addAttribute("totalPrice", totalPrice);
+                    return "cart";  
+                }
+                orderService.updateQuantity((long)cart.getUser().getId(), productId, quantity);
+            } else {
+                model.addAttribute("error", "Product not found.");
+                model.addAttribute("cart", cart);
+                model.addAttribute("orderDetails", cart.getOrderDetails());
+                double totalPrice = cart.getOrderDetails().stream()
+                        .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                        .sum();
+                model.addAttribute("totalPrice", totalPrice);
+                return "cart"; 
+            }
         }
-        return "redirect:/orders/cart?userId=" + userId;  
+        
+        
+        cart = orderService.getCartByUserId(userId);
+        model.addAttribute("cart", cart);
+        model.addAttribute("orderDetails", cart.getOrderDetails());
+        double totalPrice = cart.getOrderDetails().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                .sum();
+        model.addAttribute("totalPrice", totalPrice);
+        return "cart"; 
     }
     
 

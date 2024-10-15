@@ -31,9 +31,6 @@ public class User {
   @OneToMany(mappedBy = "user")
   private List<Review> reviews;
 
-  @OneToOne(mappedBy = "user")
-  private Cart cart;
-
   public User() {
   }
 
@@ -126,14 +123,5 @@ public class User {
   public void setReviews(List<Review> reviews) {
     this.reviews = reviews;
   }
-
-  public Cart getCart() {
-    return cart;
-  }
-
-  public void setCart(Cart cart) {
-    this.cart = cart;
-  }
-
 
 }

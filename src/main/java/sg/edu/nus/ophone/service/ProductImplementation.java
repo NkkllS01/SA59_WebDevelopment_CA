@@ -14,7 +14,17 @@ import java.util.List;
 public class ProductImplementation implements ProductInterface {
     @Autowired
     ProductRepository prepo;
+    
 
+    @Transactional
+    public void saveProduct(Product product) {
+    	prepo.save(product);
+    }
+    
+    @Transactional
+    public List<Product> findAllProducts() {
+        return prepo.findAll();
+    }
     @Override
     public Product getProductById(Long productId) {
         return prepo.findProductById(productId);

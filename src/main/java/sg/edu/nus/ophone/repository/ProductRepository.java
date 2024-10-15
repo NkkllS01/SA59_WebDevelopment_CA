@@ -11,7 +11,7 @@ import java.util.List;
 
 //code by Team3.Ng Jiamin
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query("select p from Product p where p.name like %:keyword%")
     List<Product> searchProductByKey(@Param("keyword") String keyword);
 

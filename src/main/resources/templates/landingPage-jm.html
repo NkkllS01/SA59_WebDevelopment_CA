@@ -32,7 +32,7 @@
                 <a class="nav-link text-white link-hover" th:href="@{/orangestore/home}"> Home </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white link-hover" th:href="@{/about}"> About </a>
+                <a class="nav-link text-white link-hover" th:href="@{/orangestore/about}"> About </a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-white link-hover" href="#" role="button" data-bs-toggle="dropdown"> Contact us </a>
@@ -49,7 +49,7 @@
           </div>
           <!-- Search form -->
           <div class="d-flex align-items-center ms-auto">
-            <form class="d-flex mx-3" action="#" th:action="@{/orangestore/all/products/searching}" method="POST">
+            <form class="d-flex mx-3"  th:action="@{/orangestore/all/products/searching}" method="POST">
               <div class="input-group">
                 <input type="text" class="form-control" name="keyword" placeholder="Search Product" aria-label="Search">
                 <button class="btn btn-outline-light btn-search" type="submit">
