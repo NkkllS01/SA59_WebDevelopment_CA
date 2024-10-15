@@ -52,6 +52,10 @@ public class ProductController {
 //        return "landingPage";
         return "landingPage-jm";
     }
+    @GetMapping("/about")
+    public String showAboutPage() {
+        return "about";
+    }
 
     // display all products searched by name
     @PostMapping("/all/products/searching")
