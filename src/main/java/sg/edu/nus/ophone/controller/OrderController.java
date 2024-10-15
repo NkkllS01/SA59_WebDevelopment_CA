@@ -130,7 +130,7 @@ public class OrderController {
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
-            return "redirect:/payment";  
+            return "redirect:/shipping";  
         } else {
         	model.addAttribute("error","submit unsuccessfully");
             return "cart"; 

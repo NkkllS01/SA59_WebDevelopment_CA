@@ -67,6 +67,7 @@ public class ProductController {
         model.addAttribute("products", products);
         return "searchResults";
     }
+    
 
     // display the product which is clicked via picture
     @GetMapping("/products/details/{id}")
