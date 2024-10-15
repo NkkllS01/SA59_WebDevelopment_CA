@@ -3,8 +3,6 @@ package sg.edu.nus.ophone.model;
 import jakarta.validation.constraints.NotBlank;
 
 public class ShipRequest {
-    private String name;
-    private String email;
     @NotBlank(message = "Please enter your address.")
     private String address;
     @NotBlank(message = "Please enter the city you reside in.")
