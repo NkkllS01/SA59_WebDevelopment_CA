@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // 允许来自所有路径的跨域请求
-        registry.addMapping("/**")
+        registry.addMapping("/api/**")
                 // 允许指定的前端域名，如 http://localhost:3000 (ReactJS 默认运行在此端口)
                 .allowedOrigins("http://localhost:3000")
                 // 允许的请求方法
