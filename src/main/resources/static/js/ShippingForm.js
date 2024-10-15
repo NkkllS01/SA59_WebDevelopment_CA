@@ -42,12 +42,14 @@ export default function CreateShipping() {
         console.log("City:", cityElement.current.value);
         console.log("Postal Code:", postalCodeElement.current.value);
 
+        const limitedData= {
+            address: shippingData.address,
+            city: shippingData.city,
+            postalCode: shippingData.postalCode
+        };
+
         axios
-        .post(REST_API_SHIPPING_URL, shippingData, {
-        headers: {
-            'Expect': ''
-          }
-        })
+        .post(REST_API_SHIPPING_URL, limitedData)
         .then(response => {
             console.log("Shipping data successfully sent:", response.data);
             window.location.href = "/payment.html";
