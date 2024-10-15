@@ -39,7 +39,7 @@ public class UserController {
             if(userType.equalsIgnoreCase("customer")) {
                 return "redirect:/orangestore/home";
             }else if(userType.equalsIgnoreCase("staff")){
-            	return"editProduct";
+            	return"Staff";
             }else {
             	return "login";
             }
