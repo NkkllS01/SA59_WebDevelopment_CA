@@ -30,11 +30,12 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         LOGGER.info("Intercepting: " + request.getRequestURI());
 
-        HttpSession session=request.getSession(false);
+        HttpSession session=request.getSession(false); // Avoid creating a new session if it doesn't exist
         String username = (session != null) ? (String) session.getAttribute("username") : null;
         
         // Check if user is not logged in
         if (username == null) {
+            LOGGER.debug("Session does not exist or username is null");
         	System.out.println("username is null");
             // Check if the request is already for the home page
             if (request.getRequestURI().equals("/orangestore/home")) {
@@ -52,8 +53,8 @@ public class LoginInterceptor implements HandlerInterceptor {
                            Object handler, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null) {
             // Check if user is logged in
-            HttpSession session = request.getSession();
-            String username = (String) session.getAttribute("username");
+            HttpSession session = request.getSession(false); // Avoid creating a new session if it doesn't exist
+            String username = (session != null) ? (String) session.getAttribute("username") : null;
             boolean isLoggedIn = username != null;
             // Debug log
             LOGGER.info("User logged in: " + isLoggedIn);
