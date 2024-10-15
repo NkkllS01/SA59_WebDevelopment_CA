@@ -10,47 +10,12 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Shopping Cart</title>
-     
+	 <link th:insert="~{index::webicon}">
+	 <link rel="stylesheet" th:href="@{/css/style.css}">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
      <style>
          /* General body styles */
          body {
-             font-family: Arial, sans-serif;
-             background-color: #f9f9f9;
-             margin: 0;
-             padding: 0;
-         }
-
-         /* Header styles */
-         .header {
-             background-color: #ff6600;
-             color: white;
-             padding: 15px;
-             text-align: center;
-             font-size: 24px;
-         }
-
-         /* Navigation bar styles */
-         .nav-bar {
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             padding: 10px 5%;
-             background-color: #ff6600;
-             box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
-         }
-
-         .nav-bar a {
-             color: white;
-             padding: 0 15px;
-             text-decoration: none;
-             font-size: 16px;
-         }
-
-         .nav-bar a:hover {
-             text-decoration: underline;
-         }
-
          /* Cart Table styles */
          .cart-table {
              width: 100%; /* 调整表格宽度为100% */
@@ -73,9 +38,6 @@
              color: #333;
          }
 
-         .cart-table tr:last-child td {
-             border-bottom: none;
-         }
 
          /* Button styles */
          .btn {
@@ -138,19 +100,8 @@
      </style>
  </head>
  <body>
-     <!-- Header section with navigation bar -->
-     <div class="header">OrangeStore</div>
-     <div class="nav-bar">
-         <div>
-             <a href="#">Home</a>
-             <a href="#">About</a>
-             <a href="#">Contact</a>
-         </div>
-         <div>
-             <a href="#"><i class="fas fa-user"></i></a>
-         </div>
-     </div>
-
+	<div th:insert="~{index::topbar}"></div>
+	    <div class="container">
      <!-- Main container for the shopping cart -->
      <div class="container">
          <h1 style="text-align: center;">Shopping Cart</h1>
@@ -191,10 +142,7 @@
                              </form>
                          </td>
                      </tr>
-				
                  </tbody>
-				 
-				         <!-- 添加总价行 -->
 				         <tfoot>
 				             <tr>
 				                 <td colspan="3" style="text-align: right; font-weight: bold;">Total Price:</td>
