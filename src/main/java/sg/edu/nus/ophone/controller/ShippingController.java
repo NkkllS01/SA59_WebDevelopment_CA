@@ -74,7 +74,8 @@ public class ShippingController {
             long userId = user.getId();
             List<Order> orders = orderImplement.findByUserId(userId);
             Optional<Order> optionalOrder = orders.stream()
-                    .filter( x -> x.getOrderStatus().equals("Cart")).findFirst();
+                    .filter( x -> x.getOrderStatus().equals("Cart"))
+                    .findFirst();
 
             if (!optionalOrder.isPresent()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No cart found

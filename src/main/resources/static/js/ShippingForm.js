@@ -43,7 +43,11 @@ export default function CreateShipping() {
         console.log("Postal Code:", postalCodeElement.current.value);
 
         axios
-        .post(REST_API_SHIPPING_URL, shippingData)
+        .post(REST_API_SHIPPING_URL, shippingData, {
+        headers: {
+            'Expect': ''
+          }
+        })
         .then(response => {
             console.log("Shipping data successfully sent:", response.data);
             window.location.href = "/payment.html";
