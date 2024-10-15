@@ -57,12 +57,10 @@ public class OrderController {
     }
 
     @GetMapping ("/orders")
-    // Http session data to store userId as an attribute
-    public String displayOrders(Model model, HttpSession session, Locale locale) {
+    public String displayOrders(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
         int userId = userService.findByName(username).getId();
         List<Order> orders = orderService.findByUserId(userId);
-//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("Cart"))
                         .toList();
