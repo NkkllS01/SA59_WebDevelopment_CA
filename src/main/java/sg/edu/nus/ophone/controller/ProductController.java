@@ -52,6 +52,10 @@ public class ProductController {
 //        return "landingPage";
         return "landingPage-jm";
     }
+    @GetMapping("/about")
+    public String showAboutPage() {
+        return "about";
+    }
 
     // display all products searched by name
     @PostMapping("/all/products/searching")
@@ -63,6 +67,7 @@ public class ProductController {
         model.addAttribute("products", products);
         return "searchResults";
     }
+    
 
     // display the product which is clicked via picture
     @GetMapping("/products/details/{id}")
