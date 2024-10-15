@@ -2,10 +2,13 @@ package sg.edu.nus.ophone.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
@@ -72,10 +75,61 @@ public class ProductController {
     // display the product which is clicked via picture
     @GetMapping("/products/details/{id}")
     public String displayProducts(@PathVariable("id") Integer id, ModelMap model) {
-        model.addAttribute("product", pservice.searchProductById(id));
+        model.addAttribute("product", pservice.searchProductById((long)id));
         model.addAttribute("reviews", rservice.SearchReviewByProductId(id));
         model.addAttribute("avgrating", rservice.GetAverageRating(id));
         return "displayProduct";
     }
+    @GetMapping("/create")
+    public String createProductForm(Model model) {
+        model.addAttribute("product", new Product());
+        return "createProduct";
+    }
+
+    @PostMapping("/save")
+    public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "createProduct";
+        }
+        pservice.saveProduct(product);
+        return "redirect:/products";
+    }
+
+    
+    @GetMapping("/products")
+    public String listProducts(Model model) {
+        model.addAttribute("products", pservice.findAllProducts());
+        return "searchResults";
+    }
+
+    
+    @GetMapping("/edit/{id}")
+    public String editProductForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("product", pservice.searchProductById(id));
+        return "editProduct";
+    }
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "editProduct";
+        }
+        pservice.saveProduct(product);
+        return "redirect:/products";
+    }
+
+    
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id) {
+        Product product = pservice.searchProductById(id);
+        if (product != null) {
+        	pservice.deleteProduct(id);
+        }
+        return "redirect:/products";
+    }
+
+    
+    
+    
+    
 
 }
