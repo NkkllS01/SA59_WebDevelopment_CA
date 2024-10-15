@@ -191,10 +191,20 @@
                              </form>
                          </td>
                      </tr>
+				
                  </tbody>
+				 
+				         <!-- 添加总价行 -->
+				         <tfoot>
+				             <tr>
+				                 <td colspan="3" style="text-align: right; font-weight: bold;">Total Price:</td>
+				                 <td th:text="${#numbers.formatDecimal(totalPrice, 2, 2)}"></td>
+				                 <td></td>
+				             </tr>
+				         </tfoot>
              </table>
-
-				<a href="http://localhost:3000/api/userShipping" class="btn btn-submit">Submit Ordersss</a>
+				
+				<a href="http://localhost:3000/api/userShipping" class="btn btn-submit">Submit Orders</a>
 			 
              <div class="footer-buttons">
                  <a href="#" onclick="history.go(-1); return false;" class="btn btn-md custom-btn">Back</a>
