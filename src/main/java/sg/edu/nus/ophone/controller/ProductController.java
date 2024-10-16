@@ -5,6 +5,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -46,13 +49,20 @@ public class ProductController {
         return "index";
     }
 
-    // display the home page and get products for displaying
-    @GetMapping("/home")
-    public String getLandingPage(HttpServletRequest request, Model model) {
+    public String getLandingPage(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "8") int size,
+                                 HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
         model.addAttribute("isLoggedIn", isLoggedIn);
-        model.addAttribute("products", pservice.getProduct());
+
+        if(page<0) page = 0;
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Product> productPage = pservice.getProduct(pageable);
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
 //        return "landingPage";
         return "landingPage-jm";
     }

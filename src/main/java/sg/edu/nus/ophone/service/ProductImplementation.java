@@ -2,6 +2,8 @@ package sg.edu.nus.ophone.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.model.Product;
@@ -45,8 +47,8 @@ public class ProductImplementation implements ProductInterface {
 
     @Override
     @Transactional
-    public List<Product> getProduct() {
-        return prepo.getProduct();
+    public Page<Product> getProduct(Pageable pageable) {
+        return prepo.getProduct(pageable);
     }
 
     @Override
