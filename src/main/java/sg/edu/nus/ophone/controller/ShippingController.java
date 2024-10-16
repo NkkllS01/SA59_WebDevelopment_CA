@@ -82,7 +82,12 @@ public class ShippingController {
             }
             Order order = optionalOrder.get();
             Shipping shippingRecord = shipService.createShipping(order, shipRequest.getAddress(), shipRequest.getCity(), shipRequest.getPostalCode());
-            session.setAttribute("order", order);
+
+            System.out.println("Successfully created shipping record.");
+
+            session.setAttribute("orderId", order.getId());
+
+            System.out.println("Successfully set orderId in session.");
 
             return new ResponseEntity<>(shippingRecord, HttpStatus.CREATED);
 
