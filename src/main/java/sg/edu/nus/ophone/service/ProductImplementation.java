@@ -25,6 +25,8 @@ public class ProductImplementation implements ProductInterface {
     public List<Product> findAllProducts() {
         return prepo.findAll();
     }
+    
+    
     @Override
     public Product getProductById(Long productId) {
         return prepo.findProductById(productId);
@@ -37,7 +39,7 @@ public class ProductImplementation implements ProductInterface {
     }
 
     @Override
-    public Product searchProductById(Integer id) {
+    public Product searchProductById(Long id) {
         return prepo.findProductById(id);
     }
 
