@@ -141,7 +141,7 @@ public class OrderController {
 
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
-            return "redirect:/shipping";  
+            return "submit_sucessfully";
         } else {
         	model.addAttribute("error","submit unsuccessfully");
             return "cart"; 

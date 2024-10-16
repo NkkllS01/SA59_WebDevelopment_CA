@@ -37,7 +37,8 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
-    		@RequestParam String password,@RequestParam String userType,Model model, HttpSession session) {
+    		            @RequestParam String password,
+						@RequestParam String userType,Model model, HttpSession session) {
         boolean loginsuccess=u.login(username, password);
         if(loginsuccess) {
             session.setAttribute("username", username);
@@ -66,7 +67,7 @@ public class UserController {
 	public String registerPage() {
 		return "register";
 	}
-	
+
 	@PostMapping("/register")
 	public String register(
 			@RequestParam String username,
@@ -80,7 +81,7 @@ public class UserController {
 		if(u.usernameExists(username)) {
 			model.addAttribute("error","Username already exists");
 			return "register";
-		} 
+		}
 		if (!password.equals(confirmPassword)) {
 		        model.addAttribute("error", "Passwords do not match");
 		        return "register";
