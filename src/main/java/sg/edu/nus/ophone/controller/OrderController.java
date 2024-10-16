@@ -57,12 +57,10 @@ public class OrderController {
     }
 
     @GetMapping ("/orders")
-    // Http session data to store userId as an attribute
-    public String displayOrders(Model model, HttpSession session, Locale locale) {
+    public String displayOrders(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
         int userId = userService.findByName(username).getId();
         List<Order> orders = orderService.findByUserId(userId);
-//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
                         .toList();
@@ -97,8 +95,12 @@ public class OrderController {
         Order cart = orderService.getCartByUserId(userId);
 
         if (cart != null && cart.getOrderDetails() != null && !cart.getOrderDetails().isEmpty()) {
+        	double totalPrice = cart.getOrderDetails().stream()
+                    .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                    .sum();
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
+            model.addAttribute("totalPrice",totalPrice);
         } else {
             model.addAttribute("cart", null); 
         }
@@ -128,9 +130,16 @@ public class OrderController {
     @Transactional
     public String submitCart(@RequestParam Long userId, Model model) {
         Order cart = orderService.getCartByUserId(userId);
+        double totalPrice=0;
+        for (OrderDetails item : cart.getOrderDetails()) {
+            totalPrice += item.getProduct().getUnitPrice() * item.getQuantity();
+        }
+        System.out.println("totalPrice"+totalPrice);
+        cart.setTotalAmount(totalPrice);
+
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
-            return "redirect:/payment";  
+            return "submit_sucessfully";
         } else {
         	model.addAttribute("error","submit unsuccessfully");
             return "cart"; 
@@ -155,6 +164,10 @@ public class OrderController {
                     model.addAttribute("error", "The quantity exceeds available stock. Only " + availableStock + " items are in stock.");
                     model.addAttribute("cart", cart);
                     model.addAttribute("orderDetails", cart.getOrderDetails());
+                    double totalPrice = cart.getOrderDetails().stream()
+                            .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                            .sum();
+                    model.addAttribute("totalPrice", totalPrice);
                     return "cart";  
                 }
                 orderService.updateQuantity((long)cart.getUser().getId(), productId, quantity);
@@ -162,6 +175,10 @@ public class OrderController {
                 model.addAttribute("error", "Product not found.");
                 model.addAttribute("cart", cart);
                 model.addAttribute("orderDetails", cart.getOrderDetails());
+                double totalPrice = cart.getOrderDetails().stream()
+                        .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                        .sum();
+                model.addAttribute("totalPrice", totalPrice);
                 return "cart"; 
             }
         }
@@ -170,7 +187,10 @@ public class OrderController {
         cart = orderService.getCartByUserId(userId);
         model.addAttribute("cart", cart);
         model.addAttribute("orderDetails", cart.getOrderDetails());
-        
+        double totalPrice = cart.getOrderDetails().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                .sum();
+        model.addAttribute("totalPrice", totalPrice);
         return "cart"; 
     }
     

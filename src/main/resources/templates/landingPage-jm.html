@@ -16,6 +16,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+
     <!-- topbar -->
     <div th:fragment="topbar">
       <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #FF7101">
@@ -49,7 +50,7 @@
           </div>
           <!-- Search form -->
           <div class="d-flex align-items-center ms-auto">
-            <form class="d-flex mx-3" action="#" th:action="@{/orangestore/all/products/searching}" method="POST">
+            <form class="d-flex mx-3"  th:action="@{/orangestore/all/products/searching}" method="POST">
               <div class="input-group">
                 <input type="text" class="form-control" name="keyword" placeholder="Search Product" aria-label="Search">
                 <button class="btn btn-outline-light btn-search" type="submit">

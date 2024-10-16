@@ -2,11 +2,15 @@ package sg.edu.nus.ophone.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
 import sg.edu.nus.ophone.model.Product;
@@ -67,14 +71,69 @@ public class ProductController {
         model.addAttribute("products", products);
         return "searchResults";
     }
+    
 
     // display the product which is clicked via picture
     @GetMapping("/products/details/{id}")
     public String displayProducts(@PathVariable("id") Integer id, ModelMap model) {
-        model.addAttribute("product", pservice.searchProductById(id));
+        model.addAttribute("product", pservice.searchProductById((long)id));
         model.addAttribute("reviews", rservice.SearchReviewByProductId(id));
         model.addAttribute("avgrating", rservice.GetAverageRating(id));
         return "displayProduct";
     }
+
+    @PostMapping("/create")
+    public String createProduct(Product product, BindingResult result, RedirectAttributes redirectAttributes,Model model) {
+
+        if(!(product.getBrand()==null)){
+            pservice.saveProduct(product);
+            redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+            return "redirect:/orangestore/Staff";
+        }else{
+            result.getAllErrors().forEach(error -> {
+                System.out.println(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errorMessage", "Please enter the correct brand_id");
+            return "redirect:/orangestore/Staff";
+        }
+
+
+    }
+
+
+    @GetMapping("/Staff")
+    public String findAllProducts(Model model) {
+        List<Product> products= pservice.findAllProducts();
+        model.addAttribute("products",products);
+        return "Staff";
+    }
+
+    @PostMapping("/edit")
+    public String updateProduct (Product product, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> {
+                System.out.println(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
+            return "redirect:/orangestore/Staff";
+        }
+        pservice.saveProduct(product);
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+        return "redirect:/orangestore/Staff";
+    }
+
+
+//    @PostMapping("/delete/{id}")
+//    public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+//        Product product = pservice.searchProductById(id);
+//        if (product != null) {
+//            pservice.deleteProduct(id);
+//            redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully!");
+//        } else {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Product not found.");
+//        }
+//        return "redirect:/orangestore/Staff";
+//    }
+
 
 }

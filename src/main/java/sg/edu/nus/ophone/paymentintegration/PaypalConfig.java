@@ -21,7 +21,7 @@ public class PaypalConfig {
     @Value("${paypal.mode}")
     private String mode;
 
-    // mode could be sandbox or live
+    // mainly to let PayPal know whether this is for testing in sandbox or live
     @Bean
     public Map<String, String> paypalSdkConfig() {
         Map<String, String> configMap = new HashMap<>();
@@ -36,10 +36,11 @@ public class PaypalConfig {
     }
 
     // managing API calls to PayPal, including sending requests and handling responses
-    // ensures the configuration map is attached to the API context, so PayPal can use the correct mode
     @Bean
     public APIContext apiContext() throws PayPalRESTException {
+        // call for generating Access Token using our credentials
         APIContext context = new APIContext(oAuthTokenCredential().getAccessToken());
+        // ensures the configuration map is attached to the API context, so PayPal can use the correct mode
         context.setConfigurationMap(paypalSdkConfig());
         return context;
     }
