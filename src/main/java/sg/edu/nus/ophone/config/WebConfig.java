@@ -30,8 +30,9 @@ public class WebConfig implements WebMvcConfigurer{
                 "/cart","/orders/**","/order_submitted",
                 "/myaccount/**", "/product/**");
 
-        Registry.addInterceptor(staffInterceptor).addPathPatterns(
-                "/orangestore/Staff/**");
+        Registry.addInterceptor(staffInterceptor).addPathPatterns("/orangestore/Staff");
+
+
     }
 
     @Override
