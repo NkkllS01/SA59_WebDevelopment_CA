@@ -25,6 +25,13 @@ button {
     transition: 0.5s;
 }
 
+.no-results {
+    text-align: center;
+    font-size: 1.5em;
+    color: #888;
+    margin-top: 20px;
+}
+
 .d-title {
     font-family: fantasy;
     font-size: xxx-large !important; /* 字体大小 */
@@ -43,20 +50,6 @@ header {
 
 .icon-cart {
     position: relative;
-}
-
-.icon-cart span {
-    background-color: red;
-    position: absolute;
-    top: 50%;
-    right: -10px;
-    width: 20px;
-    height: 20px;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .co-title {
@@ -170,39 +163,81 @@ header {
     margin-bottom: 20px;
 }
 
+.detail .buttons-quantity {
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中对齐 */
+    gap: 15px; /* 按钮和数量控制之间的间距 */
+}
+
 .detail .buttons button {
-    background-color: #eee;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 20px;
-    font-family: Poppins;
-    font-size: large;
-}
-
-.detail svg {
-    width: 30px;
-}
-
-.detail .buttons button:nth-child(2) {
-    background-color: #2F2F2F;
+    background-color: #FF7101;
     color: #eee;
     display: inline-flex;
     gap: 20px;
     box-shadow: 0 10px 20px #2F2F2F77;
     justify-content: center;
     align-items: center;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.detail .buttons button:hover {
+    background-color: #FFA500;
+}
+
+.addCart a {
+    color: #eee; /* 设置文本颜色为白色 */
+    font-family: Poppins;
+    font-size: large;
+    text-decoration: none; /* 去掉链接下划线 */
+}
+
+.detail svg {
+    width: 30px;
 }
 
 .detail .buttons svg {
     transform: translateY(5px);
 }
 
-.detail .description {
+.detail .quantity-control {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.detail .quantity-control button {
+    padding: 8px 12px; /* 按钮内边距 */
+    cursor: pointer; /* 鼠标光标样式 */
+    background-color: #eee; /* 按钮背景颜色 */
+    border: none; /* 去掉按钮边框 */
+    border-radius: 4px; /* 圆角 */
+    font-weight: bold;
+    transition: background-color 0.3s; /* 过渡效果 */
+}
+
+.detail .quantity-control button:hover {
+    background-color: #d4d4d4; /* 悬停时的背景颜色 */
+}
+
+.detail .quantity-control input {
+    width: 50px; /* 输入框宽度 */
+    text-align: center; /* 文本居中 */
+    margin: 0 5px; /* 输入框与按钮之间的间距 */
+    border: 1px solid #ccc; /* 输入框边框 */
+    border-radius: 4px; /* 圆角 */
+    padding: 5px; /* 输入框内边距 */
+    font-size: 16px; /* 字体大小 */
+}
+
+.detail .detail .description {
     margin-top: 20px;
     font-weight: 300;
 }
 
-.detail .avgRating {
+.detail .avgRating-brand {
     margin-top: 20px;
     font-weight: bold;
 }
