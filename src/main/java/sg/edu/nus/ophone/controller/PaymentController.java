@@ -16,11 +16,15 @@ public class PaymentController {
     @Autowired
     private OrderImplementation orderImplementation;
 
+    // upon receiving a GET request from client, redirect to payment.html
     @GetMapping("/payment")
     public String showPaymentPage(Model model, HttpSession session) {
+        // obtain the orderId stored in session
         Long orderId = (Long) session.getAttribute("orderId");
+        // find the order object by orderId
         Order order = orderImplementation.findByOrderId(orderId);
 
+        // add the order object to the model to render order related information on payment.html
         model.addAttribute("order", order);
         return "payment";
     }

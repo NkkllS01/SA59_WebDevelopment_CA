@@ -36,98 +36,121 @@ public class PaypalController {
     public static final String SUCCESS_URL = "payment-success";
     public static final String CANCEL_URL = "payment-cancel";
 
+    // initiates the PayPal payment process
     @PostMapping("/paypal")
     public String payment(HttpSession session) {
         try {
+            // obtain the username stored in session
             String username = (String) session.getAttribute("username");
             System.out.println("Retrieved username from session for Paypal: " + username);
 
+            // find the user object from the username
             User user = userServiceImp.findByName(username);
 
+            // redirect to /cart if user is null
             if (user == null) {
                 return "redirect:/cart";
             }
 
+            // get the userId from the user object
             long userId = user.getId();
-            List<Order> orders = orderImplementation.findByUserId(userId);
 
+            // find the list of orders by userId
+            List<Order> orders = orderImplementation.findByUserId(userId);
+            // filter through the list where order status = "Cart"
             Optional<Order> optionalOrder = orders.stream()
                     .filter(order -> "Cart".equals(order.getOrderStatus()))
                     .findFirst();
 
+            // if there is no order fulfilling the criteria, redirect to /cart
             if (!optionalOrder.isPresent()) {
                 return "redirect:/cart";
             }
 
+            // extracts the order object from optionalOrder and create shipping record
             Order order = optionalOrder.get();
 
-            if (order == null) {
-                return "redirect:/cart";
-            }
             System.out.println("Retrieved related Order");
 
+            // create a PayPal payment
             Payment paypalPayment = paypalService.createPayment(order, "http://localhost:8080/" + CANCEL_URL,
                     "http://localhost:8080/" + SUCCESS_URL);
 
+            // get paypalPaymentId
             String paymentId = paypalPayment.getId();
 
+            // create payment record on our server
             PaymentRecord paymentRecord = paymentService.createPaymentRecord(order, "Validating", paymentId);
 
+            // redirects the user to the PayPal approval page to confirm the payment
             for(Links link:paypalPayment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
                     return "redirect:"+link.getHref();
                 }
             }
 
+        // if there's a PayPalRESTException, redirect to /payment/fail
         } catch (PayPalRESTException e) {
             e.printStackTrace();
         }
         return "payment-fail";
     }
 
+    // if the user cancels the payment on PayPal approval page, will redirect to /payment/cancel
     @GetMapping(value = CANCEL_URL)
     public String cancelPay(@RequestParam("paymentId") String paymentId) {
         paymentService.updatePaymentStatus(paymentId, "Cancelled");
         return "payment-cancel";
     }
 
+    // if the user completes the payment, redirect to /payment/success
     @GetMapping(value = SUCCESS_URL)
     public String successPay(HttpSession session, @RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         try {
+            // execute the payment using the paymentId and payerId from PayPal response
             Payment paypalPayment = paypalService.executePayment(paymentId, payerId);
             System.out.println(paypalPayment.toJSON());
+
+            // if the state is "approved" from PayPal response, update the payment status in the payment record
             if (paypalPayment.getState().equals("approved")) {
                 paymentService.updatePaymentStatus(paymentId, "Completed");
 
+                // obtain the username stored in session
                 String username = (String) session.getAttribute("username");
 
+                // find the user object from the username
                 User user = userServiceImp.findByName(username);
+
+                // redirect to /cart if user is null
                 if (user == null) {
                     return "redirect:/cart";
                 }
 
+                // get the userId from the user object
                 long userId = user.getId();
-                List<Order> orders = orderImplementation.findByUserId(userId);
 
+                // find the list of orders by userId
+                List<Order> orders = orderImplementation.findByUserId(userId);
+                // filter through the list where order status = "Cart"
                 Optional<Order> optionalOrder = orders.stream()
                         .filter(order -> "Cart".equals(order.getOrderStatus()))
                         .findFirst();
 
+                // if there is no order fulfilling the criteria, redirect to /cart
                 if (!optionalOrder.isPresent()) {
                     return "redirect:/cart";
                 }
 
+                // extracts the order object from optionalOrder and create shipping record
                 Order order = optionalOrder.get();
-
-                if (order == null) {
-                    return "redirect:/cart";
-                } else {
-                    order.setOrderStatus("Completed");
-                }
+                // update the order status to "Completed"
+                order.setOrderStatus("Completed");
 
                 return "payment-success";
             }
-        } catch (PayPalRESTException e) {
+        }
+        // if there's a PayPalRESTException, redirect to /payment/fail
+        catch (PayPalRESTException e) {
             System.out.println(e.getMessage());
         }
         paymentService.updatePaymentStatus(paymentId, "Failed");
