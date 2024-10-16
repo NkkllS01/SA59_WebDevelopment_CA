@@ -2,6 +2,7 @@ package sg.edu.nus.ophone.model;
 
 import jakarta.validation.constraints.NotBlank;
 
+// A data transfer object
 public class ShipRequest {
     @NotBlank(message = "Please enter your address.")
     private String address;
