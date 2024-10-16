@@ -16,7 +16,7 @@ public interface ProductInterface {
     Product getProductById(Long productId);
     List<Product> searchProductByKey(String keyword);
     Product searchProductById(Long id);
-     List<Product> getProduct();
+    List<Product> getProduct();
     Product createProduct(Product product);
     void deleteProduct(Long productId);
 }

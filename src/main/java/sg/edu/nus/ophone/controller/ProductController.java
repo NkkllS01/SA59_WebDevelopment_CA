@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
 import sg.edu.nus.ophone.model.Product;
@@ -80,51 +81,55 @@ public class ProductController {
         model.addAttribute("avgrating", rservice.GetAverageRating(id));
         return "displayProduct";
     }
-    @GetMapping("/create")
-    public String createProductForm(Model model) {
-        model.addAttribute("product", new Product());
-        return "createProduct";
-    }
 
-    @PostMapping("/save")
-    public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "createProduct";
+    @PostMapping("/create")
+    public String createProduct(Product product, BindingResult result, RedirectAttributes redirectAttributes,Model model) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> {
+                System.out.println(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
+            return "redirect:/orangestore/Staff";
         }
         pservice.saveProduct(product);
-        return "redirect:/products";
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+        return "redirect:/orangestore/Staff";
+
     }
 
-    
-    @GetMapping("/products")
-    public String listProducts(Model model) {
-        model.addAttribute("products", pservice.findAllProducts());
-        return "searchResults";
+
+    @GetMapping("/Staff")
+    public String findAllProducts(Model model) {
+        List<Product> products= pservice.findAllProducts();
+        model.addAttribute("products",products);
+        return "Staff";
     }
 
-    
-    @GetMapping("/edit/{id}")
-    public String editProductForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("product", pservice.searchProductById(id));
-        return "editProduct";
-    }
-    @PostMapping("/update")
-    public String updateProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "editProduct";
+    @PostMapping("/edit")
+    public String updateProduct (Product product, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> {
+                System.out.println(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
+            return "redirect:/orangestore/Staff";
         }
         pservice.saveProduct(product);
-        return "redirect:/products";
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+        return "redirect:/orangestore/Staff";
     }
 
-    
-    @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long id) {
+
+    @PostMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         Product product = pservice.searchProductById(id);
         if (product != null) {
-        	pservice.deleteProduct(id);
+            pservice.deleteProduct(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Product not found.");
         }
-        return "redirect:/products";
+        return "redirect:/orangestore/Staff";
     }
 
     
