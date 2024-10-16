@@ -84,16 +84,19 @@ public class ProductController {
 
     @PostMapping("/create")
     public String createProduct(Product product, BindingResult result, RedirectAttributes redirectAttributes,Model model) {
-        if (result.hasErrors()) {
+
+        if(!(product.getBrand()==null)){
+            pservice.saveProduct(product);
+            redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+            return "redirect:/orangestore/Staff";
+        }else{
             result.getAllErrors().forEach(error -> {
                 System.out.println(error.getDefaultMessage());
             });
-            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Please enter the correct brand_id");
             return "redirect:/orangestore/Staff";
         }
-        pservice.saveProduct(product);
-        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
-        return "redirect:/orangestore/Staff";
+
 
     }
 
@@ -120,21 +123,17 @@ public class ProductController {
     }
 
 
-    @PostMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        Product product = pservice.searchProductById(id);
-        if (product != null) {
-            pservice.deleteProduct(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully!");
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Product not found.");
-        }
-        return "redirect:/orangestore/Staff";
-    }
+//    @PostMapping("/delete/{id}")
+//    public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+//        Product product = pservice.searchProductById(id);
+//        if (product != null) {
+//            pservice.deleteProduct(id);
+//            redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully!");
+//        } else {
+//            redirectAttributes.addFlashAttribute("errorMessage", "Product not found.");
+//        }
+//        return "redirect:/orangestore/Staff";
+//    }
 
-    
-    
-    
-    
 
 }

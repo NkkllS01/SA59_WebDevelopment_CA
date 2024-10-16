@@ -132,6 +132,13 @@ public class OrderController {
     @Transactional
     public String submitCart(@RequestParam Long userId, Model model) {
         Order cart = orderService.getCartByUserId(userId);
+        double totalPrice=0;
+        for (OrderDetails item : cart.getOrderDetails()) {
+            totalPrice += item.getProduct().getUnitPrice() * item.getQuantity();
+        }
+        System.out.println("totalPrice"+totalPrice);
+        cart.setTotalAmount(totalPrice);
+
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
             return "redirect:/shipping";  
