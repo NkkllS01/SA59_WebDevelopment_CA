@@ -1,0 +1,170 @@
+<!-- 
+	cart_page
+	Created by: LianDa,GaoZijie
+	Created on: 10/09/2024
+ -->
+ 
+ <!DOCTYPE html>
+ <html xmlns:th="http://www.thymeleaf.org">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Shopping Cart</title>
+	 <link th:insert="~{index::webicon}">
+	 <link rel="stylesheet" th:href="@{/css/style.css}">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+     <style>
+         /* General body styles */
+         body {
+         /* Cart Table styles */
+         .cart-table {
+             width: 100%; /* 调整表格宽度为100% */
+             max-width: 1200px; /* 设置最大宽度 */
+             margin: 20px auto;
+             background-color: white;
+             border-collapse: collapse;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+         }
+
+         .cart-table th, .cart-table td {
+             padding: 15px;
+             text-align: center;
+             border-bottom: 1px solid #ddd;
+         }
+
+         .cart-table th {
+             background-color: #f4f4f4;
+             font-weight: bold;
+             color: #333;
+         }
+
+
+         /* Button styles */
+         .btn {
+             background-color: #ff6600;
+             color: white;
+             border: none;
+             padding: 10px 20px;
+             cursor: pointer;
+             margin: 10px 5px;
+             border-radius: 5px;
+             font-size: 14px;
+         }
+
+         .btn:hover {
+             background-color: #e55d00;
+         }
+
+         .btn-remove {
+             background-color: #ff3300;
+         }
+
+         .btn-remove:hover {
+             background-color: #cc2900;
+         }
+
+         .btn-submit {
+             width: 100%; /* 调整按钮宽度为100% */
+             max-width: 1200px;
+             display: block;
+             margin: 20px auto;
+             font-size: 18px;
+         }
+
+         /* Footer buttons */
+         .footer-buttons {
+             text-align: right;
+             margin: 20px auto; /* 增加按钮的间距 */
+             padding: 20px;
+         }
+
+         /* General container for content */
+         .container {
+             width: 90%; /* 让容器宽度占90% */
+             max-width: 1200px;
+             margin: 0 auto; /* 让容器居中 */
+             padding-top: 20px;
+         }
+
+         .empty-cart {
+             text-align: center;
+             font-size: 18px;
+             color: #666;
+         }
+
+         .error-message {
+             color: red;
+             text-align: center;
+             font-size: 16px;
+         }
+     </style>
+ </head>
+ <body>
+	<div th:insert="~{index::topbar}"></div>
+	    <div class="container">
+     <!-- Main container for the shopping cart -->
+     <div class="container">
+         <h1 style="text-align: center;">Shopping Cart</h1>
+
+         <!-- Error message display -->
+         <div th:if="${error}" class="error-message">
+             <p th:text="${error}"></p>
+         </div>
+
+         <!-- Check if there's a cart, display if found -->
+         <div th:if="${cart != null}">
+             <table class="cart-table">
+                 <thead>
+                     <tr>
+                         <th>Product Name</th>
+                         <th>Quantity</th>
+                         <th>Unit Price</th>
+                         <th>Total</th>
+                         <th>Action</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr th:each="item : ${orderDetails}">
+                         <td th:text="${item.product.name}">Product Name</td>
+                         <td>
+                             <form th:action="@{/cart/updateQuantity/{productId}(productId=${item.product.id})}" method="post">
+                                 <input type="number" name="quantity" th:value="${item.quantity}" min="1" style="width: 60px; padding: 5px;">
+                                 <input type="hidden" name="userId" th:value="${cart.user.id}">
+                                 <button type="submit" class="btn">Update</button>
+                             </form>
+                         </td>
+                         <td th:text="${#numbers.formatDecimal(item.product.unitPrice, 2, 2)}">Price</td>
+                         <td th:text="${#numbers.formatDecimal(item.quantity * item.product.unitPrice, 2, 2)}">Total</td>
+                         <td>
+                             <form th:action="@{/cart/remove/{productId}(productId=${item.product.id})}" method="post">
+                                 <input type="hidden" name="orderId" th:value="${cart.id}">
+                                 <button type="submit" class="btn btn-remove"><i class="fas fa-trash-alt"></i> Remove</button>
+                             </form>
+                         </td>
+                     </tr>
+                 </tbody>
+				         <tfoot>
+				             <tr>
+				                 <td colspan="3" style="text-align: right; font-weight: bold;">Total Price:</td>
+				                 <td th:text="${#numbers.formatDecimal(totalPrice, 2, 2)}"></td>
+				                 <td></td>
+				             </tr>
+				         </tfoot>
+             </table>
+				
+				<a href="http://localhost:3000/api/userShipping" class="btn btn-submit">Submit Orders</a>
+			 
+             <div class="footer-buttons">
+                 <a href="#" onclick="history.go(-1); return false;" class="btn btn-md custom-btn">Back</a>
+             </div>
+         </div>
+
+         <!-- Display empty cart message -->
+         <div th:if="${cart == null}">
+             <div class="empty-cart">
+                 <p><i class="fas fa-shopping-cart"></i> Your cart is empty.</p>
+             </div>
+         </div>
+     </div>
+ </body>
+ </html>

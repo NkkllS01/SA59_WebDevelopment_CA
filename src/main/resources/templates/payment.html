@@ -1,0 +1,55 @@
+<!--//Team3.Kuo Chi-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>PayPal Integration</title>
+    <style>
+        input[type="submit"] {
+            padding: 5px 23px;
+            background-color: #e1dcbc;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #83806d;
+            color: white;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <h2>Payment Details</h2>
+    <form  th:action="@{/payment}" method="post">
+        <table>
+            <tr>
+                <td>Subtotal:</td>
+                <td>
+                    <input type="text" id="totalAmount" th:field="*{order.totalAmount}" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td>Order ID:</td>
+                <td>
+                    <input type="text" id="orderId" th:field="*{order.id}" disabled />
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Confirm Payment"></td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr>
+                <td></td>
+                <td><a href="/" style="color: #007bff; text-decoration: underline;">Back to Cart</a></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
