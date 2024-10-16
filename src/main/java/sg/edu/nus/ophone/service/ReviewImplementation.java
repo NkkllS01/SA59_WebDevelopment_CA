@@ -21,12 +21,17 @@ public class ReviewImplementation implements ReviewInterface {
     }
 
     @Override
-    public List<Review> SearchReviewByProductId(Integer pid) {
+    public List<Review> SearchReviewByProductId(Long pid) {
         return rrepo.findByProductIdOrderByRatingDesc(pid);
     }
 
     @Override
-    public Double GetAverageRating(Integer pid) {
+    public Double GetAverageRatingByPid(Long pid) {
         return rrepo.getAverageRatingByProductId(pid);
+    }
+
+    @Override
+    public List<Double> GetAverageRatingByKeyword(String keyword) {
+        return rrepo.getAverageRatingByKeyword(keyword);
     }
 }

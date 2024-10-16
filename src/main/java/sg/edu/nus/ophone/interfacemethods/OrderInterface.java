@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.LongSummaryStatistics;
 
 public interface OrderInterface {
-    List<Order> findByUserId(long userId);
-    Order findByOrderId(Long orderId);
-    List<OrderDetails> findByOrder(Order order);
-    void save(Order order);
-    Order findByOrderIdAndUserId(Long orderId, int userId);
-    void cancelOrder(Order order);
+    public List<Order> findByUserId(long userId);
+    public Order findByOrderId(Long orderId);
+    public List<OrderDetails> findByOrder(Order order);
+    public void save(Order order);
+    public Order findByOrderIdAndUserId(Long orderId, int userId);
+    public void cancelOrder(Order order);
     
     OrderDetails addOrderDetail(OrderDetails orderDetail);
     List<OrderDetails> getOrderDetailsByOrderId(Long orderId);
     boolean removeOrderDetail(Long orderId, Long productId);
     void updateQuantity(Long orderId, Long productId, Integer quantity);
     OrderDetails updateOrderDetail(OrderDetails orderDetail);
-    Order getCartByUserId(Long userId);
+    public Order getCartByUserId(Long userId);
     void createOrder(Order order);
     void submitOrder(Long userId);
 }

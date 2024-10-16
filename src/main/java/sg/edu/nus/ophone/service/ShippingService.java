@@ -17,7 +17,6 @@ public class ShippingService {
     @Autowired
     ShippingRepository shipRepo;
 
-    // creates a shipping record
     @Transactional
     public Shipping createShipping(@Valid Order order,String address, String city, String postalCode) {
         Shipping shipping = new Shipping();
@@ -29,7 +28,6 @@ public class ShippingService {
         return shipRepo.save(shipping);
     }
 
-    // updates shipping status upon fulfillment etc...
     @Transactional
     public boolean updateShippingStatus(int orderId, String status) {
         Shipping shipping = shipRepo.findByOrderId(orderId);

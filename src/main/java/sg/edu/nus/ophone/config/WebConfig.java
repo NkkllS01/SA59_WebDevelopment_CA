@@ -5,7 +5,6 @@ import sg.edu.nus.ophone.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import sg.edu.nus.ophone.interceptor.StaffInterceptor;
 
 
 /**
@@ -20,19 +19,12 @@ public class WebConfig implements WebMvcConfigurer{
 
     @Autowired
     private LoginInterceptor LoginInterceptor;
-    @Autowired
-    private StaffInterceptor staffInterceptor;
-
 
     @Override
     public void addInterceptors(InterceptorRegistry Registry) {
         Registry.addInterceptor(LoginInterceptor).addPathPatterns(
                 "/cart","/orders/**","/order_submitted",
                 "/myaccount/**", "/product/**");
-
-        Registry.addInterceptor(staffInterceptor).addPathPatterns("/orangestore/Staff");
-
-
     }
 
     @Override
