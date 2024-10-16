@@ -27,12 +27,12 @@ public class Order {
 //    @JoinColumn(name = "status", referencedColumnName = "id")
     private String orderStatus;
 
-    @OneToOne
+    @OneToOne(mappedBy = "order")
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private PaymentRecord paymentRecord;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetails> orderDetails = new ArrayList<>();
+    private List<OrderDetails> orderDetails;
 
     @OneToOne(mappedBy = "order")
     private Shipping shipping;

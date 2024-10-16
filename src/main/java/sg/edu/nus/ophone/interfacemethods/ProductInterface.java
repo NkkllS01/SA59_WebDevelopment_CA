@@ -1,5 +1,7 @@
 package sg.edu.nus.ophone.interfacemethods;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import sg.edu.nus.ophone.model.Product;
 
 import java.util.List;
@@ -13,8 +15,8 @@ import java.util.List;
 public interface ProductInterface {
     public Product getProductById(Long productId);
     public List<Product> searchProductByKey(String keyword);
-    public Product searchProductById(Integer id);
-    public List<Product> getProduct();
+    public Product searchProductById(Long id);
+    Page<Product> getProduct(Pageable pageable);
     Product createProduct(Product product);
     void deleteProduct(Long productId);
 }

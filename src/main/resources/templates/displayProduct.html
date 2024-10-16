@@ -25,19 +25,32 @@
         <div class="content">
             <div class="name" th:text="${product.name}"></div>
             <div class="price" th:text="'SG$' + ${product.unitPrice}"></div>
-            <div class="buttons">
-                <button>Check Out</button>
-                <button class="addCart">
-                    Add To cart
-                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
-                    </svg>
-                </button>
-            </div>
             <div class="description" th:text="${product.description}"></div>
-            <div class="avgRating" >General Rating:
-                <span th:text="${avgrating}"></span>
+            <div class="avgRating-brand" >
+                Brand: <span th:text="${product.brand.name}"></span> |
+                General Rating: <span th:text="${avgrating}"></span>
             </div>
+            <form th:action="@{/orangestore/products/details/{id}/addtocart(id=${product.id})}" method="post">
+                <div class="buttons-quantity">
+                    <div class="quantity-control">
+                        <button type="button" class="decrease"
+                                onclick="this.form.quantity.value = Math.max(1, this.form.quantity.value - 1)">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" />
+                        <button type="button" class="increase"
+                                onclick="this.form.quantity.value = parseInt(this.form.quantity.value) + 1">+</button>
+                    </div>
+                    <div class="buttons">
+                        <button class="addCart">
+                            <a th:href="@{/orangestore/products/details/{id}/addtocart(id=${product.id})}">
+                                Add To cart
+                            </a>
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="reviews">
@@ -48,10 +61,7 @@
             <div class="comment">
                 <table>
                     <tr>
-
-                        <!--        userid                    -->
-                        <!--                            <td class="comment-author" th:text="${review.user.id}"></td>-->
-                        <td class="comment-author">userId</td>
+                        <td class="comment-author" th:text="${review.user.id}"></td>
                         <td class="comment-text" th:text="${review.comment}"></td>
                         <td class="comment-rating" th:text="${'Rating: ' + review.rating}"></td>
                     </tr>

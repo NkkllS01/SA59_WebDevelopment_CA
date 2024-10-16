@@ -2,6 +2,8 @@ package sg.edu.nus.ophone.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.model.Product;
@@ -14,7 +16,17 @@ import java.util.List;
 public class ProductImplementation implements ProductInterface {
     @Autowired
     ProductRepository prepo;
+    
 
+    @Transactional
+    public void saveProduct(Product product) {
+    	prepo.save(product);
+    }
+    
+    @Transactional
+    public List<Product> findAllProducts() {
+        return prepo.findAll();
+    }
     @Override
     public Product getProductById(Long productId) {
         return prepo.findProductById(productId);
@@ -27,14 +39,14 @@ public class ProductImplementation implements ProductInterface {
     }
 
     @Override
-    public Product searchProductById(Integer id) {
+    public Product searchProductById(Long id) {
         return prepo.findProductById(id);
     }
 
     @Override
     @Transactional
-    public List<Product> getProduct() {
-        return prepo.getProduct();
+    public Page<Product> getProduct(Pageable pageable) {
+        return prepo.getProduct(pageable);
     }
 
     @Override

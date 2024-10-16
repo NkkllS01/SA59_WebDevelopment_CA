@@ -1,6 +1,7 @@
 package sg.edu.nus.ophone.controller;
 
 import com.paypal.api.payments.Payment;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
@@ -58,9 +59,10 @@ public class OrderController {
     @GetMapping ("/orders")
     // Http session data to store userId as an attribute
     public String displayOrders(Model model, HttpSession session, Locale locale) {
-//        int username = (int) session.getAttribute("username");
-//        List<Order> orders = orderService.findByUserId(username);
-        List<Order> orders = orderService.findByUserId(1);
+        String username = (String) session.getAttribute("username");
+        int userId = userService.findByName(username).getId();
+        List<Order> orders = orderService.findByUserId(userId);
+//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
                         .toList();
@@ -77,75 +79,118 @@ public class OrderController {
      */
 
     @GetMapping("/cart")
-    public String viewCart(@RequestParam(required = false) Long userId, HttpSession session, Model model) {
+    public String viewCart(HttpSession session, Model model) {
 
-        if (userId == null) {
-            User loggedInUser = (User) session.getAttribute("loggedInUser");
-            if (loggedInUser != null) {
-                userId = (long) loggedInUser.getId();
-            } else {
-                return "redirect:/login";
-            }
+       
+        String username = (String) session.getAttribute("username");
+        System.out.println("Session Username: " + username);
+        if (username == null) {
+            return "redirect:/login";
         }
+        User loggedInUser = userService.findByName(username);
 
-
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+      
+        Long userId = (long)loggedInUser.getId();
         Order cart = orderService.getCartByUserId(userId);
-        if (cart != null) {
+
+        if (cart != null && cart.getOrderDetails() != null && !cart.getOrderDetails().isEmpty()) {
+        	double totalPrice = cart.getOrderDetails().stream()
+                    .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                    .sum();
             model.addAttribute("cart", cart);
             model.addAttribute("orderDetails", cart.getOrderDetails());
-            return "cart";
+            model.addAttribute("totalPrice",totalPrice);
         } else {
-            model.addAttribute("errorMessage", "Cart not found.");
-            return "error";
+            model.addAttribute("cart", null); 
         }
+
+        return "cart";  
     }
+    
     @PostMapping("/cart/remove/{productId}")
     public String removeCartItem(@RequestParam Long orderId, @PathVariable Long productId, Model model) {
         try {
             Order cart = orderService.findByOrderId(orderId);
-            if (cart == null) {
-                model.addAttribute("errorMessage", "Order not found.");
-                return "error";  
-            }
             boolean isRemoved = orderService.removeOrderDetail(orderId, productId);
             if (!isRemoved) {
                 model.addAttribute("errorMessage", "Order detail could not be removed.");
-                return "error";  
+                return "cart";  
             }
-            return "redirect:/orders/cart?userId=" + cart.getUser().getId();
-            
+            return "redirect:/cart";
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Something went wrong. Please try again.");
-            return "error";  
+            model.addAttribute("error", "remove unsucessfully");
+            return "cart";  
         }
     }
+    
+    
     @PostMapping("/cart/submit")
     @Transactional
     public String submitCart(@RequestParam Long userId, Model model) {
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
-            return "order_submitted";  
+            return "redirect:/shipping";  
         } else {
-            return "error"; 
+        	model.addAttribute("error","submit unsuccessfully");
+            return "cart"; 
         }
     }
-    @PostMapping("/cart/updateQuantity/{productId}")
+    
+    
+    
+ @PostMapping("/cart/updateQuantity/{productId}")
     public String updateCartItemQuantity(
             @RequestParam Long userId, 
             @PathVariable Long productId, 
-            @RequestParam Integer quantity) {
-        
+            @RequestParam Integer quantity,
+            Model model) {
+
         Order cart = orderService.getCartByUserId(userId);
         if (cart != null) {
-            orderService.updateQuantity(cart.getId(), productId, quantity);
+            Product product = productService.getProductById(productId);
+            if (product != null) {
+                int availableStock = product.getStock(); 
+                if (quantity > availableStock) {
+                    model.addAttribute("error", "The quantity exceeds available stock. Only " + availableStock + " items are in stock.");
+                    model.addAttribute("cart", cart);
+                    model.addAttribute("orderDetails", cart.getOrderDetails());
+                    double totalPrice = cart.getOrderDetails().stream()
+                            .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                            .sum();
+                    model.addAttribute("totalPrice", totalPrice);
+                    return "cart";  
+                }
+                orderService.updateQuantity((long)cart.getUser().getId(), productId, quantity);
+            } else {
+                model.addAttribute("error", "Product not found.");
+                model.addAttribute("cart", cart);
+                model.addAttribute("orderDetails", cart.getOrderDetails());
+                double totalPrice = cart.getOrderDetails().stream()
+                        .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                        .sum();
+                model.addAttribute("totalPrice", totalPrice);
+                return "cart"; 
+            }
         }
-        return "redirect:/orders/cart?userId=" + userId;  
+        
+        
+        cart = orderService.getCartByUserId(userId);
+        model.addAttribute("cart", cart);
+        model.addAttribute("orderDetails", cart.getOrderDetails());
+        double totalPrice = cart.getOrderDetails().stream()
+                .mapToDouble(item -> item.getQuantity() * item.getProduct().getUnitPrice())
+                .sum();
+        model.addAttribute("totalPrice", totalPrice);
+        return "cart"; 
     }
     
 
     @GetMapping("/orders/{id}")
-    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, Locale locale) {
+    public String displayOrderDetails(Model model, @PathVariable("id") Long orderId, HttpServletResponse response) {
         Order order = orderService.findByOrderId(orderId);
 
         // get and add order details to model
@@ -192,16 +237,39 @@ public class OrderController {
              model.addAttribute("orderDetails", orderDetails);
              return "order-cancel";
          } else {
+             model.addAttribute("errorTitle", "Unsuccessful Order Cancellation");
              model.addAttribute("errorMessage",
                      "Your order cannot be cancelled as it has already been " +
                              shippingStatus.toLowerCase() + ".");
-             return "order-cancel-fail";
+             return "errorMsg";
          }
      }
 
      @GetMapping("/product/{id}/review")
-     public String reviewProduct(@PathVariable("id") Long productId, Model model, HttpSession session) {
-        return "product-review";
+     public String reviewProduct(@PathVariable("id") long productId,
+                                 @RequestParam("orderId") long orderId,
+                                 Model model, HttpSession session) {
+        Product product = productService.getProductById(productId);
+        Order order = orderService.findByOrderId(orderId);
+        Shipping shipping = order.getShipping();
+        String shippingStatus = shipping.getShippingStatus();
+
+         if (shippingStatus.equalsIgnoreCase("Delivered")) {
+             model.addAttribute("order", order);
+             model.addAttribute("product", product);
+             model.addAttribute("review", new Review());
+             return "product-review";
+         } else if (shippingStatus.equalsIgnoreCase("Cancelled")) {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created as the order has been cancelled.");
+             return "errorMsg";
+         } else {
+             model.addAttribute("errorTitle", "Product Review Unsuccessful");
+             model.addAttribute("errorMessage",
+                     "A review cannot be created yet as the order has not been delivered.");
+             return "errorMsg";
+         }
      }
 
     @PostMapping("/product/{id}/review/create")
