@@ -32,7 +32,7 @@ public class Order {
     private PaymentRecord paymentRecord;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetails> orderDetails = new ArrayList<>();
+    private List<OrderDetails> orderDetails;
 
     @OneToOne(mappedBy = "order")
     private Shipping shipping;

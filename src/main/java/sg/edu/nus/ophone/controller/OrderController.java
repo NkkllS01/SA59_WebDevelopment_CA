@@ -57,10 +57,12 @@ public class OrderController {
     }
 
     @GetMapping ("/orders")
-    public String displayOrders(Model model, HttpSession session) {
+    // Http session data to store userId as an attribute
+    public String displayOrders(Model model, HttpSession session, Locale locale) {
         String username = (String) session.getAttribute("username");
         int userId = userService.findByName(username).getId();
         List<Order> orders = orderService.findByUserId(userId);
+//        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
                 .filter(order -> !order.getOrderStatus().equalsIgnoreCase("In cart"))
                         .toList();
@@ -104,8 +106,7 @@ public class OrderController {
         } else {
             model.addAttribute("cart", null); 
         }
-        
-       
+
         return "cart";  
     }
     
@@ -130,13 +131,6 @@ public class OrderController {
     @Transactional
     public String submitCart(@RequestParam Long userId, Model model) {
         Order cart = orderService.getCartByUserId(userId);
-        double totalPrice=0;
-        for (OrderDetails item : cart.getOrderDetails()) {
-            totalPrice += item.getProduct().getUnitPrice() * item.getQuantity();
-        }
-        System.out.println("totalPrice"+totalPrice);
-        cart.setTotalAmount(totalPrice);
-
         if (cart != null && "cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
             return "redirect:/shipping";  

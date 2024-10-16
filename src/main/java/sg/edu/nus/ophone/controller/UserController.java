@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import sg.edu.nus.ophone.model.Product;
 import sg.edu.nus.ophone.model.User;
-import sg.edu.nus.ophone.repository.ProductRepository;
 import sg.edu.nus.ophone.service.UserServiceImp;
-
-import java.util.List;
 
 
 @Controller
@@ -26,10 +22,8 @@ public class UserController {
 
     @Autowired
     private UserServiceImp u;
-    @Autowired
-    private ProductRepository productRepository;
 
-	@GetMapping("/login")
+    @GetMapping("/login")
     public String Loginpage() {
         return "login";
 
@@ -37,7 +31,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
-    		@RequestParam String password,@RequestParam String userType,Model model, HttpSession session) {
+    		@RequestParam String password,@RequestParam String userType, Model model, HttpSession session) {
         boolean loginsuccess=u.login(username, password);
         if(loginsuccess) {
             session.setAttribute("username", username);
@@ -45,7 +39,7 @@ public class UserController {
             if(userType.equalsIgnoreCase("customer")) {
                 return "redirect:/orangestore/home";
             }else if(userType.equalsIgnoreCase("staff")){
-            	return"redirect:/orangestore/Staff";
+            	return"editProduct";
             }else {
             	return "login";
             }
@@ -71,7 +65,7 @@ public class UserController {
 	public String register(
 			@RequestParam String username,
 			@RequestParam String password,
-			@RequestParam String confirmPassword,
+			 @RequestParam String confirmPassword,
 			@RequestParam String email,
 			@RequestParam String address,
 			@RequestParam String city,

@@ -61,3 +61,45 @@ body {
 .listProducts .item .price {
     font-size: medium;
 }
+
+.pagination-container {
+    margin: 20px 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    display: block;
+    padding: 10px 15px;
+    color: #FF7101 !important; /* 强制设置颜色 */
+    text-decoration: none;
+    border: none; /* 去除边框 */
+    background-color: transparent !important; /* 背景透明 */
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.page-link:hover {
+    background-color: #FF7101 !important; /* 悬停时背景颜色 */
+    color: white !important; /* 悬停时文字颜色 */
+}
+
+.page-item.active .page-link {
+    background-color: #FF7101 !important; /* 当前页背景颜色 */
+    color: white !important; /* 当前页文字颜色 */
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d !important; /* 禁用状态文字颜色 */
+    pointer-events: none;
+    background-color: #f8f9fa; /* 禁用状态背景颜色 */
+}
