@@ -151,11 +151,14 @@
 				             </tr>
 				         </tfoot>
              </table>
-				
-				<a href="http://localhost:3000/api/userShipping" class="btn btn-submit">Submit Orders</a>
+
+             <form th:action="@{/cart/submit}" method="post">
+                 <input type="hidden" name="userId" th:value="${cart.user.getId()}">
+                 <button type="submit" class="btn btn-submit">Submit Orders</button>
+             </form>
 			 
              <div class="footer-buttons">
-                 <a href="#" onclick="history.go(-1); return false;" class="btn btn-md custom-btn">Back</a>
+                 <a href="/orangestore/home" class="btn btn-secondary">Back to Home</a>
              </div>
          </div>
 

@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sg.edu.nus.ophone.interfacemethods.OrderInterface;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
@@ -80,7 +82,7 @@ public class ProductController {
         boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
         model.addAttribute("isLoggedIn", isLoggedIn);
 
-        if(page<0) page = 0;
+        if (page < 0) page = 0;
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Product> productPage = pservice.getProduct(pageable);
@@ -131,7 +133,7 @@ public class ProductController {
 
         Product product = pservice.getProductById(id);
 
-        Long userId = (long)loggedInUser.getId();
+        Long userId = (long) loggedInUser.getId();
         Order cart = orderService.getCartByUserId(userId);
         if (cart == null) {
             cart = new Order();
@@ -146,5 +148,44 @@ public class ProductController {
 
         return "redirect:/orangestore/products/details/" + id;
     }
+
+    @PostMapping("/create")
+    public String createProduct(Product product, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> {
+                System.out.println(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
+            return "redirect:/orangestore/Staff";
+        }
+        pservice.saveProduct(product);
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+        return "redirect:/orangestore/Staff";
+
+    }
+
+    @GetMapping("/Staff")
+    public String findAllProducts(Model model) {
+        List<Product> products = pservice.findAllProducts();
+        model.addAttribute("products", products);
+        return "Staff";
+    }
+
+    @PostMapping("/edit")
+    public String updateProduct (Product product, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(error -> {
+                System.out.println(error.getDefaultMessage());
+            });
+            redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
+            return "redirect:/orangestore/Staff";
+        }
+            pservice.saveProduct(product);
+            redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
+            return "redirect:/orangestore/Staff";
+        }
+
+
+
 
 }
