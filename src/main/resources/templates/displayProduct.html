@@ -6,6 +6,7 @@
     <title>Product Detail</title>
     <link th:insert="~{index::webicon}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -57,13 +58,22 @@
         <div class="title"><p>Customer Reviews</p></div>
         <div class="comments-list"
              th:each="review, iterStat:${reviews}"
-             th:if="${iterStat.index < 2}">
+             th:if="${iterStat.index < 6}">
             <div class="comment">
                 <table>
                     <tr>
                         <td class="comment-author" th:text="${review.user.id}"></td>
                         <td class="comment-text" th:text="${review.comment}"></td>
-                        <td class="comment-rating" th:text="${'Rating: ' + review.rating}"></td>
+                        <td class="comment-rating">
+                            <span th:text="${'Rating: ' + review.rating}"></span>
+                            <div>
+                                <i class="fas fa-star" th:if="${review.rating >= 1}"></i>
+                                <i class="fas fa-star" th:if="${review.rating >= 2}"></i>
+                                <i class="fas fa-star" th:if="${review.rating >= 3}"></i>
+                                <i class="fas fa-star" th:if="${review.rating >= 4}"></i>
+                                <i class="fas fa-star" th:if="${review.rating == 5}"></i>
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -73,9 +83,17 @@
                class="view-more-button">View More</a>
         </div>
     </div>
-    <div class="sp-title"><p>Similar Product</p></div>
+    <div class="sp-title"><p>Similar Products</p></div>
     <div class="listProducts">
-
+        <div th:each="sameproduct:${sameproducts}">
+            <div class="item">
+                <a th:href="@{/orangestore/products/details/{id}(id=${sameproduct.id})}">
+                    <img th:src="${sameproduct.imagePathName}" alt="${sameproduct.name}"/>
+                </a>
+                <h2 th:text="${sameproduct.name}"></h2>
+                <div class="price" th:text="'SG$' + ${sameproduct.unitPrice}"></div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
