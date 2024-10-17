@@ -6,6 +6,7 @@
     <title>Product Detail</title>
     <link th:insert="~{index::webicon}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -25,35 +26,54 @@
         <div class="content">
             <div class="name" th:text="${product.name}"></div>
             <div class="price" th:text="'SG$' + ${product.unitPrice}"></div>
-            <div class="buttons">
-                <button>Check Out</button>
-                <button class="addCart">
-                    Add To cart
-                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
-                    </svg>
-                </button>
-            </div>
             <div class="description" th:text="${product.description}"></div>
-            <div class="avgRating" >General Rating:
-                <span th:text="${avgrating}"></span>
+            <div class="avgRating-brand" >
+                Brand: <span th:text="${product.brand.name}"></span> |
+                General Rating: <span th:text="${avgrating}"></span>
             </div>
+            <form th:action="@{/orangestore/products/details/{id}/addtocart(id=${product.id})}" method="post">
+                <div class="buttons-quantity">
+                    <div class="quantity-control">
+                        <button type="button" class="decrease"
+                                onclick="this.form.quantity.value = Math.max(1, this.form.quantity.value - 1)">-</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" />
+                        <button type="button" class="increase"
+                                onclick="this.form.quantity.value = parseInt(this.form.quantity.value) + 1">+</button>
+                    </div>
+                    <div class="buttons">
+                        <button class="addCart">
+                            <a th:href="@{/orangestore/products/details/{id}/addtocart(id=${product.id})}">
+                                Add To cart
+                            </a>
+                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="reviews">
         <div class="title"><p>Customer Reviews</p></div>
         <div class="comments-list"
              th:each="review, iterStat:${reviews}"
-             th:if="${iterStat.index < 2}">
+             th:if="${iterStat.index < 6}">
             <div class="comment">
                 <table>
                     <tr>
-
-                        <!--        userid                    -->
-                        <!--                            <td class="comment-author" th:text="${review.user.id}"></td>-->
-                        <td class="comment-author">userId</td>
+                        <td class="comment-author" th:text="${review.user.id}"></td>
                         <td class="comment-text" th:text="${review.comment}"></td>
-                        <td class="comment-rating" th:text="${'Rating: ' + review.rating}"></td>
+                        <td class="comment-rating">
+                            <span th:text="${'Rating: ' + review.rating}"></span>
+                            <div>
+                                <i class="fas fa-star" th:if="${review.rating >= 1}"></i>
+                                <i class="fas fa-star" th:if="${review.rating >= 2}"></i>
+                                <i class="fas fa-star" th:if="${review.rating >= 3}"></i>
+                                <i class="fas fa-star" th:if="${review.rating >= 4}"></i>
+                                <i class="fas fa-star" th:if="${review.rating == 5}"></i>
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -63,9 +83,17 @@
                class="view-more-button">View More</a>
         </div>
     </div>
-    <div class="sp-title"><p>Similar Product</p></div>
+    <div class="sp-title"><p>Similar Products</p></div>
     <div class="listProducts">
-
+        <div th:each="sameproduct:${sameproducts}">
+            <div class="item">
+                <a th:href="@{/orangestore/products/details/{id}(id=${sameproduct.id})}">
+                    <img th:src="${sameproduct.imagePathName}" alt="${sameproduct.name}"/>
+                </a>
+                <h2 th:text="${sameproduct.name}"></h2>
+                <div class="price" th:text="'SG$' + ${sameproduct.unitPrice}"></div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

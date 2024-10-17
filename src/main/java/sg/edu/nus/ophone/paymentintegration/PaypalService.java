@@ -35,7 +35,7 @@ public class PaypalService {
         payer.setPaymentMethod("PayPal");
 
         Payment payment = new Payment();
-        payment.setIntent("SALE");
+        payment.setIntent("sale");
         payment.setPayer(payer);
         payment.setTransactions(transactions);
 
@@ -43,6 +43,8 @@ public class PaypalService {
         redirectUrls.setCancelUrl(cancelUrl);
         redirectUrls.setReturnUrl(successUrl);
         payment.setRedirectUrls(redirectUrls);
+
+        System.out.println("Creating payment with details: " + payment.toJSON());
 
         return payment.create(apiContext);
 

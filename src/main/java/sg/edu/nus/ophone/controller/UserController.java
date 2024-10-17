@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.service.UserServiceImp;
 
+import java.util.List;
+
+import static sg.edu.nus.ophone.interceptor.LoginInterceptor.LOGGER;
+
 
 @Controller
 public class UserController {
@@ -30,15 +34,16 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username,
-    		@RequestParam String password,@RequestParam String userType,Model model, HttpSession session) {
+    		@RequestParam String password,@RequestParam String userType, Model model, HttpSession session) {
         boolean loginsuccess=u.login(username, password);
         if(loginsuccess) {
             session.setAttribute("username", username);
             session.setAttribute("userType", userType);
+			LOGGER.info("Session Username after login: " + session.getAttribute("username"));
             if(userType.equalsIgnoreCase("customer")) {
                 return "redirect:/orangestore/home";
             }else if(userType.equalsIgnoreCase("staff")){
-            	return"editProduct";
+				return"redirect:/orangestore/Staff";
             }else {
             	return "login";
             }
