@@ -50,7 +50,7 @@ public class Order {
     public Order(User user, String orderDate) {
         this.user = user;
         this.orderDate = LocalDate.parse(orderDate);
-        this.orderStatus = "In cart";
+        this.orderStatus = "Cart";
     }
     
 	public void createOrder() {
