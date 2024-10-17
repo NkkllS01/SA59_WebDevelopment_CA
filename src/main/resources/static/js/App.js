@@ -1,14 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ShippingForm from './ShippingForm';
+import logo from "./logo.svg";
+import "./App.css";
+import Header from "./header";
+import Footer from "./footer";
+import CreateShipping from "./ShippingForm";
 
 function App() {
+    const cssURL = "http://localhost:8080/css/custom-style-jm.css";
     return (
-        <Router>
-            <Switch>
-                <Route exact path="/shipping" component={ShippingForm} />
-            </Switch>
-        </Router>
+        <div className="d-flex flex-column min-vh-100">
+            <link rel="stylesheet" href={cssURL} />
+            <Header />
+            <div className="flex-grow-1">
+                <CreateShipping />
+            </div>
+            <Footer />
+        </div>
     );
 }
 
