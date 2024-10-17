@@ -93,13 +93,13 @@ public class TestDataCreation {
         xmUltra.setImagePathName("/images/Xiaomi 14Ultra.jpg");
 
         Product product9 = new Product("Oppo Find N3", "Find N3", 1680.00,50, oppo);
-        product9.setImagePathName("/images/Oppo Find N3.jpg");
+        product9.setImagePathName("/images/Oppo Find N3 Flip.png");
         Product product10 = new Product("Oppo Find N3 Flip", "Find N3 Flip", 1880.00,50, oppo);
-        product10.setImagePathName("/images/Oppo Find N3 Flip.jpg");
+        product10.setImagePathName("/images/Oppo Find N3 Flip.png");
         Product product11 = new Product("Oppo Find N3 Pro", "Find N3 Pro", 2080.00,20, oppo);
-        product11.setImagePathName("/images/Oppo Find N3 Pro.jpg");
+        product11.setImagePathName("/images/Oppo Find X3 Pro.png");
         Product product12 = new Product("Oppo A3", "A3", 1380.00,80, oppo);
-        product12.setImagePathName("/images/Oppo A3.jpg");
+        product12.setImagePathName("/images/Oppo A3.png");
         Product product13 = new Product("Oppo A3 Pro", "A3 Pro", 1580.00,50, oppo);
         product13.setImagePathName("/images/Oppo A3 Pro.jpg");
         Product product14 = new Product("OnePlus 12 5G", "12 5G", 1088.00,100, onePlus);
@@ -107,19 +107,19 @@ public class TestDataCreation {
         Product product15 = new Product("OnePlus 12R 5G", "12R 5G", 888.00,150, onePlus);
         product15.setImagePathName("/images/OnePlus 12R 5G.jpg");
         Product product16 = new Product("HONOR Magic6 Pro", "Magic6 Pro", 1399.00,100, honor);
-        product16.setImagePathName("/images/HONOR Magic6 Pro.jpg");
+        product16.setImagePathName("/images/HONOR Magic6 Pro.png");
         Product product17 = new Product("HONOR Magic6", "Magic6", 1199.00,150, honor);
-        product17.setImagePathName("/images/HONOR Magic6.jpg");
+        product17.setImagePathName("/images/HONOR Magic6 Lite.png");
         Product product18 = new Product("HONOR Magic V3", "Magic V3", 1999.00,40, honor);
-        product18.setImagePathName("/images/HONOR Magic V3.jpg");
+        product18.setImagePathName("/images/HONOR Magic V3.png");
         Product product19 = new Product("HONOR 200 Lite", "200 Lite", 999.00,200, honor);
-        product19.setImagePathName("/images/HONOR 200 Lite.jpg");
+        product19.setImagePathName("/images/HONOR 200 Lite.png");
         Product product20 = new Product("realme 13+ 5G", "13+ 5G", 499.00,200, realme);
         product20.setImagePathName("/images/realme 13+ 5G.jpg");
         Product product21 = new Product("realme 13 Pro+ 5G", "13 Pro+ 5G", 699.00,150, realme);
         product21.setImagePathName("/images/realme 13 Pro+ 5G.jpg");
         Product product22 = new Product("realme GT 6T", "GT 6T", 699.00,150, realme);
-        product22.setImagePathName("/images/realme GT 6T.jpg");
+        product22.setImagePathName("/images/realme GT 6T.webp");
         productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2, hwMate, hwPura, xmFold, xmUltra, product9, product10, product11,
                 product12, product13, product14, product15, product16, product17, product18, product19, product20, product21, product22));
 
