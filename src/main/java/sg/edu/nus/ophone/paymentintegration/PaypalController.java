@@ -122,7 +122,7 @@ public class PaypalController {
                 if (order == null) {
                     return "redirect:/cart";
                 } else {
-                    order.setOrderStatus("Completed");
+                    order.setOrderStatus("Pending delivery");
                 }
 
                 return "payment-success";
