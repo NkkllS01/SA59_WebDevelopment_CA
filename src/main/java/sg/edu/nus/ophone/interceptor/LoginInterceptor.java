@@ -72,18 +72,21 @@ public class LoginInterceptor implements HandlerInterceptor {
                 LOGGER.info("(PostHandle) Session is null");
             }
             String username = null;
+            String userType = null;
             boolean isLoggedIn = false;
 
             if (session != null) {
                 username = (String) session.getAttribute("username");
+                userType = (String) session.getAttribute("userType");
                 isLoggedIn = username != null;
             }
 
             // Debug log
             LOGGER.info("(PostHandle) User logged in: " + isLoggedIn);
 
-            // Add the isLoggedIn attribute to the model
+            // Add the isLoggedIn and userType attribute to the model
             modelAndView.addObject("isLoggedIn", isLoggedIn);
+            modelAndView.addObject("userType", userType);
         }
     }
 }
