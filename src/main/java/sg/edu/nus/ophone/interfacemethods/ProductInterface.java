@@ -13,14 +13,12 @@ import java.util.List;
  * Created on: 10/09/2024
  */
 public interface ProductInterface {
-    public Product getProductById(Long productId);
-    public List<Product> searchProductByKey(String keyword);
-    public Product searchProductById(Long id);
+	void saveProduct(Product product);
+	List<Product> findAllProducts();
+    Product getProductById(Long productId);
+    List<Product> searchProductByKey(String keyword);
+    Product searchProductById(Long id);
     Page<Product> getProduct(Pageable pageable);
     Product createProduct(Product product);
     void deleteProduct(Long productId);
-    void saveProduct(Product product);
-    List<Product> findAllProducts();
-
-
 }
