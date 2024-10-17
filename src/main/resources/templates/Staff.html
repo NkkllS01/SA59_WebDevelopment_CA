@@ -57,7 +57,7 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}"></td>
                 <td th:text="${product.name}"></td>
-                <td th:text="${product.brand.id}"></td>
+                <td th:text="${product.brand.name}"></td>
                 <td th:text="${product.description}"></td>
                 <td th:text="${product.unitPrice}"></td>
                 <td th:text="${product.stock}"></td>
@@ -78,7 +78,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Product Informatino</h5>
+                    <h5 class="modal-title" id="editProductModalLabel">Product Information</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -94,7 +94,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="productBrand" class="form-label">Brand</label>
-                            <input type="text" class="form-control" id="productBrand" name="brand" required>
+                            <select class="form-select" id="productBrand" name="brand.id" required>
+                                <option value="" disabled selected>Select a brand</option>
+                                <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}">
+                                </option>
+                            </select>
+                            <!--<input type="text" class="form-control" id="productBrand" name="brand" required> -->
                         </div>
                         <div class="mb-3">
                             <label for="productDescription" class="form-label">Description</label>
