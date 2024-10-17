@@ -72,6 +72,7 @@ public class ProductController {
     }
 
     // display the home page and get products for displaying
+    @GetMapping("/home")
     public String getLandingPage(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "8") int size,
                                  HttpServletRequest request, Model model) {
