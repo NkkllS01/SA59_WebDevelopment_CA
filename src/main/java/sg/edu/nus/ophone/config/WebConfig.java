@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addInterceptors(InterceptorRegistry Registry) {
         Registry.addInterceptor(LoginInterceptor).addPathPatterns(
-                "/cart","/orders/**","/order_submitted",
+                "/orangestore/**","/cart","/orders/**","/order_submitted",
                 "/myaccount/**", "/product/**");
     }
 

@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.service.UserServiceImp;
 
+import java.util.List;
+
+import static sg.edu.nus.ophone.interceptor.LoginInterceptor.LOGGER;
+
 
 @Controller
 public class UserController {
@@ -36,6 +40,7 @@ public class UserController {
         if(loginsuccess) {
             session.setAttribute("username", username);
             session.setAttribute("userType", userType);
+			LOGGER.info("Session Username after login: " + session.getAttribute("username"));
             if(userType.equalsIgnoreCase("customer")) {
                 return "redirect:/orangestore/home";
             }else if(userType.equalsIgnoreCase("staff")){
