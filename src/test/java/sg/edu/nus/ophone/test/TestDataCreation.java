@@ -54,6 +54,7 @@ public class TestDataCreation {
         Brand realme = new Brand("realme", "realme");
         brandRepo.saveAll(Arrays.asList(orange, pineapple, kiwi, huawei, xiaomi, apple, oppo, onePlus, honor, realme));
 
+
         // Create Product Data
         Product oPhone = new Product("Orange oPhone 24", "oPhone 24", 1500.00, 40, orange);
         oPhone.setImagePathName("/images/iQOO 12.jpg");
@@ -113,7 +114,9 @@ public class TestDataCreation {
         product24.setImagePathName("/images/realme GT 6.jpg");
         Product product25 = new Product("realme GT 6T", "GT 6T", 699.00,150, realme);
         product25.setImagePathName("/images/realme GT 6T.jpg");
-        productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2, hwMate, hwPura, xmFold, xmUltra));
+        productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2, hwMate, hwPura, xmFold, xmUltra, product9, product10, product11,
+                product12, product13, product14, product15, product16, product17, product18, product19, product20, product21,
+                product22, product23, product24, product25));
 
         // Create Order Data
         Order order1 = new Order(andy, "2024-10-01");
