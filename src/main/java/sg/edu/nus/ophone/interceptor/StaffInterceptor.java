@@ -7,6 +7,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -43,4 +44,36 @@ public class StaffInterceptor implements HandlerInterceptor {
         // Allow staff to proceed with the request
         return true;
     }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                           Object handler, ModelAndView modelAndView) throws Exception {
+        if (modelAndView != null) {
+            // Check if user is logged in
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                LOGGER.info("(PostHandle) Session exists with ID: " + session.getId());
+                LOGGER.info("(PostHandle) Session Username in interceptor: " + session.getAttribute("username"));
+            } else {
+                LOGGER.info("(PostHandle) Session is null");
+            }
+            String username = null;
+            String userType = null;
+            boolean isLoggedIn = false;
+
+            if (session != null) {
+                username = (String) session.getAttribute("username");
+                userType = (String) session.getAttribute("userType");
+                isLoggedIn = username != null;
+            }
+
+            // Debug log
+            LOGGER.info("(PostHandle) User logged in: " + isLoggedIn);
+
+            // Add the isLoggedIn and userType attribute to the model
+            modelAndView.addObject("isLoggedIn", isLoggedIn);
+            modelAndView.addObject("userType", userType);
+        }
+    }
+
 }

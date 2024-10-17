@@ -28,30 +28,40 @@
           Name:
         </td>
         <td>
-          <input type="text" th:field="*{name}" th:value="*{name}" disabled/>
+          <input type="text" th:field="*{name}" th:value="*{name}" readonly/>
         </td>
       </tr>
       <tr>
         <td>Email: </td>
-        <td><input type="text" th:field="*{email}" th:value="*{email}" /></td>
+        <td>
+          <input type="text" th:field="*{email}" th:value="*{email}" />
+        <div th:if="${#fields.hasErrors('email')}"
+            th:errors="*{email}" class="text-danger">
+        </div>
       </tr>
       <tr>
         <td>Address:</td>
         <td>
           <input type="text" th:field="*{address}" th:value="*{address}" />
-        </td>
+        <div th:if="${#fields.hasErrors('address')}"
+            th:errors="*{address}" class="text-danger">
+        </div>
       </tr>
       <tr>
         <td>City: </td>
         <td>
           <input type="text" th:field="*{city}" th:value="*{city}" />
-        </td>
+          <div th:if="${#fields.hasErrors('city')}"
+              th:errors="*{city}" class="text-danger">
+        </div>
       </tr>
       <tr>
         <td>Postal Code: </td>
         <td>
           <input type="text" th:field="*{postalCode}" th:value="*{postalCode}" />
-        </td>
+        <div th:if="${#fields.hasErrors('postalCode')}"
+            th:errors="*{postalCode}" class="text-danger">
+        </div>
       </tr>
       <tr>
         <td colspan="2">

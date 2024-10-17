@@ -14,14 +14,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import sg.edu.nus.ophone.interfacemethods.OrderInterface;
-import sg.edu.nus.ophone.interfacemethods.ProductInterface;
-import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
-import sg.edu.nus.ophone.interfacemethods.UserService;
-import sg.edu.nus.ophone.model.Order;
-import sg.edu.nus.ophone.model.OrderDetails;
-import sg.edu.nus.ophone.model.Product;
-import sg.edu.nus.ophone.model.User;
+import sg.edu.nus.ophone.interfacemethods.*;
+import sg.edu.nus.ophone.model.*;
 import sg.edu.nus.ophone.service.OrderImplementation;
 import sg.edu.nus.ophone.service.ProductImplementation;
 import sg.edu.nus.ophone.service.ReviewImplementation;
@@ -45,6 +39,9 @@ public class ProductController {
 
     @Autowired
     private UserService uService;
+
+    @Autowired
+    private BrandInterface bService;
 
     @Autowired
     public void setProductService(ProductImplementation pserviceImpl) {
@@ -177,6 +174,8 @@ public class ProductController {
     public String findAllProducts(Model model) {
         List<Product> products= pservice.findAllProducts();
         model.addAttribute("products",products);
+        List<Brand> brands = bService.findAllBrands();
+        model.addAttribute("brands",brands);
         return "Staff";
     }
 
