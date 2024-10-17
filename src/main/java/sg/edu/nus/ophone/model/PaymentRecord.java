@@ -9,7 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //code by Team3.Kuo Chi
 @Entity
@@ -24,11 +25,11 @@ public class PaymentRecord {
 	private Order order;
 
 	@Column(name="payment_date")
-	private LocalDate paymentDate;
-	
+	private LocalDateTime paymentDate;
+
 	@Column(name="payment_amount")
 	private double paymentAmount;
-	
+
 	@Column(name="status")
 	private String status;
 
@@ -40,7 +41,8 @@ public class PaymentRecord {
 
 	public PaymentRecord(Order order, String paymentDate, String status, String paypalId) {
 		this.order = order;
-		this.paymentDate = LocalDate.parse(paymentDate);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		this.paymentDate = LocalDateTime.parse(paymentDate, formatter);
 		this.paymentAmount = order.getTotalAmount();
 		this.status = status;
 		this.paypalId = paypalId;
@@ -63,12 +65,12 @@ public class PaymentRecord {
 		this.order = order;
 	}
 
-	public LocalDate getPaymentDate() {
+	public LocalDateTime getPaymentDate() {
 		return paymentDate;
 	}
 
 	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = LocalDate.parse(paymentDate);
+		this.paymentDate = LocalDateTime.parse(paymentDate);
 	}
 
 	public double getPaymentAmount() {
@@ -94,11 +96,11 @@ public class PaymentRecord {
 	public void setPaypalId(String paypalId) {
 		this.paypalId = paypalId;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Payment Record ID: " + id + ", Order: " + order + ", Payment Date: " + paymentDate +
-				", Payment Amount: " + paymentAmount + 
+				", Payment Amount: " + paymentAmount +
 				", Status: " + status + ", PayPal ID: " + paypalId;
 	}
 
