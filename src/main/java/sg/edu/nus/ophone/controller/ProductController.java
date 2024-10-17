@@ -2,9 +2,9 @@ package sg.edu.nus.ophone.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +27,6 @@ import sg.edu.nus.ophone.service.ProductImplementation;
 import sg.edu.nus.ophone.service.ReviewImplementation;
 import sg.edu.nus.ophone.service.UserServiceImp;
 
-
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -76,7 +74,7 @@ public class ProductController {
 
     // display the home page and get products for displaying
     @GetMapping("/home")
-    public String getLandingPage(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "8") int size,HttpServletRequest request, Model model) {
+    public String getLandingPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size, HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
         model.addAttribute("isLoggedIn", isLoggedIn);
@@ -85,9 +83,10 @@ public class ProductController {
         Page<Product> productPage = pservice.getProduct(pageable);
         model.addAttribute("products", productPage.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());//
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        // return "landingPage";
         return "landingPage-jm";
-       }
+    }
 
     @GetMapping("/about")
     public String showAboutPage() {
