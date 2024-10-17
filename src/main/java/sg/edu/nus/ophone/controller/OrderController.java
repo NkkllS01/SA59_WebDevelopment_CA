@@ -137,7 +137,7 @@ public class OrderController {
         }
         System.out.println("totalPrice"+totalPrice);
         cart.setTotalAmount(totalPrice);
-        if (cart != null && "cart".equals(cart.getOrderStatus())) {
+        if (cart != null && "Cart".equals(cart.getOrderStatus())) {
             orderService.createOrder(cart);
             return "submit_sucessfully";
         } else {

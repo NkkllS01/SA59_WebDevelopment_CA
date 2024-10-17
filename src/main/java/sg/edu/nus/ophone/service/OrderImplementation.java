@@ -119,7 +119,7 @@ public class OrderImplementation implements OrderInterface {
 
     @Override
     public void submitOrder(Long userId) {
-        Order cart = orderRepo.findByUserIdAndStatus(userId, "cart");
+        Order cart = orderRepo.findByUserIdAndStatus(userId, "Cart");
         if (cart != null) {
 
             orderRepo.save(cart);
