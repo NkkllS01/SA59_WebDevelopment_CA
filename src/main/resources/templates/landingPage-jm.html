@@ -28,8 +28,11 @@
             </a>
             <!-- Navbar links -->
             <ul class="navbar-nav ms-3 text-white fw-bold">
-              <li class="nav-item">
+              <li class="nav-item" th:if="${userType == 'customer' || userType == null}">
                 <a class="nav-link text-white link-hover" th:href="@{/orangestore/home}"> Home </a>
+              </li>
+              <li class="nav-item" th:if="${userType == 'staff'}">
+                <a class="nav-link text-white link-hover" th:href="@{/orangestore/Staff}"> Home </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-white link-hover" th:href="@{/orangestore/about}"> About </a>
@@ -47,9 +50,9 @@
               </li>
             </ul>
           </div>
-          <!-- Search form -->
           <div class="d-flex align-items-center ms-auto">
-            <form class="d-flex mx-3"  th:action="@{/orangestore/all/products/searching}" method="POST">
+            <!-- Search form -->
+            <form class="d-flex mx-3"  th:action="@{/orangestore/all/products/searching}" method="POST" th:if="${userType == 'customer' || userType == null}">
               <div class="input-group">
                 <input type="text" class="form-control" name="keyword" placeholder="Search Product" aria-label="Search">
                 <button class="btn btn-outline-light btn-search" type="submit">
@@ -57,7 +60,6 @@
                 </button>
               </div>
             </form>
-
             <!-- Login -->
             <!-- Thymeleaf conditional check for user login status -->
             <div th:if="${isLoggedIn}">
@@ -68,7 +70,12 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loggedInUserMenu">
                   <li><a class="dropdown-item" th:href="@{/myaccount/profile/update}">My Profile</a></li>
-                  <li><a class="dropdown-item" th:href="@{/orders}">View Order History</a></li>
+                  <li th:if="${userType == 'customer'}">
+                    <a class="dropdown-item" th:href="@{/orders}">View Order History</a>
+                  </li>
+                  <li th:if="${userType == 'staff'}">
+                    <a class="dropdown-item" th:href="@{/orangestore/Staff}">Manage Products</a>
+                  </li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
                 </ul>
@@ -83,7 +90,7 @@
             </div>
 
             <!-- Cart -->
-            <a th:href="@{/cart}" class="mx-3 text-white icon-hover" aria-label="Shopping Cart">
+            <a th:href="@{/cart}" th:if="${userType == 'customer' || userType == null}" class="mx-3 text-white icon-hover" aria-label="Shopping Cart">
               <i class="fas fa-shopping-cart fa-2x"></i>
             </a>
           </div>
