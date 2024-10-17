@@ -133,7 +133,7 @@ public class ProductController {
             cart = new Order();
             cart.setUser(loggedInUser);
             cart.setOrderDetails(Arrays.asList(new OrderDetails(cart, product, quantity)));
-            cart.setOrderStatus("cart");
+            cart.setOrderStatus("Cart");
             cart.setOrderDate(LocalDate.now());
         } else {
             boolean b = true;
