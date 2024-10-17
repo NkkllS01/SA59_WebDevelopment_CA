@@ -28,10 +28,7 @@
           Name:
         </td>
         <td>
-          <input type="text" th:field="*{name}" th:value="*{name}" />
-        <div th:if="${#fields.hasErrors('name')}"
-            th:errors="*{name}" class="text-danger">
-        </div>
+          <input type="text" th:field="*{name}" th:value="*{name}" disabled/>
       </tr>
       <tr>
         <td>Email: </td>
