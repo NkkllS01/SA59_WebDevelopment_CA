@@ -110,7 +110,7 @@ public class ProductController {
     }
 
     // add to cart
-    @PostMapping("products/details/{id}/addtocart")
+    @PostMapping("/products/details/{id}/addtocart")
     public String addToCart(@PathVariable("id") Long id, @RequestParam("quantity") Integer quantity, HttpSession session) {
         String username = (String) session.getAttribute("username");
         if (username == null) {
@@ -130,7 +130,7 @@ public class ProductController {
             cart = new Order();
             cart.setUser(loggedInUser);
             cart.setOrderDetails(Arrays.asList(new OrderDetails(cart, product, quantity)));
-            cart.setOrderStatus("cart");
+            cart.setOrderStatus("Cart");
             cart.setOrderDate(LocalDate.now());
         } else {
             boolean b = true;
