@@ -27,7 +27,7 @@ public class PaypalController {
     public static final String SUCCESS_URL = "payment/success";
     public static final String CANCEL_URL = "payment/cancel";
 
-    @PostMapping("/payment")
+    @PostMapping("/paypal")
     public String payment(HttpSession session) {
         try {
             User user = (User) session.getAttribute("user");
