@@ -180,7 +180,7 @@ public class ProductController {
     }
 
     @PostMapping("/edit")
-    public String updateProduct (Product product, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String updateProduct(Product product, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             result.getAllErrors().forEach(error -> {
                 System.out.println(error.getDefaultMessage());
@@ -188,10 +188,17 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("errorMessage", "Please correct the errors.");
             return "redirect:/orangestore/Staff";
         }
+
+        Product existingProduct = pservice.getProductById(product.getId());
+        if (product.getImagePathName() == null || product.getImagePathName().isEmpty()) {
+            product.setImagePathName(existingProduct.getImagePathName());
+        }
+
         pservice.saveProduct(product);
         redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
         return "redirect:/orangestore/Staff";
     }
+
 
 
 //    @PostMapping("/delete/{id}")
