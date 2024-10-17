@@ -64,7 +64,7 @@ public class OrderController {
         List<Order> orders = orderService.findByUserId(userId);
 //        List<Order> orders = orderService.findByUserId(1);
         List<Order> orderList = orders.stream()
-                .filter(order -> !order.getOrderStatus().equalsIgnoreCase("Cart"))
+                .filter(order -> !order.getOrderStatus().equalsIgnoreCase("cart"))
                         .toList();
         model.addAttribute("orders", orderList);
         return "order-history";
