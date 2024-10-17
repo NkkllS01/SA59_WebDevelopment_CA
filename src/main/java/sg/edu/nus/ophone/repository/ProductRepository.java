@@ -1,5 +1,7 @@
 package sg.edu.nus.ophone.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +22,5 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     Product findProductById(@Param("id") long id);
 
     @Query("Select p from Product p")
-    List<Product> getProduct();
+    Page<Product> getProduct(Pageable pageable);
 }
