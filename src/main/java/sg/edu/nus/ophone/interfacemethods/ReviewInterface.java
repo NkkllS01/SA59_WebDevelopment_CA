@@ -7,7 +7,9 @@ import java.util.List;
 public interface ReviewInterface {
     void createNewReview(Review review);
 
-    List<Review> SearchReviewByProductId(Integer pid);
+    List<Review> SearchReviewByProductId(Long pid);
 
-    Double GetAverageRating(Integer pid);
+    Double GetAverageRatingByPid(Long pid);
+
+    public List<Double> GetAverageRatingByKeyword(String keyword);
 }

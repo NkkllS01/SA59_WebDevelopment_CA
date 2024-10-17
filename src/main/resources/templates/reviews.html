@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link th:insert="~{index::webicon}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<div th:insert="~{index::topbar}"></div>
+<div class="container">
+    <header>
+        <div th:insert="~{index::logo}"></div>
+        <div th:insert="~{index::icon-cart}"></div>
+    </header>
+    <div class="reviews">
+        <div class="title">
+            <p>Customer Reviews</p>
+        </div>
+        <div class="comments-list" th:each="review : ${reviews}">
+            <div class="comment">
+                <table>
+                    <tr>
+                        <td class="comment-author" th:text="${review.user.id}"></td>
+                        <td class="comment-text" th:text="${review.comment}"></td>
+                        <td class="comment-rating" th:text="${'Rating: ' + review.rating}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

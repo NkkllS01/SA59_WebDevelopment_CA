@@ -25,12 +25,19 @@ button {
     transition: 0.5s;
 }
 
+.no-results {
+    text-align: center;
+    font-size: 1.5em;
+    color: #888;
+    margin-top: 20px;
+}
+
 .d-title {
     font-family: fantasy;
-    font-size: xxx-large !important; /* 字体大小 */
-    font-weight: bold; /* 字体加粗 */
-    text-align: center; /* 居中对齐 */
-    color: #333; /* 字体颜色 */
+    font-size: xxx-large !important;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
     margin-bottom: 20px;
 }
 
@@ -43,20 +50,6 @@ header {
 
 .icon-cart {
     position: relative;
-}
-
-.icon-cart span {
-    background-color: red;
-    position: absolute;
-    top: 50%;
-    right: -10px;
-    width: 20px;
-    height: 20px;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .co-title {
@@ -73,30 +66,30 @@ header {
     align-items: center;
     width: 100%;
     max-width: 600px;
-    margin: 0 auto 50px auto; /* 上 0，右 auto，下 20px，左 auto */
+    margin: 0 auto 50px auto;
 }
 
 .search-input {
-    flex: 1; /* 使输入框占据可用空间 */
-    padding: 10px; /* 内边距 */
+    flex: 1;
+    padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc; /* 边框样式 */
-    border-radius: 4px; /* 圆角边框 */
-    margin-right: 10px; /* 输入框与按钮之间的间隔 */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
 }
 
 .search-button {
-    padding: 10px 20px; /* 内边距 */
-    font-size: 16px; /* 字体大小 */
+    padding: 10px 20px;
+    font-size: 16px;
     color: white;
     background-color: #FF7101;
-    border: none; /* 去掉边框 */
-    border-radius: 4px; /* 圆角边框 */
-    cursor: pointer; /* 鼠标悬停时显示手型 */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .search-button:hover {
-    background-color: #FFA500; /* 悬停时更改背景色 */
+    background-color: #FFA500;
 }
 
 /* list item product */
@@ -170,99 +163,141 @@ header {
     margin-bottom: 20px;
 }
 
+.detail .buttons-quantity {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 .detail .buttons button {
-    background-color: #eee;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 20px;
-    font-family: Poppins;
-    font-size: large;
-}
-
-.detail svg {
-    width: 30px;
-}
-
-.detail .buttons button:nth-child(2) {
-    background-color: #2F2F2F;
+    background-color: #FF7101;
     color: #eee;
     display: inline-flex;
     gap: 20px;
     box-shadow: 0 10px 20px #2F2F2F77;
     justify-content: center;
     align-items: center;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.detail .buttons button:hover {
+    background-color: #FFA500;
+}
+
+.addCart a {
+    color: #eee;
+    font-family: Poppins;
+    font-size: large;
+    text-decoration: none;
+}
+
+.detail svg {
+    width: 30px;
 }
 
 .detail .buttons svg {
     transform: translateY(5px);
 }
 
-.detail .description {
+.detail .quantity-control {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.detail .quantity-control button {
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #eee;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.detail .quantity-control button:hover {
+    background-color: #d4d4d4;
+}
+
+.detail .quantity-control input {
+    width: 50px;
+    text-align: center;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.detail .detail .description {
     margin-top: 20px;
     font-weight: 300;
 }
 
-.detail .avgRating {
+.detail .avgRating-brand {
     margin-top: 20px;
     font-weight: bold;
 }
 
 /* reviews */
 .reviews {
-    margin: 20px; /* 外边距 */
-    padding: 15px; /* 内边距 */
-    background-color: #f1f1f1; /* 背景色 */
-    border-radius: 8px; /* 圆角 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    margin: 20px;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .reviews .title {
-    margin-bottom: 20px; /* 标题底部间距 */
-    font-size: 24px; /* 标题字体大小 */
-    font-weight: bold; /* 字体加粗 */
-    color: #333; !important;/* 字体颜色 */
-    text-align: center; /* 居中对齐 */
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333; !important;
+    text-align: center;
 }
 
 .comments-list {
-    max-height: 400px; /* 最大高度 */
-    overflow-y: auto; /* 纵向滚动条 */
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .comment {
-    margin-bottom: 15px; /* 评论之间的间距 */
+    margin-bottom: 15px;
 }
 
 .comment table {
-    width: 100%; /* 表格宽度 */
-    border-collapse: collapse; /* 合并边框 */
-    background-color: #ffffff; /* 表格背景色 */
-    border-radius: 5px; /* 圆角 */
-    overflow: hidden; /* 隐藏超出边框的部分 */
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .comment td {
-    padding: 10px; /* 内边距 */
-    border-bottom: 1px solid #ddd; /* 行间的底部边框 */
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 .comment-author {
-    width: 20%; /* 作者列宽度 */
-    font-weight: bold; /* 加粗字体 */
-    color: #007bff; /* 字体颜色 */
-    text-align: left; /* 左对齐 */
+    width: 20%;
+    font-weight: bold;
+    color: #007bff;
+    text-align: left;
 }
 
 .comment-text {
-    width: 60%; /* 评论文本列宽度 */
-    text-align: left; /* 左对齐 */
-    color: #555; /* 字体颜色 */
+    width: 60%;
+    text-align: left;
+    color: #555;
 }
 
 .comment-rating {
-    width: 20%; /* 评分列宽度 */
-    text-align: right; /* 右对齐 */
-    color: #f39c12; /* 评分颜色 */
+    width: 20%;
+    text-align: right;
+    color: #f39c12;
 }
 
 /* 最后一行的底部边框去掉 */
@@ -271,21 +306,29 @@ header {
 }
 
 .view-more {
-    text-align: center; /* 居中对齐 */
-    margin-top: 20px; /* 上边距 */
+    text-align: center;
+    margin-top: 20px;
 }
 
 .view-more-button {
-    padding: 10px 20px; /* 内边距 */
-    background-color: #FF7101; /* 按钮背景色 */
-    color: white; /* 按钮文字颜色 */
-    text-decoration: none; /* 去掉下划线 */
-    border-radius: 5px; /* 圆角 */
-    transition: background-color 0.3s; /* 添加过渡效果 */
+    padding: 10px 20px;
+    background-color: #FF7101;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .view-more-button:hover {
-    background-color: #FFA500; /* 悬停时改变背景色 */
+    background-color: #FFA500;
+}
+
+.sp-title {
+    margin: 50px auto 20px auto;
+    font-size: 30px;
+    font-weight: bold;
+    color: #333; !important;
+    text-align: center;
 }
 
 /* menu */

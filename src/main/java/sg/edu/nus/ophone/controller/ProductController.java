@@ -11,14 +11,23 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sg.edu.nus.ophone.interfacemethods.OrderInterface;
 import sg.edu.nus.ophone.interfacemethods.ProductInterface;
 import sg.edu.nus.ophone.interfacemethods.ReviewInterface;
+import sg.edu.nus.ophone.interfacemethods.UserService;
+import sg.edu.nus.ophone.model.Order;
+import sg.edu.nus.ophone.model.OrderDetails;
 import sg.edu.nus.ophone.model.Product;
+import sg.edu.nus.ophone.model.User;
+import sg.edu.nus.ophone.service.OrderImplementation;
 import sg.edu.nus.ophone.service.ProductImplementation;
 import sg.edu.nus.ophone.service.ReviewImplementation;
+import sg.edu.nus.ophone.service.UserServiceImp;
 
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -31,6 +40,12 @@ public class ProductController {
     private ReviewInterface rservice;
 
     @Autowired
+    private OrderInterface oService;
+
+    @Autowired
+    private UserService uService;
+
+    @Autowired
     public void setProductService(ProductImplementation pserviceImpl) {
         this.pservice = pserviceImpl;
     }
@@ -38,6 +53,16 @@ public class ProductController {
     @Autowired
     public void setReviewService(ReviewImplementation rserviceImpl) {
         this.rservice = rserviceImpl;
+    }
+
+    @Autowired
+    public void setOrderService(OrderImplementation orderImp) {
+        this.oService = orderImp;
+    }
+
+    @Autowired
+    public void setUserService(UserServiceImp userImp) {
+        this.uService = userImp;
     }
 
     // index page --- common components
@@ -56,30 +81,71 @@ public class ProductController {
 //        return "landingPage";
         return "landingPage-jm";
     }
+
     @GetMapping("/about")
     public String showAboutPage() {
         return "about";
     }
 
     // display all products searched by name
-    @GetMapping("/all/products/searching")
+    @PostMapping("/all/products/searching")
     public String search(@RequestParam("keyword") String keyword, Model model) {
         List<Product> products = pservice.searchProductByKey(keyword);
-        if (products.isEmpty()) {
-            return "noProductFound";
-        }
         model.addAttribute("products", products);
         return "searchResults";
     }
-    
 
     // display the product which is clicked via picture
     @GetMapping("/products/details/{id}")
-    public String displayProducts(@PathVariable("id") Integer id, ModelMap model) {
-        model.addAttribute("product", pservice.searchProductById((long)id));
+    public String displayProducts(@PathVariable("id") Long id, ModelMap model) {
+        model.addAttribute("product", pservice.searchProductById(id));
         model.addAttribute("reviews", rservice.SearchReviewByProductId(id));
-        model.addAttribute("avgrating", rservice.GetAverageRating(id));
+        model.addAttribute("avgrating", rservice.GetAverageRatingByPid(id));
+        model.addAttribute("sameproducts",
+                pservice.searchProductByKey(pservice.searchProductById(id).getBrand().getName()));
         return "displayProduct";
+    }
+
+    // add to cart
+    @PostMapping("products/details/{id}/addtocart")
+    public String addToCart(@PathVariable("id") Long id, @RequestParam("quantity") Integer quantity, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        User loggedInUser = uService.findByName(username);
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        Product product = pservice.getProductById(id);
+
+        Long userId = (long)loggedInUser.getId();
+        Order cart = oService.getCartByUserId(userId);
+        if (cart == null) {
+            cart = new Order();
+            cart.setUser(loggedInUser);
+            cart.setOrderDetails(Arrays.asList(new OrderDetails(cart, product, quantity)));
+            cart.setOrderStatus("cart");
+            cart.setOrderDate(LocalDate.now());
+        } else {
+            boolean b = true;
+            List<OrderDetails> orderDetails = cart.getOrderDetails();
+            for (OrderDetails od : orderDetails) {
+                if (id == od.getProduct().getId()) {
+                    b = false;
+                    od.setQuantity(od.getQuantity() + quantity);
+                    break;
+                }
+            }
+            if (b) {
+                orderDetails.add(new OrderDetails(cart, product, quantity));
+            }
+        }
+        oService.save(cart);
+
+        return "redirect:/orangestore/products/details/" + id;
     }
 
     @PostMapping("/create")
