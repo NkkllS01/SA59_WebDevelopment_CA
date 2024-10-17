@@ -19,4 +19,8 @@ public interface ProductInterface {
     Page<Product> getProduct(Pageable pageable);
     Product createProduct(Product product);
     void deleteProduct(Long productId);
+    void saveProduct(Product product);
+    List<Product> findAllProducts();
+
+
 }
