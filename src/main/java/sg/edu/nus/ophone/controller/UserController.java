@@ -5,14 +5,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import sg.edu.nus.ophone.model.User;
 import sg.edu.nus.ophone.service.UserServiceImp;
 
@@ -27,7 +25,8 @@ public class UserController {
     @Autowired
     private UserServiceImp u;
 
-    @GetMapping("/login")
+
+	@GetMapping("/login")
     public String Loginpage() {
         return "login";
 
@@ -62,39 +61,42 @@ public class UserController {
 		return "redirect:/login?logout=true";
 	}
 	@GetMapping("/register")
-	public String registerPage() {
+	public String registerPage(Model model) {
+		model.addAttribute("user", new User());
 		return "register";
 	}
+
 	
 	@PostMapping("/register")
-	public String register(
-			@RequestParam String username,
-			@RequestParam String password,
-			 @RequestParam String confirmPassword,
-			@RequestParam String email,
-			@RequestParam String address,
-			@RequestParam String city,
-			@RequestParam String postalCode,
-			Model model) {
-		if(u.usernameExists(username)) {
+	public String register(@Valid @ModelAttribute ("user") User user, BindingResult bindingResult, Model model) {
+		// Check for password length before any validation
+		if (user.getPassword() != null && (user.getPassword().length() < 8 || user.getPassword().length() > 20)) {
+			model.addAttribute("error", "Password must be between 8-20 characters");
+			return "register";
+		}
+		if (bindingResult.hasErrors()) {
+			return "register";
+		}
+		if(u.usernameExists(user.getName())) {
 			model.addAttribute("error","Username already exists");
 			return "register";
 		} 
-		if (!password.equals(confirmPassword)) {
+		if (!user.getPassword().equals(user.getConfirmPassword())) {
 		        model.addAttribute("error", "Passwords do not match");
 		        return "register";
 		  }
-		User newuser =new User();
-		newuser.setName(username);
-		newuser.setPassword(password);
-		newuser.setEmail(email);
-		newuser.setUserType("customer");
-		newuser.setAddress(address);
-		newuser.setCity(city);
-		newuser.setPostalCode(postalCode);
-		u.saveUser(newuser);
+		User newUser = new User();
+		newUser.setName(user.getName());  // Name is now part of user
+		newUser.setPassword(user.getPassword());// Password is from user object
+		newUser.setEmail(user.getEmail());
+		newUser.setUserType("customer");
+		newUser.setAddress(user.getAddress());
+		newUser.setCity(user.getCity());
+		newUser.setPostalCode(user.getPostalCode());
+		u.saveUser(newUser);
 		return "redirect:/login";
 	}
+
 
 	@GetMapping("/myaccount/profile/update")
 	public String updateProfile(Model model, HttpSession session) {

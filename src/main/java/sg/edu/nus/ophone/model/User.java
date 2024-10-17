@@ -3,6 +3,8 @@ package sg.edu.nus.ophone.model;
 import java.util.List;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 //code by Team3.Cynthia Peh
 @Entity
@@ -14,16 +16,26 @@ public class User {
   private String userType;
 
   @Column(length = 50)
+  @NotBlank(message= "Required field")
   private String name;
 
   @Column(length = 100)
+  @NotBlank(message= "Required field")
   private String email;
+  @NotBlank(message= "Required field")
   private String address;
+  @NotBlank(message= "Required field")
   private String city;
+  @NotBlank(message= "Required field")
   private String postalCode;
 
   @Column(length = 20)
+  @NotBlank(message= "Required field")
+  @Size(min = 8, max = 20, message = "Password must be between 8-20 characters")
   private String password;
+
+  @Transient
+  private String confirmPassword;
 
   @OneToMany(mappedBy = "user")
   private List<Order> orders;
@@ -124,4 +136,13 @@ public class User {
     this.reviews = reviews;
   }
 
+
+
+  public String getConfirmPassword() {
+    return confirmPassword;
+  }
+
+  public void setConfirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
+  }
 }
