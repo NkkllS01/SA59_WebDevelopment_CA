@@ -81,6 +81,7 @@
                     <h5 class="modal-title" id="editProductModalLabel">Product Information</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <form id="editProductForm" th:action="@{/orangestore/edit}" method="post">
                         <div class="mb-3">
@@ -133,6 +134,7 @@
         document.getElementById("productDescription").value = description;
         document.getElementById("productPrice").value = unitPrice;
         document.getElementById("productStock").value = stock;
+
 
         var editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
         editModal.show();
