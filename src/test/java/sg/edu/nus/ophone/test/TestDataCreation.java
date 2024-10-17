@@ -56,15 +56,23 @@ public class TestDataCreation {
 
 
         // Create Product Data
-        Product oPhone = new Product("Orange oPhone 24", "oPhone 24", 1500.00, 40, orange);
+        Product oPhone = new Product("Orange oPhone 24", "Third-generation Snapdragon 8 mobile platform | Self-developed gaming chip Q1 |" +
+                "Wanli light-chasing imaging system | Full-time four-zone cooling system | 1.5K 144Hz all-weather super-sensitive screen.",
+                1500.00, 40, orange);
         oPhone.setImagePathName("/images/iQOO 12.jpg");
-        Product pPhone = new Product("Pineapple pPhone Pro", "pPhone Pro", 1900.00, 30, pineapple);
+        Product pPhone = new Product("Pineapple pPhone Pro", "1-inch gimbal-level main camera | Blueprint imaging chip V3+ | Zeiss 200 million APO super telephoto.",
+                1900.00, 30, pineapple);
         pPhone.setImagePathName("/images/vivo X100 Ultra.jpg");
-        Product kPhone = new Product("Kiwi kPhone S3", "kPhone S3", 2024, 99, kiwi);
+        Product kPhone = new Product("Kiwi kPhone S3", "Second-generation Snapdragon 8 mobile platform｜Rampage Engine 3.0" +
+                "｜Ice Cooling System｜2K Eye Protection Screen｜5000mAh Large Battery", 2024, 99, kiwi);
         kPhone.setImagePathName("/images/Redmi K70.jpg");
-        Product kPhone2 = new Product("Kiwi kPhone S1 Max", "kPhone S1 Max", 1999, 56, kiwi);
+        Product kPhone2 = new Product("Kiwi kPhone S1 Max", "The 6.94-inch ultra-clear flexible OLED screen has a peak brightness of up to 2200 nits. " +
+                "The picture is still clear and bright under strong light, delicate and moving, allowing you to immerse yourself in watching movies. " +
+                "With the pixel super light-transmitting technology, it has lower power consumption and the good show never stops.",
+                1999, 56, kiwi);
         kPhone2.setImagePathName("/images/HUAWEI Pocket2.jpg");
-        Product hwMate = new Product("HUAWEI Mate60", "6.7\" display, Weight: approx. 206g (w/ battery)",
+        Product hwMate = new Product("HUAWEI Mate60", "It has always been a classic and has always been innovative. " +
+                "The ultimate central axis symmetry, a continuation of the past. Concentric design, breaking boundaries, exploring new aesthetics.",
                 1600, 90, huawei);
         hwMate.setImagePathName("/images/HUAWEI Mate60.jpg");
         Product hwPura = new Product("HUAWEI Pura70",
@@ -72,11 +80,15 @@ public class TestDataCreation {
                 1548, 37, huawei);
         hwPura.setImagePathName("/images/HUAWEI Pura70.jpg");
         Product xmFold = new Product("Xiaomi MIX Fold 4",
-                "Six Leica-branded cameras, a 5,100mAh battery and the latest Qualcomm chip.",
+                "ltra-thin four-curved body｜Xiaomi Keel 2.0 hinge｜Full carbon fiber support structure｜Leica Optical All-Star Quad Camera｜" +
+                        "Leica Optical Summilux lens｜UHD screen with consistent internal and external vision｜Third-generation Snapdragon 8 mobile platform｜" +
+                        "5100mAh Xiaomi Jinshajiang battery | DOU1.47 days｜Xiaomi Surge 67W wired second charge | Xiaomi Surge 50W wireless second charge｜" +
+                        "Two-way satellite communication｜IPX8 waterproof｜Xiaomi HyperOS AI efficiency master",
                 1582.50, 34, xiaomi);
         xmFold.setImagePathName("/images/Xiaomi MIX Fold4.jpg");
         Product xmUltra = new Product("Xiaomi MIX Fold4",
-                "Qualcomm Snapdragon 8 Gen 3, powered by modern LPRRD5X RAM and the latest UFS 4.0 storage technologies.",
+                "Second-generation Snapdragon 8 mobile platform｜Xiaomi Pengpai OS｜Rage Engine 3.0｜Ice Cooling™ system｜" +
+                        "Second-generation high-end 2K Chinese screen｜Light Hunter™ 800 sensor｜120W + 5000mAh",
                 1699, 28, xiaomi);
         xmUltra.setImagePathName("/images/Xiaomi 14Ultra.jpg");
 
@@ -94,29 +106,22 @@ public class TestDataCreation {
         product14.setImagePathName("/images/OnePlus 12 5G.jpg");
         Product product15 = new Product("OnePlus 12R 5G", "12R 5G", 888.00,150, onePlus);
         product15.setImagePathName("/images/OnePlus 12R 5G.jpg");
-        Product product16 = new Product("OnePlus Nord 4 5G", "Nord 4 5G", 688.00,200, onePlus);
-        product16.setImagePathName("/images/OnePlus Nord 4 5G.jpg");
-        Product product17 = new Product("OnePlus Nord CE 4 Lite 5G", "Nord CE 4 Lite 5G", 488.00,150, onePlus);
-        product17.setImagePathName("/images/OnePlus Nord CE 4 Lite 5G.jpg");
-        Product product18 = new Product("HONOR Magic6 Pro", "Magic6 Pro", 1399.00,100, honor);
-        product18.setImagePathName("/images/HONOR Magic6 Pro.jpg");
-        Product product19 = new Product("HONOR Magic6", "Magic6", 1199.00,150, honor);
-        product19.setImagePathName("/images/HONOR Magic6.jpg");
-        Product product20 = new Product("HONOR Magic V3", "Magic V3", 1999.00,40, honor);
-        product20.setImagePathName("/images/HONOR Magic V3.jpg");
-        Product product21 = new Product("HONOR 200 Lite", "200 Lite", 999.00,200, honor);
-        product21.setImagePathName("/images/HONOR 200 Lite.jpg");
-        Product product22 = new Product("realme 13+ 5G", "13+ 5G", 499.00,200, realme);
-        product22.setImagePathName("/images/realme 13+ 5G.jpg");
-        Product product23 = new Product("realme 13 Pro+ 5G", "13 Pro+ 5G", 699.00,150, realme);
-        product23.setImagePathName("/images/realme 13 Pro+ 5G.jpg");
-        Product product24 = new Product("realme GT 6", "GT 6", 799.00,150, realme);
-        product24.setImagePathName("/images/realme GT 6.jpg");
-        Product product25 = new Product("realme GT 6T", "GT 6T", 699.00,150, realme);
-        product25.setImagePathName("/images/realme GT 6T.jpg");
+        Product product16 = new Product("HONOR Magic6 Pro", "Magic6 Pro", 1399.00,100, honor);
+        product16.setImagePathName("/images/HONOR Magic6 Pro.jpg");
+        Product product17 = new Product("HONOR Magic6", "Magic6", 1199.00,150, honor);
+        product17.setImagePathName("/images/HONOR Magic6.jpg");
+        Product product18 = new Product("HONOR Magic V3", "Magic V3", 1999.00,40, honor);
+        product18.setImagePathName("/images/HONOR Magic V3.jpg");
+        Product product19 = new Product("HONOR 200 Lite", "200 Lite", 999.00,200, honor);
+        product19.setImagePathName("/images/HONOR 200 Lite.jpg");
+        Product product20 = new Product("realme 13+ 5G", "13+ 5G", 499.00,200, realme);
+        product20.setImagePathName("/images/realme 13+ 5G.jpg");
+        Product product21 = new Product("realme 13 Pro+ 5G", "13 Pro+ 5G", 699.00,150, realme);
+        product21.setImagePathName("/images/realme 13 Pro+ 5G.jpg");
+        Product product22 = new Product("realme GT 6T", "GT 6T", 699.00,150, realme);
+        product22.setImagePathName("/images/realme GT 6T.jpg");
         productRepo.saveAll(Arrays.asList(oPhone, pPhone, kPhone, kPhone2, hwMate, hwPura, xmFold, xmUltra, product9, product10, product11,
-                product12, product13, product14, product15, product16, product17, product18, product19, product20, product21,
-                product22, product23, product24, product25));
+                product12, product13, product14, product15, product16, product17, product18, product19, product20, product21, product22));
 
         // Create Order Data
         Order order1 = new Order(andy, "2024-10-01");
